@@ -78,6 +78,7 @@ const STATUS={done:{label:'Сделано / зафиксировано',color:'#
 let data=null,view='dashboard',selected=null,scale=1;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function formatStamp(item){if(!item.timestamp)return esc(item.date||'');const d=new Date(item.timestamp);return new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Berlin',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d)+' (местное время)';}
 function filtered(){const q=$('search').value.trim().toLowerCase(),g=$('groupFilter').value,s=$('statusFilter').value;return data.nodes.filter(n=>(!q||(n.title+' '+n.subtitle+' '+n.summary+' '+n.details).toLowerCase().includes(q))&&(!g||n.group===g)&&(!s||n.status===s))}
 function group(id){return data.groups.find(g=>g.id===id)}
 function statusTag(s){const v=STATUS[s]||STATUS.todo;return '<span class="status"><i style="width:7px;height:7px;border-radius:50%;background:'+v.color+'"></i>'+v.label+'</span>'}
@@ -102,10 +103,10 @@ function renderDashboard(){
 $('viewTitle').textContent='Dashboard · состояние проекта';
 const counts={};data.nodes.forEach(n=>counts[n.status]=(counts[n.status]||0)+1);
 const open=data.nodes.filter(n=>n.status!=='done').length;
-const activity=(data.activity||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
-const decisions=(data.decisions||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+const activity=(data.activity||[]).slice().sort((a,b)=>(b.timestamp||b.date).localeCompare(a.timestamp||a.date));
+const decisions=(data.decisions||[]).slice().sort((a,b)=>(b.timestamp||b.date).localeCompare(a.timestamp||a.date));
 const focus=esc(data.meta.currentFocus||'Следующий шаг не определён');
-$('stage').innerHTML='<div class="stagehead"><strong>Dashboard · живое состояние карты</strong><span class="hint"><span class="live-dot"></span>Данные загружены · '+esc(data.meta.updated)+'</span></div>'+
+$('stage').innerHTML='<div class="stagehead"><strong>Dashboard · живое состояние карты</strong><span class="hint"><span class="live-dot"></span>Данные загружены · '+(data.meta.updatedAt?formatStamp({timestamp:data.meta.updatedAt}):esc(data.meta.updated))+'</span></div>'+
 '<div class="dashboard"><div class="dashgrid">'+
 '<div class="dashcard"><span class="dashvalue">'+data.nodes.length+'</span><span class="dashmuted">Разделов проекта</span></div>'+
 '<div class="dashcard"><span class="dashvalue">'+data.edges.length+'</span><span class="dashmuted">Связей между разделами</span></div>'+
@@ -114,14 +115,14 @@ $('stage').innerHTML='<div class="stagehead"><strong>Dashboard · живое с�
 '<div class="dashcard"><span class="dashvalue">'+(counts.agreed||0)+'</span><span class="dashmuted">Согласовано, ждёт реализации</span></div>'+
 '<div class="dashcard"><span class="dashvalue">'+(counts.verify||0)+'</span><span class="dashmuted">Требует проверки</span></div></div>'+
 '<div class="dashsection"><h2>Текущий фокус</h2><p>'+focus+'</p><div class="dashmuted">Рабочая ветка: <b>'+esc(data.meta.branch)+'</b> · main защищена от изменений</div><div class="dashactions"><button id="dashRefresh">Обновить данные</button><button id="dashOpenTasks">Открытые задачи</button><button id="dashShowMap">Открыть карту</button></div><p id="dashRefreshError" class="dashmuted" role="status" aria-live="polite"></p></div>'+
-'<div class="dashsection"><h2>Последние изменения</h2>'+(activity.length?activity.map(a=>'<div class="activity"><time>'+esc(a.date)+'</time><div><b>'+esc(a.title)+'</b><p>'+esc(a.summary)+'</p></div></div>').join(''):'<p class="dashmuted">Изменений пока нет.</p>')+'</div>'+
-'<div class="dashsection"><h2>Последние решения</h2>'+(decisions.length?decisions.map(a=>'<div class="activity"><time>'+esc(a.date)+'</time><div><b>'+esc(a.title)+'</b><p>'+esc(a.summary)+'</p></div></div>').join(''):'<p class="dashmuted">Решения пока не внесены.</p>')+'</div></div>';
+'<div class="dashsection"><h2>Последние изменения</h2>'+(activity.length?activity.map(a=>'<div class="activity"><time>'+formatStamp(a)+'</time><div><b>'+esc(a.title)+'</b><p>'+esc(a.summary)+'</p></div></div>').join(''):'<p class="dashmuted">Изменений пока нет.</p>')+'</div>'+
+'<div class="dashsection"><h2>Последние решения</h2>'+(decisions.length?decisions.map(a=>'<div class="activity"><time>'+formatStamp(a)+'</time><div><b>'+esc(a.title)+'</b><p>'+esc(a.summary)+'</p></div></div>').join(''):'<p class="dashmuted">Решения пока не внесены.</p>')+'</div></div>';
 $('dashRefresh').onclick=async()=>{const b=$('dashRefresh');b.disabled=true;b.textContent='Обновляю…';try{const r=await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);data=await r.json();renderStats();renderDashboard()}catch(e){b.disabled=false;b.textContent='Повторить обновление';const m=$('dashRefreshError');if(m)m.textContent='Не удалось обновить данные: '+(e?.message||String(e));} };
 $('dashOpenTasks').onclick=()=>{view='open';render()};
 $('dashShowMap').onclick=()=>{view='map';render()};
 }
 function render(){renderTabs();const nodes=filtered();if(view==='dashboard'){renderDashboard()}else if(view==='map'){if(!$('canvas')){$('stage').innerHTML='<div class="stagehead"><strong id="viewTitle">Интерактивная карта связей</strong><div><button id="zoomOut">−</button> <button id="zoomIn">+</button> <button id="resetView">Сброс</button></div></div><div class="canvas-scroll" id="canvasScroll"><div class="canvas" id="canvas"><svg class="edges" id="edges" viewBox="0 0 1120 820"></svg><div id="nodes"></div></div></div><div class="legend" id="legend"></div>';}$('zoomIn').onclick=()=>{scale=Math.min(1.4,scale+.1);renderMap(filtered())};$('zoomOut').onclick=()=>{scale=Math.max(.6,scale-.1);renderMap(filtered())};$('resetView').onclick=()=>{scale=1;$('canvasScroll').scrollTo(0,0);renderMap(filtered())};renderMap(nodes)}else renderList(nodes,view==='open',view==='links')}
-function init(){ $('subtitle').textContent=data.meta.subtitle+' · '+data.meta.scope;$('updated').textContent='Обновлено: '+data.meta.updated;$('foot').textContent='Источник данных: project-map-data.json · Ветка: '+data.meta.branch+' · Карта является рабочей спецификацией, а не подтверждением реализации.';data.groups.forEach(g=>$('groupFilter').add(new Option(g.title,g.id)));Object.entries(STATUS).forEach(([k,v])=>$('statusFilter').add(new Option(v.label,k)));renderStats();$('search').oninput=render;$('groupFilter').onchange=render;$('statusFilter').onchange=render;render()}
+function init(){ $('subtitle').textContent=data.meta.subtitle+' · '+data.meta.scope;$('updated').textContent='Обновлено: '+(data.meta.updatedAt?formatStamp({timestamp:data.meta.updatedAt}):data.meta.updated);$('foot').textContent='Источник данных: project-map-data.json · Ветка: '+data.meta.branch+' · Карта является рабочей спецификацией, а не подтверждением реализации.';data.groups.forEach(g=>$('groupFilter').add(new Option(g.title,g.id)));Object.entries(STATUS).forEach(([k,v])=>$('statusFilter').add(new Option(v.label,k)));renderStats();$('search').oninput=render;$('groupFilter').onchange=render;$('statusFilter').onchange=render;render()}
 fetch(DATA_URL).then(r=>{if(!r.ok)throw new Error('Не удалось загрузить project-map-data.json');return r.json()}).then(d=>{data=d;init()}).catch(e=>{$('stage').innerHTML='<div class="empty">Ошибка загрузки данных карты: '+esc(e.message)+'. Убедитесь, что project-map-data.json находится рядом с project-map.html.</div>'});
 </script>
 </body></html>
