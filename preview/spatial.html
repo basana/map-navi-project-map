@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172c35">
+<title>MAP NAVI — Spatial Rhine Demo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+:root{--night:#172c35;--panel:#203b45;--paper:#f1e8d5;--muted:#b7c5c1;--gold:#e3b96d;--red:#d87955;--blue:#75b9cf;--green:#9bb88a;--line:#6c8990}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--night);color:var(--paper);font-family:Inter,system-ui,-apple-system,sans-serif}
+body{height:100dvh;display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+header{padding:11px 15px 9px;background:linear-gradient(120deg,#172c35,#294753);border-bottom:1px solid #46616a;flex:none}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.kicker{font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font:600 22px/1.08 Georgia,serif;margin:3px 0 0;letter-spacing:.01em}
+.sub{font-size:11px;color:var(--muted);margin-top:4px}
+.pill{font-size:10px;border:1px solid #66838a;border-radius:20px;padding:6px 9px;color:#d8e3dc;white-space:nowrap}
+main{min-height:0;flex:1;display:flex;flex-direction:column;gap:8px;padding:9px 10px 10px}
+.mapwrap{position:relative;min-height:0;flex:1.1;border:1px solid #55717a;border-radius:15px;overflow:hidden;background:#d9d5c7;box-shadow:0 12px 28px #07151b66}
+#map{position:absolute;inset:0}
+.map-title{position:absolute;z-index:700;left:11px;top:10px;background:#172c35e8;border:1px solid #6b8287;border-radius:10px;padding:8px 10px;pointer-events:none;box-shadow:0 3px 12px #0003}
+.map-title b{display:block;font:600 14px Georgia,serif;color:#fff0d2}
+.map-title span{font-size:9px;color:#c4d2cd;letter-spacing:.08em;text-transform:uppercase}
+.legend{position:absolute;z-index:700;left:10px;bottom:10px;background:#172c35ed;border:1px solid #6b8287;border-radius:10px;padding:8px 10px;display:grid;gap:5px;font-size:10px;box-shadow:0 3px 12px #0003}
+.legend div{display:flex;align-items:center;gap:7px;color:#e5e9df}
+.swatch{width:19px;height:0;border-top:3px solid var(--blue)}.swatch.hist{border-top:3px dashed var(--gold)}.swatch.context{border-top:2px dotted #e4e3d5}
+.map-tools{position:absolute;z-index:800;right:10px;top:10px;display:grid;gap:6px}
+.map-tools button{width:37px;height:37px;border-radius:50%;border:1px solid #73888a;background:#172c35ed;color:white;font-size:17px}
+.info{flex:none;background:linear-gradient(145deg,#24434d,#1c333c);border:1px solid #49656d;border-radius:14px;padding:10px 11px;box-shadow:0 8px 22px #07151b55}
+.infohead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.eyebrow{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h2{font:600 20px/1.1 Georgia,serif;margin:3px 0 4px;color:#fff0d2}
+#desc{font-size:11px;line-height:1.4;color:#d0dcd5;margin:0;max-width:600px}
+#level{font-size:9px;border:1px solid #66838a;color:#d4e0d8;border-radius:20px;padding:5px 8px;white-space:nowrap}
+.relations{display:flex;gap:6px;overflow-x:auto;padding:9px 0 1px;scrollbar-width:none}
+.relations::-webkit-scrollbar{display:none}
+.rel{flex:0 0 auto;max-width:220px;text-align:left;border:1px solid #5c7880;border-radius:10px;padding:7px 9px;background:#294a54;color:#edf0e7}
+.rel small{display:block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#c3d0c9;margin-bottom:3px}
+.rel strong{font:600 12px Georgia,serif;display:block}
+.rel.active{border-color:var(--gold);background:#4b4b3b}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:#aebfba;margin-top:6px}
+#clear{border:0;background:transparent;color:var(--gold);font-size:10px;padding:3px}
+.leaflet-container{font:11px system-ui;background:#d8d4c8}
+.leaflet-control-attribution{font-size:8px!important}
+.node{width:100%;height:100%;display:grid;place-items:center;border-radius:50%;font-weight:800;font-size:11px;color:#172c35;border:2px solid #fff5dc;box-shadow:0 3px 12px #07151b66;transition:transform .2s,opacity .2s}
+.node.major{background:#e5b96e;width:46px;height:46px;border:3px solid #fff1cf;font-size:15px;box-shadow:0 0 0 7px #e5b96e55,0 4px 15px #07151b88}
+.node.primary{background:#75b9cf;width:34px;height:34px}
+.node.secondary{background:#9bb88a;width:26px;height:26px}
+.node.dim{opacity:.27;filter:grayscale(1)}
+.node.selected{transform:scale(1.14);box-shadow:0 0 0 10px #e5b96e66,0 5px 18px #07151b99}
+.edge-label{font-size:9px;background:#172c35e8;color:#f3e9d2;border:1px solid #73888a;border-radius:6px;padding:3px 5px;white-space:nowrap}
+@media(min-width:760px){header{padding:14px 22px}.brand h1{font-size:27px}main{max-width:1300px;width:100%;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);grid-template-rows:minmax(0,1fr);gap:12px;padding:12px 18px 18px}.mapwrap{min-height:0}.info{align-self:stretch;display:flex;flex-direction:column;justify-content:flex-start;padding:16px}.relations{display:grid;grid-template-columns:1fr;overflow:auto}.rel{max-width:none}.bottom{margin-top:auto}}
+</style></head>
+<body>
+<header><div class="brand"><div><div class="kicker">MAP NAVI · Spatial exploration</div><h1>Средний Рейн · Кобленц</h1><div class="sub">Один участок · география, история и визуальные связи</div></div><div class="pill">DEMO 01 / LIVE CONCEPT</div></div></header>
+<main>
+<section class="mapwrap" aria-label="Интерактивная карта связей">
+<div id="map"></div>
+<div class="map-title"><b>Рейнская панорама</b><span>Выберите узел — увидите его окружение</span></div>
+<div class="legend"><div><i class="swatch"></i> Географическая связь</div><div><i class="swatch hist"></i> Исторический контекст</div><div><i class="swatch context"></i> Общий культурный ландшафт</div></div>
+<div class="map-tools"><button id="zoomAll" aria-label="Показать весь участок">⌗</button><button id="reset" aria-label="Сбросить выбор">↺</button></div>
+</section>
+<section class="info">
+<div class="infohead"><div><div class="eyebrow" id="kind">Центральный объект · уровень 1</div><h2 id="name">Эренбрайтштайн</h2><p id="desc">Крепость возвышается над Рейном напротив устья Мозеля и Deutsches Eck. Это главный ориентир выбранного участка.</p></div><span id="level">ФОКУС</span></div>
+<div class="relations" id="relations"></div>
+<div class="bottom"><span id="hint">Нажмите на любой узел карты или карточку связи</span><button id="clear">Снять выделение ×</button></div>
+</section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const places=[
+{id:'eh',name:'Эренбрайтштайн',short:'E',kind:'Крепость',level:'major',lat:50.3651,lng:7.6151,desc:'Крепость на высоком скальном выступе над Рейном. Её современный облик сформирован в 1817–1828 годах; с площадки открывается вид на Кобленц, Рейн и Мозель.',relations:['de','ko','landscape','stol']},
+{id:'de',name:'Deutsches Eck',short:'D',kind:'Слияние рек · памятник',level:'primary',lat:50.3649,lng:7.6052,desc:'Здесь Мозель впадает в Рейн. Напротив, на другом берегу Рейна, возвышается крепость Эренбрайтштайн — одна из самых выразительных пространственных пар города.',relations:['eh','ko','mosel','landscape']},
+{id:'ko',name:'Старый Кобленц',short:'K',kind:'Городской центр',level:'primary',lat:50.3594,lng:7.5975,desc:'Исторический центр расположен у слияния Рейна и Мозеля. Его положение связывает городской маршрут с Deutsches Eck и панорамой крепости на противоположном берегу.',relations:['eh','de','stol','landscape']},
+{id:'stol',name:'Штольценфельс',short:'S',kind:'Замок',level:'secondary',lat:50.3150 ,lng:7.5678,desc:'Замок XIII века, перестроенный в XIX столетии в духе романтизма. Он показывает другую главу истории Рейна — не военную крепость, а романтический образ средневекового замка.',relations:['ko','eh','lah','landscape']},
+{id:'lah',name:'Замок Ланек',short:'L',kind:'Замок',level:'secondary',lat:50.3159,lng:7.6360 ,desc:'Замок над местом впадения Лана в Рейн. Основан в XIII веке; его положение помогает увидеть, как речные долины определяли размещение укреплений.',relations:['stol','lahn','landscape']},
+{id:'mosel',name:'Устье Мозеля',short:'M',kind:'Географический узел',level:'secondary',lat:50.365,lng:7.604,desc:'Место впадения Мозеля в Рейн. Именно эта география объясняет стратегическое положение Кобленца и крепости на противоположном берегу.',relations:['de','eh','ko']},
+{id:'lahn',name:'Устье Лана',short:'A',kind:'Географический узел',level:'secondary',lat:50.315,lng:7.৬  .replace('7.৬','7.৬') ,desc:'Лан впадает в Рейн у Ланштайна. Рядом на высоте стоит замок Ланек — наглядный пример связи укрепления с речным узлом.',relations:['lah','landscape']},
+{id:'landscape',name:'Верхняя долина Среднего Рейна',short:'UN',kind:'Культурный ландшафт UNESCO',level:'secondary',lat:50.337,lng:7.590,desc:'Общий культурный контекст: исторические города, замки, укрепления и речная долина образуют единый ландшафт Верхней долины Среднего Рейна, включённый в список Всемирного наследия UNESCO.',relations:['eh','de','ko','stol','lah']}
+];
+const edges=[
+{a:'eh',b:'de',type:'geo',label:'напротив, через Рейн',color:'#75b9cf',weight:5},
+{a:'eh',b:'ko',type:'geo',label:'панорама города',color:'#75b9cf',weight:3},
+{a:'de',b:'ko',type:'geo',label:'устье Мозеля',color:'#75b9cf',weight:4},
+{a:'lah',b:'lahn',type:'geo',label:'над устьем Лана',color:'#75b9cf',weight:4},
+{a:'stol',b:'ko',type:'geo',label:'вверх по Рейну',color:'#75b9cf',weight:2},
+{a:'eh',b:'landscape',type:'context',label:'объект культурного ландшафта',color:'#e5e3d5',weight:2},
+{a:'stol',b:'landscape',type:'context',label:'объект культурного ландшафта',color:'#e5e3d5',weight:2},
+{a:'lah',b:'landscape',type:'context',label:'объект культурного ландшафта',color:'#e5e3d5',weight:2},
+{a:'stol',b:'lah',type:'history',label:'разные главы истории замков Рейна',color:'#e3b96d',weight:2}
+];
+const map=L.map('map',{zoomControl:false,scrollWheelZoom:true}).setView([50.342,7.59],12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+const byId=Object.fromEntries(places.map(p=>[p.id,p])),markers={},lines={};
+edges.forEach((e,i)=>{const p=byId[e.a],q=byId[e.b];lines[i]=L.polyline([[p.lat,p.lng],[q.lat,q.lng]],{color:e.color,weight:e.weight,opacity:.62,dashArray:e.type==='history'?'7 7':e.type==='context'?'2 8':null}).addTo(map);});
+places.forEach(p=>{const html='<div class="node '+p.level+'" id="node-'+p.id+'">'+p.short+'</div>';const size=p.level==='major'?46:p.level==='primary'?34:26;const icon=L.divIcon({className:'',html,iconSize:[size,size],iconAnchor:[size/2,size/2]});markers[p.id]=L.marker([p.lat,p.lng],{icon,title:p.name}).addTo(map).on('click',()=>select(p.id));});
+let selected='eh';
+function select(id){selected=id;const p=byId[id];document.getElementById('kind').textContent=p.kind+' · '+(p.level==='major'?'центральный уровень':p.level==='primary'?'первый уровень':'контекстный уровень');document.getElementById('name').textContent=p.name;document.getElementById('desc').textContent=p.desc;document.getElementById('level').textContent=p.level==='major'?'ФОКУС':p.level==='primary'?'СВЯЗАННЫЙ':'КОНТЕКСТ';
+const related=new Set(p.relations);places.forEach(x=>{const el=document.getElementById('node-'+x.id);el.classList.toggle('dim',x.id!==id&&!related.has(x.id));el.classList.toggle('selected',x.id===id);});
+edges.forEach((e,i)=>{const active=e.a===id||e.b===id;lines[i].setStyle({opacity:active?.95:.10,weight:active?e.weight+1:e.weight});});
+const rel=document.getElementById('relations');rel.replaceChildren();edges.filter(e=>e.a===id||e.b===id).forEach(e=>{const other=byId[e.a===id?e.b:e.a];const b=document.createElement('button');b.className='rel';b.innerHTML='<small>'+({geo:'География',history:'Исторический контекст',context:'Культурный ландшафт'}[e.type])+'</small><strong>'+other.name+'</strong><small>'+e.label+'</small>';b.onclick=()=>select(other.id);rel.appendChild(b);});
+document.getElementById('hint').textContent='Показано '+(p.relations.length)+' связанных узлов · остальные приглушены';
+}
+function clear(){selected=null;places.forEach(p=>document.getElementById('node-'+p.id).classList.remove('dim','selected'));edges.forEach((e,i)=>lines[i].setStyle({opacity:.62,weight:e.weight}));document.getElementById('kind').textContent='Обзор участка';document.getElementById('name').textContent='Кобленц и долина рек';document.getElementById('desc').textContent='Вся система снова видна целиком: город у слияния Рейна и Мозеля, крепость напротив, замки вдоль долины и отдельный узел у устья Лана.';document.getElementById('level').textContent='ОБЗОР';document.getElementById('relations').replaceChildren();document.getElementById('hint').textContent='Выберите объект, чтобы раскрыть его связи';}
+document.getElementById('reset').onclick=clear;document.getElementById('clear').onclick=clear;document.getElementById('zoomAll').onclick=()=>map.fitBounds(L.latLngBounds(places.map(p=>[p.lat,p.lng])).pad(.18));select('eh');map.fitBounds(L.latLngBounds(places.map(p=>[p.lat,p.lng])).pad(.18));setTimeout(()=>map.invalidateSize(),250);
+</script></body></html>
