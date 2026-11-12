@@ -62,7 +62,7 @@ h2{font:600 20px/1.1 Georgia,serif;margin:3px 0 4px;color:#fff0d2}
 </section>
 <section class="info">
 <div class="infohead"><div><div class="eyebrow" id="kind">Центральный объект · уровень 1</div><h2 id="name">Эренбрайтштайн</h2><p id="desc">Крепость возвышается над Рейном напротив устья Мозеля и Deutsches Eck. Это главный ориентир выбранного участка.</p></div><span id="level">ФОКУС</span></div>
-<div class="relations" id="relations"></div>
+<div class="relations" id="relations"></div><div class="bottom" style="justify-content:flex-start;flex-wrap:wrap"><span>Проверка фактов:</span><a href="https://www.museumsportal-rlp.de/museen/festung-ehrenbreitstein" target="_blank" rel="noopener" style="color:#e3b96d">Museumsportal RLP</a><a href="https://whc.unesco.org/uploads/nominations/1066.pdf" target="_blank" rel="noopener" style="color:#e3b96d">UNESCO dossier</a><a href="https://spay.welterbe-mittelrheintal.de/freizeit-und-tourismus/burgen-schloesser-und-mehr-im-unesco-welterbe" target="_blank" rel="noopener" style="color:#e3b96d">Welterbe Mittelrhein</a></div>
 <div class="bottom"><span id="hint">Нажмите на любой узел карты или карточку связи</span><button id="clear">Снять выделение ×</button></div>
 </section>
 </main>
@@ -99,7 +99,7 @@ function select(id){selected=id;const p=byId[id];document.getElementById('kind')
 const related=new Set(p.relations);places.forEach(x=>{const el=document.getElementById('node-'+x.id);el.classList.toggle('dim',x.id!==id&&!related.has(x.id));el.classList.toggle('selected',x.id===id);});
 edges.forEach((e,i)=>{const active=e.a===id||e.b===id;lines[i].setStyle({opacity:active?.95:.10,weight:active?e.weight+1:e.weight});});
 const rel=document.getElementById('relations');rel.replaceChildren();edges.filter(e=>e.a===id||e.b===id).forEach(e=>{const other=byId[e.a===id?e.b:e.a];const b=document.createElement('button');b.className='rel';b.innerHTML='<small>'+({geo:'География',history:'Исторический контекст',context:'Культурный ландшафт'}[e.type])+'</small><strong>'+other.name+'</strong><small>'+e.label+'</small>';b.onclick=()=>select(other.id);rel.appendChild(b);});
-document.getElementById('hint').textContent='Показано '+(p.relations.length)+' связанных узлов · остальные приглушены';
+document.getElementById('hint').textContent='Выделено '+edges.filter(e=>e.a===id||e.b===id).length+' прямых связей · остальные приглушены';
 }
 function clear(){selected=null;places.forEach(p=>document.getElementById('node-'+p.id).classList.remove('dim','selected'));edges.forEach((e,i)=>lines[i].setStyle({opacity:.62,weight:e.weight}));document.getElementById('kind').textContent='Обзор участка';document.getElementById('name').textContent='Кобленц и долина рек';document.getElementById('desc').textContent='Вся система снова видна целиком: город у слияния Рейна и Мозеля, крепость напротив, замки вдоль долины и отдельный узел у устья Лана.';document.getElementById('level').textContent='ОБЗОР';document.getElementById('relations').replaceChildren();document.getElementById('hint').textContent='Выберите объект, чтобы раскрыть его связи';}
 document.getElementById('reset').onclick=clear;document.getElementById('clear').onclick=clear;document.getElementById('zoomAll').onclick=()=>map.fitBounds(L.latLngBounds(places.map(p=>[p.lat,p.lng])).pad(.18));select('eh');map.fitBounds(L.latLngBounds(places.map(p=>[p.lat,p.lng])).pad(.18));setTimeout(()=>map.invalidateSize(),250);
