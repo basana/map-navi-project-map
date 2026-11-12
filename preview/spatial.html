@@ -56,7 +56,7 @@ h2{font:600 20px/1.1 Georgia,serif;margin:3px 0 4px;color:#fff0d2}
 <main>
 <section class="mapwrap" aria-label="Интерактивная карта связей">
 <div id="map"></div>
-<div class="map-title"><b>Рейнская панорама</b><span>Выберите узел — увидите его окружение</span></div>
+<div class="map-title"><b>Рейнская панорама</b><span>Линии показывают связи, а не маршруты</span></div>
 <div class="legend"><div><i class="swatch"></i> Географическая связь</div><div><i class="swatch hist"></i> Исторический контекст</div><div><i class="swatch context"></i> Общий культурный ландшафт</div></div>
 <div class="map-tools"><button id="zoomAll" aria-label="Показать весь участок">⌗</button><button id="reset" aria-label="Сбросить выбор">↺</button></div>
 </section>
@@ -72,7 +72,7 @@ const places=[
 {id:'eh',name:'Эренбрайтштайн',short:'E',kind:'Крепость',level:'major',lat:50.3651,lng:7.6151,desc:'Крепость на высоком скальном выступе над Рейном. Её современный облик сформирован в 1817–1828 годах; с площадки открывается вид на Кобленц, Рейн и Мозель.',relations:['de','ko','landscape','stol']},
 {id:'de',name:'Deutsches Eck',short:'D',kind:'Слияние рек · памятник',level:'primary',lat:50.3649,lng:7.6052,desc:'Здесь Мозель впадает в Рейн. Напротив, на другом берегу Рейна, возвышается крепость Эренбрайтштайн — одна из самых выразительных пространственных пар города.',relations:['eh','ko','mosel','landscape']},
 {id:'ko',name:'Старый Кобленц',short:'K',kind:'Городской центр',level:'primary',lat:50.3594,lng:7.5975,desc:'Исторический центр расположен у слияния Рейна и Мозеля. Его положение связывает городской маршрут с Deutsches Eck и панорамой крепости на противоположном берегу.',relations:['eh','de','stol','landscape']},
-{id:'stol',name:'Штольценфельс',short:'S',kind:'Замок',level:'secondary',lat:50.3150 ,lng:7.5678,desc:'Замок XIII века, перестроенный в XIX столетии в духе романтизма. Он показывает другую главу истории Рейна — не военную крепость, а романтический образ средневекового замка.',relations:['ko','eh','lah','landscape']},
+{id:'stol',name:'Штольценфельс',short:'S',kind:'Замок',level:'secondary',lat:50.2875,lng:7.5678,desc:'Замок XIII века, перестроенный в XIX столетии в духе романтизма. Он показывает другую главу истории Рейна — не военную крепость, а романтический образ средневекового замка.',relations:['ko','eh','lah','landscape']},
 {id:'lah',name:'Замок Ланек',short:'L',kind:'Замок',level:'secondary',lat:50.3159,lng:7.6360 ,desc:'Замок над местом впадения Лана в Рейн. Основан в XIII веке; его положение помогает увидеть, как речные долины определяли размещение укреплений.',relations:['stol','lahn','landscape']},
 {id:'mosel',name:'Устье Мозеля',short:'M',kind:'Географический узел',level:'secondary',lat:50.365,lng:7.604,desc:'Место впадения Мозеля в Рейн. Именно эта география объясняет стратегическое положение Кобленца и крепости на противоположном берегу.',relations:['de','eh','ko']},
 {id:'lahn',name:'Устье Лана',short:'A',kind:'Географический узел',level:'secondary',lat:50.315,lng:7.৬  .replace('7.৬','7.৬') ,desc:'Лан впадает в Рейн у Ланштайна. Рядом на высоте стоит замок Ланек — наглядный пример связи укрепления с речным узлом.',relations:['lah','landscape']},
