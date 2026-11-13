@@ -462,9 +462,9 @@
       "subtitle": "Подготовка маршрута и карты заранее",
       "status": "progress",
       "summary": "Подготовка офлайн-пакета — обязательная функция: выбранный маршрут, POI, материалы и лицензированные картографические данные должны быть доступны при слабой или отсутствующей сети.",
-      "details": "Текущий Service Worker не обеспечивает полноценный offline: заранее сохраняет index.html и manifest.json, но не кеширует большинство ресурсов и не сохраняет тайлы. Основная карта и три дополнительные карты используют стандартные OSM raster tiles. Политика публичного OSM tile-сервера запрещает bulk prefetch/offline download. Необходимо выбрать провайдера с явным разрешением offline/prefetch для веб-PWA либо self-hosted tiles. Целевой UX: Prepare your journey, прогресс, список загруженных компонентов, проверка целостности и Ready for offline use; пять минут — ориентир, не обещание. GPS без сети требует теста на iPhone; offline routing не обещать без локального routing engine.",
+      "details": "Текущий Service Worker не обеспечивает полноценный offline: заранее сохраняет index.html и manifest.json, но не кеширует большинство ресурсов и не сохраняет тайлы. Основная карта и три дополнительные карты используют стандартные OSM raster tiles. Политика публичного OSM tile-сервера запрещает bulk prefetch/offline download. Необходимо выбрать провайдера с явным разрешением offline/prefetch для веб-PWA либо self-hosted tiles. Целевой UX: Prepare your journey, прогресс, список загруженных компонентов, проверка целостности и Ready for offline use; пять минут — ориентир, не обещание. GPS без сети требует теста на iPhone; offline routing не обещать без локального routing engine. Дополнительная проверка 13.11.2026: activate в sw.js удаляет все Cache Storage entries данного origin, кроме rhine-design-test-v304. Поскольку Cache Storage общий для origin basana.github.io, это потенциально может затронуть кэши других GitHub Pages-проектов; пока это только обнаруженный риск, не подтверждённый инцидент. Перед реализацией ограничить очистку уникальным namespace приложения. Подтверждены четыре OSM tileLayer в index.html: основная карта и три дополнительные карты.",
       "where": "turret-tales-christmas, feature/map-navi-gps-follow-01: sw.js, index.html; аудит 13.11.2026",
-      "next": "Исследовать и выбрать лицензированный источник тайлов; затем спроектировать offline pack manager и тест на iPhone.",
+      "next": "Сначала спроектировать безопасное именование/очистку кэшей и исследовать лицензированный источник тайлов для веб-PWA; затем offline pack manager.",
       "links": [
         {
           "label": "Актуальная рабочая ветка приложения",
@@ -611,6 +611,13 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-13",
+      "type": "audit",
+      "title": "Обнаружен риск глобальной очистки Cache Storage в Service Worker",
+      "summary": "Текущий activate удаляет все кэши origin, кроме одного имени приложения. Требуется ограничить очистку собственным namespace, чтобы не затронуть другие GitHub Pages-проекты. Подтверждены четыре OSM tileLayer.",
+      "nodeId": "offline-navigation"
+    },
     {
       "date": "2026-11-13",
       "type": "implemented",
