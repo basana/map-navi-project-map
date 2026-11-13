@@ -126,6 +126,19 @@ GPS, активная цель и режим камеры — независим
 
 Дополнительная проверка `index.html` выявила четыре подключения стандартных OSM raster tiles: основная карта и три встроенные карты в тематических разделах (строки 4347, 4824, 6124, 6169 в проверенной версии файла). Следовательно, офлайн-архитектура должна учитывать все четыре карты либо явно определить, какие из них входят в первый offline pack.
 
+
+
+### Первичное сравнение поставщиков тайлов (13.11.2026)
+
+Проверены официальные условия и документация:
+
+- **Geoapify — наиболее перспективный кандидат для дальнейшей проверки.** Официальная страница Map Tiles прямо говорит, что их OSM-based tiles можно cache, store and redistribute; raster tiles имеют стандартный XYZ URL и прямо поддерживают Leaflet. Это ближе всего к текущему стеку. Free plan указывает 3,000 credits/day; один tile request стоит 0.25 credits (ориентировочно 12,000 запросов тайлов в день до учёта иных API и лимитов). Коммерческое использование Free в production допускается с ограничениями и просьбой связаться с Geoapify. До реализации необходимо письменно уточнить конкретно: bulk prefetch по пользовательскому запросу в PWA, длительное хранение в Cache Storage/IndexedDB, выдача сохранённых тайлов тому же конечному пользователю офлайн, лимиты RPS/объёма и требования к тарифу. Источники: https://www.geoapify.com/map-tiles/ ; https://www.geoapify.com/pricing/ ; https://www.geoapify.com/terms-and-conditions/ .
+- **Thunderforest — технически совместим с Leaflet и прямо разрешает кэширование тайлов в браузере/на устройстве для offline use.** Но предварительная массовая загрузка для будущего офлайн-использования доступна только на Small Business или выше: текущая опубликованная цена Small Business — €235/month excl. VAT, 15 млн tile requests/month. Это существенно дороже для ранней Beta. Источники: https://www.thunderforest.com/terms/ ; https://www.thunderforest.com/pricing/ ; https://www.thunderforest.com/tutorials/leaflet/ .
+- **Stadia Maps — пока не подходит как подтверждённое решение для PWA.** Условия разрешают ограниченный offline cache до 100 MB/device именно в mobile application; пример и документация ориентированы на Flutter/MapLibre Native. В Terms of Service effective 9 Nov 2026 запрещён bulk download за исключением этой mobile-app льготы. Для веб-PWA требуется письменное разъяснение; не считать native permission автоматически разрешением для PWA. Источники: https://stadiamaps.com/terms-of-service/ ; https://stadiamaps.com/faqs/ ; https://docs.stadiamaps.com/tutorials/offline-maps-with-flutter-maplibre-gl/ .
+- **MapTiler Cloud — не подтверждён для пользовательского bulk prefetch.** Стандартное browser caching описано как временное; bulk download из API требует Custom plan/отдельного соглашения. MapTiler Server — отдельный self-hosted путь, с отдельными условиями и инфраструктурой. Источники: https://www.maptiler.com/terms/cloud/ ; https://docs.maptiler.com/guides/using-map/atak-maps/ ; https://docs.maptiler.com/guides/maps-apis/maps-platform/how-are-the-tile-requests-cached-in-web-browser/ .
+
+**Предварительный вывод:** начать переговорное/техническое уточнение с Geoapify, не менять пока текущую подложку. Если Geoapify письменно подтвердит пользовательский bulk prefetch и офлайн-хранение в веб-PWA на приемлемом тарифе и лимитах, можно сохранить Leaflet и заменить только tile provider. Если нет — сравнить стоимость Thunderforest Small Business с собственным хостингом/региональными пакетами. Ни один поставщик пока не выбран.
+
 ## 7. Фактически внесённые изменения в туристическое приложение
 
 Репозиторий: **basana/turret-tales-christmas**  
