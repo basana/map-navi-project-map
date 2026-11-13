@@ -462,9 +462,9 @@
       "subtitle": "Подготовка маршрута и карты заранее",
       "status": "progress",
       "summary": "Подготовка офлайн-пакета — обязательная функция: выбранный маршрут, POI, материалы и лицензированные картографические данные должны быть доступны при слабой или отсутствующей сети.",
-      "details": "Текущий Service Worker не обеспечивает полноценный offline: заранее сохраняет index.html и manifest.json, но не кеширует большинство ресурсов и не сохраняет тайлы. Основная карта и три дополнительные карты используют стандартные OSM raster tiles. Политика публичного OSM tile-сервера запрещает bulk prefetch/offline download. Необходимо выбрать провайдера с явным разрешением offline/prefetch для веб-PWA либо self-hosted tiles. Целевой UX: Prepare your journey, прогресс, список загруженных компонентов, проверка целостности и Ready for offline use; пять минут — ориентир, не обещание. GPS без сети требует теста на iPhone; offline routing не обещать без локального routing engine. Дополнительная проверка 13.11.2026: activate в sw.js удаляет все Cache Storage entries данного origin, кроме rhine-design-test-v304. Поскольку Cache Storage общий для origin basana.github.io, это потенциально может затронуть кэши других GitHub Pages-проектов; пока это только обнаруженный риск, не подтверждённый инцидент. Перед реализацией ограничить очистку уникальным namespace приложения. Подтверждены четыре OSM tileLayer в index.html: основная карта и три дополнительные карты.",
+      "details": "Текущий Service Worker не обеспечивает полноценный offline: заранее сохраняет index.html и manifest.json, но не кеширует большинство ресурсов и не сохраняет тайлы. Основная карта и три дополнительные карты используют стандартные OSM raster tiles. Политика публичного OSM tile-сервера запрещает bulk prefetch/offline download. Необходимо выбрать провайдера с явным разрешением offline/prefetch для веб-PWA либо self-hosted tiles. Целевой UX: Prepare your journey, прогресс, список загруженных компонентов, проверка целостности и Ready for offline use; пять минут — ориентир, не обещание. GPS без сети требует теста на iPhone; offline routing не обещать без локального routing engine. Дополнительная проверка 13.11.2026: activate в sw.js удаляет все Cache Storage entries данного origin, кроме rhine-design-test-v304. Поскольку Cache Storage общий для origin basana.github.io, это потенциально может затронуть кэши других GitHub Pages-проектов; пока это только обнаруженный риск, не подтверждённый инцидент. Перед реализацией ограничить очистку уникальным namespace приложения. Подтверждены четыре OSM tileLayer в index.html: основная карта и три дополнительные карты. Первичное сравнение провайдеров (13.11.2026): Geoapify выглядит наиболее перспективным, поскольку официально разрешает cache/store/redistribute OSM-based generated tiles и поддерживает XYZ raster + Leaflet; однако надо письменно подтвердить bulk prefetch и офлайн-хранение именно в PWA, коммерческие условия и RPS. Thunderforest разрешает browser/device offline cache, но bulk download требует Small Business от €235/месяц без VAT. Stadia Maps ограничивает исключение 100 MB mobile application, поэтому PWA не подтверждена. MapTiler Cloud bulk download требует Custom plan/отдельного соглашения. Ни один провайдер не выбран.",
       "where": "turret-tales-christmas, feature/map-navi-gps-follow-01: sw.js, index.html; аудит 13.11.2026",
-      "next": "Сначала спроектировать безопасное именование/очистку кэшей и исследовать лицензированный источник тайлов для веб-PWA; затем offline pack manager.",
+      "next": "Получить от Geoapify письменное подтверждение условий для PWA bulk prefetch/cache; параллельно оценить реальный объём пакета Koblenz и сравнить с Thunderforest Small Business и self-hosted tiles.",
       "links": [
         {
           "label": "Актуальная рабочая ветка приложения",
@@ -611,6 +611,13 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-13",
+      "type": "research",
+      "title": "Сравнены условия четырёх поставщиков офлайн-тайлов",
+      "summary": "Geoapify — предварительный фаворит для проверки PWA bulk prefetch; Thunderforest разрешает офлайн-кэш, но bulk download от €235/мес.; Stadia 100 MB mobile app, PWA не подтверждена; MapTiler bulk требует Custom plan. Провайдер не выбран.",
+      "nodeId": "offline-navigation"
+    },
     {
       "date": "2026-11-13",
       "type": "audit",
