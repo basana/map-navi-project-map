@@ -44,11 +44,13 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:16p
 <script>
 const datasets={
 walk:{title:'The guided walk',focus:'de',nodes:[
-{id:'de',name:'Deutsches Eck',type:'monument',x:465,y:300,scale:1.28,desc:'The confluence of the Rhine and Moselle. A defining geographic and historical point of the guided walk.',links:['kastor','fort','jesuit','river']},
+{id:'de',name:'Deutsches Eck',type:'monument',x:465,y:300,scale:1.28,desc:'The confluence of the Rhine and Moselle. A defining geographic and historical point of the guided walk.',links:['kastor','fort','jesuit','river','peter','konrad']},
 {id:'kastor',name:'St. Kastor Basilica',type:'church',x:260,y:235,scale:.86,desc:'The Romanesque basilica beside the Deutsches Eck: a key stop on the walking tour.',links:['de','fort']},
 {id:'fort',name:'Electoral Palace',type:'palace',x:690,y:225,scale:.82,desc:'A major landmark along the Rhine waterfront, linking the old city with the river promenade.',links:['de','jesuit','river']},
 {id:'jesuit',name:'Jesuitenplatz',type:'square',x:680,y:435,scale:.72,desc:'A historic square and the final point in the core guided walking sequence.',links:['de','fort','kastor']},
-{id:'river',name:'Rhine & Moselle',type:'river',x:435,y:485,scale:.68,desc:'The two rivers explain the position and strategic importance of Koblenz.',links:['de','fort']}
+{id:'river',name:'Rhine & Moselle',type:'river',x:435,y:425,scale:.62,desc:'The two rivers explain the position and strategic importance of Koblenz.',links:['de','fort']},
+{id:'peter',name:'Peter-Altmeier-Ufer',type:'river',x:135,y:420,scale:.56,desc:'One of the two possible starting points for the guided walk along the waterfront.',links:['de','kastor','konrad']},
+{id:'konrad',name:'Konrad-Adenauer-Ufer',type:'river',x:285,y:455,scale:.56,desc:'An alternative starting point for the guided walk, depending on the group and tour arrangement.',links:['de','kastor','peter']}
 ]},
 city:{title:'Historic Koblenz',focus:'de',nodes:[
 {id:'de',name:'Deutsches Eck',type:'monument',x:455,y:315,scale:1.15,desc:'The confluence anchors the wider historic city and the riverfront.',links:['kastor','florin','mint','jesuit','townhall','fort']},
