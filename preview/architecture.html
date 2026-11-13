@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071b35">
+<title>MAP NAVI — Blue Isometric Architecture · Preview 02</title>
+<style>
+:root{color-scheme:dark;--bg:#07182d;--panel:#0b2340;--line:#65b9e8;--bright:#b5e7ff;--muted:#91abc4;--gold:#e2c38b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% 35%,#102f51 0,#07182d 68%);color:#e8f5ff;font-family:Inter,system-ui,-apple-system,sans-serif}
+body{padding:clamp(12px,2vw,26px)}.shell{max-width:1240px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin:2px 0 16px}.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#85c9f0;font-weight:700}h1{font:500 clamp(24px,4vw,38px)/1.05 Georgia,serif;margin:7px 0 5px;color:#edf8ff}.sub{font-size:12px;color:#9fb8cf}.version{border:1px solid #315879;color:#b7d8ee;border-radius:30px;padding:7px 11px;font-size:10px;white-space:nowrap}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}.stage{border:1px solid #315879;background:#0b2340;color:#b9d3e7;border-radius:24px;padding:9px 14px;font-size:12px;cursor:pointer}.stage[aria-pressed=true]{background:#173f62;border-color:#72c8f4;color:#f0faff;box-shadow:inset 0 0 0 1px #72c8f455}
+.workspace{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.75fr);gap:12px;align-items:stretch}.scene{position:relative;min-height:570px;border:1px solid #24496b;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#0b2542dd,#071a30f5);box-shadow:0 18px 55px #0005}.scene:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#4d91bd0c 1px,transparent 1px),linear-gradient(90deg,#4d91bd0c 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(transparent,#000 15%,#000 85%,transparent)}svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.edge{fill:none;stroke:#55b7e8;stroke-width:1.5;opacity:.25;stroke-dasharray:4 7}.edge.active{opacity:.8;stroke:#9be0ff;stroke-width:2}.node{cursor:pointer;transition:opacity .25s,filter .25s}.node .wire{fill:#58b9ec0b;stroke:#75c8f4;stroke-width:1.45;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}.node .fine{fill:none;stroke:#9bdfff;stroke-width:.85;opacity:.72;vector-effect:non-scaling-stroke}.node .glow{fill:#6fcaff;opacity:.07}.node.main .wire{stroke:#c0edff;stroke-width:1.9}.node.main .fine{opacity:.95}.node.mid{opacity:.72}.node.far{opacity:.4}.node.dim{opacity:.12;filter:grayscale(1)}.node.selected{filter:drop-shadow(0 0 13px #65caff66)}.node:focus{outline:none}.node:focus .wire{stroke:#fff;stroke-width:2.6}.node-label{font:12px Inter,system-ui,sans-serif;fill:#e3f5ff;text-anchor:middle;paint-order:stroke;stroke:#07182d;stroke-width:4px;stroke-linejoin:round}.node-sub{font:9px Inter,system-ui,sans-serif;fill:#83b7d6;text-anchor:middle;letter-spacing:.08em;paint-order:stroke;stroke:#07182d;stroke-width:3px}.scene-caption{position:absolute;left:15px;top:14px;pointer-events:none}.scene-caption strong{display:block;font:16px Georgia,serif;color:#e8f6ff}.scene-caption span{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#8dbbd8}.key{position:absolute;right:14px;top:14px;display:grid;gap:7px;font-size:9px;color:#a9c6db;background:#07182dcc;border:1px solid #315879;border-radius:10px;padding:9px 10px}.key i{display:inline-block;width:19px;border-top:2px solid #8bd8ff;margin-right:6px;vertical-align:middle}.key i.dashed{border-top-style:dashed;opacity:.5}.panel{border:1px solid #24496b;border-radius:18px;background:linear-gradient(155deg,#102d4c,#0a2039);padding:17px;display:flex;flex-direction:column;min-height:570px}.panel-kicker{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8fc9ec}.panel h2{font:500 25px/1.08 Georgia,serif;margin:8px 0;color:#f0f8ff}.panel p{font-size:12px;line-height:1.55;color:#b6cce0;margin:0}.depth{display:grid;gap:8px;margin:18px 0}.depth-row{display:flex;align-items:center;gap:10px;font-size:10px;color:#bdd4e7}.depth-mark{width:27px;height:27px;border:1px solid #67bce9;border-radius:8px;display:grid;place-items:center;color:#b8e7ff}.depth-row:nth-child(2) .depth-mark{transform:scale(.83);opacity:.72}.depth-row:nth-child(3) .depth-mark{transform:scale(.68);opacity:.43}.related{border-top:1px solid #284c6c;padding-top:14px;margin-top:4px}.related h3{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#8fc9ec;margin:0 0 9px}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:1px solid #315879;border-radius:20px;padding:6px 9px;background:#102c49;color:#c5e2f5;font-size:10px;cursor:pointer}.chip:hover{border-color:#8bd8ff}.foot{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:#789bb8;font-size:9px}.reset{border:0;background:transparent;color:#a9dfff;font-size:10px;cursor:pointer}.note{font-size:10px;color:#789bb8;margin:12px 2px 0;line-height:1.5}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.scene{min-height:490px}.panel{min-height:0}.foot{margin-top:16px}}
+@media(max-width:520px){body{padding:10px}.version{font-size:9px}.scene{min-height:420px}.key{top:auto;bottom:12px;right:10px}.scene-caption{left:10px;top:10px}.node-label{font-size:11px}}
+</style>
+</head>
+<body><div class="shell">
+<header><div><div class="eyebrow">MAP NAVI · Spatial architecture</div><h1>Blue isometric study</h1><div class="sub">A spatial language for places, stories and meaningful connections</div></div><div class="version">PREVIEW 02 · BETA CONCEPT</div></header>
+<nav class="toolbar" aria-label="Geographic scale">
+<button class="stage" data-stage="walk" aria-pressed="true">01 · Guided walk</button>
+<button class="stage" data-stage="city" aria-pressed="false">02 · Koblenz</button>
+<button class="stage" data-stage="rhine" aria-pressed="false">03 · Rhine Valley</button>
+</nav>
+<div class="workspace">
+<section class="scene" aria-label="Interactive isometric architectural scene">
+<div class="scene-caption"><strong id="sceneTitle">The guided walk</strong><span>schematic spatial composition · not to scale</span></div>
+<div class="key"><div><i></i> direct connection</div><div><i class="dashed"></i> wider context</div></div>
+<svg id="scene" viewBox="0 0 900 590" role="img" aria-label="Interactive blue isometric architecture of Koblenz"></svg>
+</section>
+<aside class="panel">
+<div class="panel-kicker" id="panelKicker">CENTRAL PLACE · FOCUS</div><h2 id="placeName">Deutsches Eck</h2><p id="placeDesc">The meeting point of the Rhine and Moselle. The selected place becomes the visual anchor; nearby places remain connected and readable.</p>
+<div class="depth">
+<div class="depth-row"><span class="depth-mark">01</span><span><b>Main place</b> — most architectural detail</span></div>
+<div class="depth-row"><span class="depth-mark">02</span><span><b>Nearby places</b> — medium detail</span></div>
+<div class="depth-row"><span class="depth-mark">03</span><span><b>Wider context</b> — simplified silhouettes</span></div>
+</div>
+<div class="related"><h3>Connected places</h3><div class="chips" id="chips"></div></div>
+<div class="foot"><span id="status">Select a building to reorganise the scene</span><button class="reset" id="reset">Clear focus ↺</button></div>
+</aside>
+</div>
+<p class="note">Concept preview. The blue linework is an intentionally schematic architectural language. Building geometry, exact geographic positions and historical relationships will be refined against verified source material before integration.</p>
+</div>
+<script>
+const datasets={
+walk:{title:'The guided walk',focus:'de',nodes:[
+{id:'de',name:'Deutsches Eck',type:'monument',x:465,y:300,scale:1.28,desc:'The confluence of the Rhine and Moselle. A defining geographic and historical point of the guided walk.',links:['kastor','fort','jesuit','river']},
+{id:'kastor',name:'St. Kastor Basilica',type:'church',x:260,y:235,scale:.86,desc:'The Romanesque basilica beside the Deutsches Eck: a key stop on the walking tour.',links:['de','fort']},
+{id:'fort',name:'Electoral Palace',type:'palace',x:690,y:225,scale:.82,desc:'A major landmark along the Rhine waterfront, linking the old city with the river promenade.',links:['de','jesuit','river']},
+{id:'jesuit',name:'Jesuitenplatz',type:'square',x:680,y:435,scale:.72,desc:'A historic square and the final point in the core guided walking sequence.',links:['de','fort','kastor']},
+{id:'river',name:'Rhine & Moselle',type:'river',x:435,y:485,scale:.68,desc:'The two rivers explain the position and strategic importance of Koblenz.',links:['de','fort']}
+]},
+city:{title:'Historic Koblenz',focus:'de',nodes:[
+{id:'de',name:'Deutsches Eck',type:'monument',x:455,y:315,scale:1.15,desc:'The confluence anchors the wider historic city and the riverfront.',links:['kastor','florin','mint','jesuit','townhall','fort']},
+{id:'kastor',name:'St. Kastor',type:'church',x:245,y:230,scale:.8,desc:'Romanesque basilica at the northern edge of the old town.',links:['de','florin']},
+{id:'florin',name:'Florinsmarkt',type:'church',x:390,y:155,scale:.72,desc:'A historic square with a distinctive church and civic architecture.',links:['kastor','de','mint']},
+{id:'mint',name:'Münzplatz',type:'square',x:590,y:165,scale:.72,desc:'One of the historic squares within the old town.',links:['florin','de','townhall']},
+{id:'jesuit',name:'Jesuitenplatz',type:'square',x:680,y:420,scale:.68,desc:'A central historic square and a familiar stop on the guided walk.',links:['de','townhall']},
+{id:'townhall',name:'Rathaus & Schängelbrunnen',type:'palace',x:735,y:285,scale:.7,desc:'The town hall and the famous Schängelbrunnen fountain represent Koblenz civic identity.',links:['de','mint','jesuit']},
+{id:'fort',name:'Electoral Palace',type:'palace',x:205,y:440,scale:.68,desc:'The palace on the Rhine is an important part of the city’s historical waterfront.',links:['de','kastor']}
+]},
+rhine:{title:'The Rhine Valley',focus:'ehren',nodes:[
+{id:'ehren',name:'Ehrenbreitstein Fortress',type:'fortress',x:450,y:300,scale:1.18,desc:'The fortress opposite Koblenz overlooks the confluence and provides a powerful spatial anchor for the region.',links:['de','stol','marks','boppard','loreley']},
+{id:'de',name:'Deutsches Eck',type:'monument',x:235,y:205,scale:.8,desc:'The meeting point of the Rhine and Moselle, directly opposite the fortress.',links:['ehren','stol']},
+{id:'stol',name:'Stolzenfels Castle',type:'castle',x:685,y:205,scale:.82,desc:'A romantic 19th-century reconstruction that represents the Rhine’s castle revival.',links:['ehren','marks']},
+{id:'marks',name:'Marksburg',type:'castle',x:690,y:430,scale:.78,desc:'A hilltop castle above Braubach and one of the region’s most recognisable medieval fortresses.',links:['ehren','stol','boppard']},
+{id:'boppard',name:'Boppard',type:'town',x:245,y:455,scale:.72,desc:'A historic Rhine town with Roman roots and a rich medieval urban landscape.',links:['ehren','marks','loreley']},
+{id:'loreley',name:'Loreley',type:'landmark',x:455,y:115,scale:.68,desc:'The legendary rock above a dramatic bend in the Rhine, central to the cultural imagination of the valley.',links:['ehren','boppard']}
+]}
+};
+const svg=document.getElementById('scene'),NS='http://www.w3.org/2000/svg';let stage='walk',selected='de';
+function el(tag,attrs={},parent=svg){const e=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));parent.appendChild(e);return e}
+function line(x1,y1,x2,y2,cls='edge'){el('path',{d:`M ${x1} ${y1} L ${x2} ${y2}`,class:cls})}
+function architecture(type,detail){let s='';
+const poly=(pts,c='wire')=>'<polygon class="'+c+'" points="'+pts+'"/>';
+const path=(d,c='wire')=>'<path class="'+c+'" d="'+d+'"/>';
+const rect=(x,y,w,h,c='wire')=>'<rect class="'+c+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"/>';
+const tower=(x,y,w,h)=>poly(`${x},${y} ${x+w/2},${y-12} ${x+w},${y} ${x+w},${y+h} ${x+w/2},${y+h+12} ${x},${y+h}`);
+if(type==='church'){s+=poly('0,0 65,-27 130,0 65,28');s+=poly('0,0 0,62 65,91 65,28');s+=poly('65,28 130,0 130,62 65,91');s+=tower(14,-58,23,58)+tower(94,-48,22,48);s+=path('M 14,-58 L 25,-78 L 37,-58 M 94,-48 L 105,-68 L 116,-48','fine');s+=rect(56,37,18,31,'fine');}
+else if(type==='fortress'||type==='castle'){s+=poly('0,0 75,-34 150,0 75,35');s+=poly('0,0 0,72 75,108 75,35');s+=poly('75,35 150,0 150,72 75,108');s+=tower(8,-38,25,38)+tower(117,-40,25,40);s+=path('M 8,-38 L 20,-56 L 33,-38 M 117,-40 L 130,-59 L 142,-40','fine');s+=rect(58,8,32,40,'fine');if(detail>1)s+=path('M 0,18 L 75,54 L 150,18 M 25,12 L 25,80 M 125,12 L 125,80','fine');}
+else if(type==='palace'){s+=poly('0,0 82,-35 164,0 82,36');s+=poly('0,0 0,57 82,94 82,36');s+=poly('82,36 164,0 164,57 82,94');s+=rect(25,-27,114,29);s+=path('M 25,-27 L 82,-52 L 139,-27','fine');for(let i=0;i<5;i++)s+=rect(34+i*22,-14,8,14,'fine');}
+else if(type==='monument'){s+=poly('0,0 66,-29 132,0 66,30');s+=poly('0,0 0,64 66,95 66,30');s+=poly('66,30 132,0 132,64 66,95');s+=tower(45,-65,42,65);s+=path('M 45,-65 L 66,-88 L 87,-65 M 54,-49 L 78,-49 M 54,-32 L 78,-32','fine');}
+else if(type==='square'){s+=poly('0,0 76,-34 152,0 76,35');s+=path('M 20,-2 L 76,-27 L 132,-2 M 20,-2 L 20,10 L 76,37 L 132,10 L 132,-2','fine');s+=tower(58,-55,35,30);s+=path('M 58,-55 L 75,-70 L 93,-55','fine');}
+else if(type==='town'){s+=poly('0,0 70,-32 140,0 70,32');s+=poly('0,0 0,55 70,88 70,32');s+=poly('70,32 140,0 140,55 70,88');s+=rect(18,-24,30,24);s+=rect(83,-19,35,19);s+=path('M 18,-24 L 33,-37 L 48,-24 M 83,-19 L 100,-32 L 118,-19','fine');}
+else if(type==='landmark'){s+=poly('0,0 78,-35 156,0 78,36');s+=poly('0,0 0,48 78,84 78,36');s+=poly('78,36 156,0 156,48 78,84');s+=path('M 18,2 Q 78,-50 138,2 M 28,9 Q 78,-25 128,9','fine');s+=path('M 68,-5 L 78,-50 L 88,-5','wire');}
+else if(type==='river'){s+=path('M -15,0 Q 25,-45 70,-10 T 155,0','wire');s+=path('M -15,18 Q 25,-27 70,8 T 155,18','fine');s+=path('M -15,36 Q 25,-9 70,26 T 155,36','fine');}
+if(detail===1){s=s.replace(/<path class="fine"[\s\S]*?<\/path>/g,'').replace(/<rect class="fine"[\s\S]*?<\/rect>/g,'');}
+return s}
+function render(){const data=datasets[stage],focus=data.nodes.find(n=>n.id===selected)||data.nodes[0],rel=new Set(focus.links);svg.replaceChildren();
+const pos=Object.fromEntries(data.nodes.map(n=>[n.id,n]));data.nodes.forEach(n=>n.links.filter(id=>pos[id]&&n.id<id).forEach(id=>{const q=pos[id];line(n.x,n.y+20,q.x,q.y+20,(rel.has(id)&&n.id===selected?'edge active':'edge'));}));
+data.nodes.forEach(n=>{const tier=n.id===selected?'main':rel.has(n.id)?'mid':'far';const g=el('g',{class:'node '+tier+(n.id===selected?' selected':'')+(n.id!==selected&&!rel.has(n.id)?' dim':''),transform:`translate(${n.x} ${n.y}) scale(${n.scale*(n.id===selected?1.12:1)})`,tabindex:'0',role:'button','aria-label':'Select '+n.name});el('ellipse',{cx:65,cy:78,rx:95,ry:25,class:'glow'},g);const art=el('g',{transform:'translate(-65 -25)'},g);art.innerHTML=architecture(n.type,n.id===selected?2:n.links.includes(selected)?1:0);const label=el('text',{x:65,y:125,class:'node-label'},g);label.textContent=n.name;const sub=el('text',{x:65,y:141,class:'node-sub'},g);sub.textContent=n.id===selected?'FOCUS':rel.has(n.id)?'CONNECTED':'WIDER CONTEXT';g.addEventListener('click',()=>{selected=n.id;render()});g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selected=n.id;render()}});});
+document.getElementById('sceneTitle').textContent=data.title;document.getElementById('placeName').textContent=focus.name;document.getElementById('placeDesc').textContent=focus.desc;document.getElementById('panelKicker').textContent='CENTRAL PLACE · '+(focus.type==='river'?'GEOGRAPHY':'FOCUS');document.getElementById('status').textContent=rel.size+' connected places in this view';const chips=document.getElementById('chips');chips.replaceChildren();focus.links.forEach(id=>{const n=pos[id];if(!n)return;const b=document.createElement('button');b.className='chip';b.textContent=n.name;b.onclick=()=>{selected=id;render()};chips.appendChild(b)});}
+document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{stage=b.dataset.stage;selected=datasets[stage].focus;document.querySelectorAll('[data-stage]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render()}));
+document.getElementById('reset').addEventListener('click',()=>{selected=datasets[stage].focus;render()});render();
+</script></body></html>
