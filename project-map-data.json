@@ -132,16 +132,20 @@
       "id": "camera",
       "group": "navigation",
       "title": "Tourist Follow и Free View",
-      "subtitle": "Камера отдельно от GPS",
-      "status": "agreed",
+      "subtitle": "GPS Follow / Free View — первая реализация",
+      "status": "progress",
       "summary": "Free View приостанавливает автоматическое движение камеры, сохраняя GPS и активную цель.",
-      "details": "Tourist Follow — режим сопровождения пользователя. Free View — временный свободный просмотр карты. Переключение режима камеры не должно сбрасывать GPS, активную категорию или выбранный объект. Результат должен быть одинаковым независимо от порядка действий.",
-      "where": "MAP_STANDARD.md, раздел 17",
-      "next": "Проверить поведение камеры и последовательности переключений.",
+      "details": "Техническое изменение внесено в отдельную ветку действующего приложения basana/turret-tales-christmas: GPS продолжает сопровождение по умолчанию; ручное перемещение или масштабирование переводит карту в Free View; кнопка ↻ Follow возвращает сопровождение. Проверен синтаксис всех четырёх inline scripts. Реальный тест в браузере и на устройстве ещё не выполнен.",
+      "where": "basana/turret-tales-christmas, feature/map-navi-gps-follow-01, index.html; commits 666507c, 02a2a82",
+      "next": "Опубликовать изолированный preview и проверить Follow/Free View на iPhone/iPad, включая GPS и POI-сценарии.",
       "links": [
         {
-          "label": "Стандарт Map Navi",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/blob/feature/map-navi-standard/MAP_STANDARD.md"
+          "label": "Рабочая ветка приложения",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+        },
+        {
+          "label": "Изменённый index.html",
+          "url": "https://github.com/basana/turret-tales-christmas/blob/feature/map-navi-gps-follow-01/index.html"
         }
       ]
     },
@@ -149,13 +153,22 @@
       "id": "map-ui",
       "group": "navigation",
       "title": "Управление картой",
-      "subtitle": "Понятные и крупные кнопки",
-      "status": "verify",
-      "summary": "Обсуждались читаемость кнопки возврата к полной карте, размер и понятность пиктограммы.",
-      "details": "Пользователь отметил, что маленькая сетка внутри большого круга плохо распознаётся. Принято направление: более крупная кнопка со стрелками. Это UX-решение нужно отдельно проверить в интерфейсе.",
-      "where": "Обсуждение Map Navi, 10.11.2026",
-      "next": "Проверить выбранный вариант на iPhone и iPad.",
-      "links": []
+      "subtitle": "Три круглые кнопки в одной правой колонке",
+      "status": "progress",
+      "summary": "Кнопки аптек, туалетов и возврата к полной карте собраны в единый вертикальный блок справа; пиктограмма полного охвата заменена на более крупные расходящиеся стрелки.",
+      "details": "В отдельной ветке действующего приложения кнопки аптеки, туалета и reset объединены в одну вертикальную колонку справа, начиная ниже поисковой строки. Все используют общий размер и интервал; кнопка полного охвата получила пиктограмму ⤢. Требуется визуальная проверка на разных экранах.",
+      "where": "basana/turret-tales-christmas, feature/map-navi-gps-follow-01, index.html; commit 56e011e",
+      "next": "Проверить геометрию на узком iPhone и горизонтальном iPad; затем оценить, не перекрывают ли кнопки полезную область карты.",
+      "links": [
+        {
+          "label": "Рабочая ветка приложения",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+        },
+        {
+          "label": "Изменённый index.html",
+          "url": "https://github.com/basana/turret-tales-christmas/blob/feature/map-navi-gps-follow-01/index.html"
+        }
+      ]
     },
     {
       "id": "free-premium",
@@ -329,24 +342,20 @@
       "id": "github-branch",
       "group": "technical",
       "title": "GitHub и тестовая ветка",
-      "subtitle": "feature/map-navi-standard",
-      "status": "done",
-      "summary": "Для совместной работы создана отдельная ветка; основная ветка защищена от изменений без согласования.",
-      "details": "Работа над стандартом и картой проекта ведётся в feature/map-navi-standard. Ветка main не меняется без отдельного явного решения. Ранее в тестовую ветку добавлены MAP_STANDARD.md и MAP_NAVI_AUDIT.md. До текущей задачи код сайта не менялся.",
-      "where": "GitHub repository basana/rhein-guide-publicD_A",
-      "next": "Продолжать проверку всех изменений в отдельной ветке.",
+      "subtitle": "Отдельная ветка в репозитории действующего приложения",
+      "status": "progress",
+      "summary": "Изменения текущей версии туристического приложения вносятся в feature/map-navi-gps-follow-01; опубликованная main не меняется.",
+      "details": "Для работы с актуальным кодом действующего сайта создана ветка basana/turret-tales-christmas/feature/map-navi-gps-follow-01 от main. В ней изменён только index.html. Отдельная ветка basana/rhein-guide-publicD_A/feature/map-navi-standard сохраняет спецификацию и изолированный прототип; её index.html — более старая копия, поэтому не переносить её поверх актуального сайта.",
+      "where": "GitHub: basana/turret-tales-christmas и basana/rhein-guide-publicD_A",
+      "next": "Продолжать реализацию только на актуальной копии приложения в feature/map-navi-gps-follow-01; не сливать в main без проверки.",
       "links": [
         {
-          "label": "Тестовая ветка",
+          "label": "Ветка актуального приложения",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+        },
+        {
+          "label": "Ветка спецификации и прототипа",
           "url": "https://github.com/basana/rhein-guide-publicD_A/tree/feature/map-navi-standard"
-        },
-        {
-          "label": "MAP_STANDARD.md",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/blob/feature/map-navi-standard/MAP_STANDARD.md"
-        },
-        {
-          "label": "MAP_NAVI_AUDIT.md",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/blob/feature/map-navi-standard/MAP_NAVI_AUDIT.md"
         }
       ]
     },
@@ -575,6 +584,20 @@
   "activity": [
     {
       "date": "2026-11-13",
+      "type": "implemented",
+      "title": "GPS Follow / Free View добавлены в актуальную ветку приложения",
+      "summary": "GPS сопровождает пользователя по умолчанию; ручной drag/zoom переводит камеру в Free View; отдельная кнопка возвращает Follow. Проверен синтаксис четырёх inline scripts; браузерный тест ещё нужен.",
+      "nodeId": "camera"
+    },
+    {
+      "date": "2026-11-13",
+      "type": "implemented",
+      "title": "Аптека, туалеты и полный охват объединены в правую колонку",
+      "summary": "Три круглые кнопки выровнены в один вертикальный блок ниже поиска; reset получил крупную пиктограмму расходящихся стрелок. Нужна проверка на iPhone/iPad.",
+      "nodeId": "map-ui"
+    },
+    {
+      "date": "2026-11-13",
       "type": "decision",
       "title": "Storymarks — отдельный переключаемый слой и расширение Premium",
       "summary": "Пользователь может включать и выключать архитектурные знаки истории. Free получает базовый набор, Premium — больше Storymarks и дополнительные пояснения; точный объём определим после списка деталей.",
@@ -631,6 +654,12 @@
     }
   ],
   "decisions": [
+    {
+      "date": "2026-11-13",
+      "title": "Актуальный код туристического приложения — отдельная ветка в его собственном репозитории",
+      "summary": "Работа над текущим приложением ведётся в basana/turret-tales-christmas/feature/map-navi-gps-follow-01. Старая копия в rhein-guide-publicD_A остаётся средой спецификации и прототипа; main действующего сайта не изменяется.",
+      "nodeId": "github-branch"
+    },
     {
       "date": "2026-11-13",
       "title": "Управление и уровни доступа Architectural Storymarks",
