@@ -31,7 +31,7 @@
 - [Preview shell](https://github.com/basana/turret-tales-preview)
 - [PR #2 — GPS Follow device test](https://github.com/basana/turret-tales-christmas/pull/2)
 
-**Текущий фактический статус на 15 ноября 2026 года:** GPS Follow / Free View, возврат к GPS, приоритет POI и обновлённая колонка Pharmacy / Toilets / Reset находятся в отдельной integration-ветке `feature/map-navi-integration-2026-11-15`; открыт PR #3. Ветка на 3 коммита впереди `main`, отстающих коммитов нет. В `index.html` и `sw.js` внесены изменения. Код ещё не проверен на устройствах; Deploy Preview и live Netlify не подтверждены. `main` не изменён, merge и production deploy не выполнялись. PR #2 остаётся отдельной открытой preview-веткой и не является актуальной интеграционной веткой.
+**Текущий фактический статус на 15 ноября 2026 года:** GPS Follow / Free View, возврат к GPS, приоритет POI и обновлённая колонка Pharmacy / Toilets / Reset находятся в отдельной integration-ветке `feature/map-navi-integration-2026-11-15`; открыт PR #3. Ветка на 4 коммита впереди `main`, отстающих коммитов нет. В `index.html` и `sw.js` внесены изменения. Код ещё не проверен на устройствах; Deploy Preview и live Netlify не подтверждены. `main` не изменён, merge и production deploy не выполнялись. PR #2 остаётся отдельной открытой preview-веткой и не является актуальной интеграционной веткой.
 
 ## 2. Календарь по дням и времени
 
