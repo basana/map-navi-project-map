@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "GPS Follow / Free View перенесены в отдельную integration-ветку поверх актуального main; следующий шаг — Preview и проверка POI camera priority на iPhone/iPad. Production main не изменён.",
-    "updatedAt": "2026-11-15T16:36:58+01:00",
+    "currentFocus": "GPS Follow / Free View подготовлены в отдельной integration-ветке и PR #3 для Preview. Следующий шаг — получить Deploy Preview и проверить поведение на iPhone/iPad; main не менять.",
+    "updatedAt": "2026-11-15T16:37:18+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -662,6 +662,16 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-15",
+      "timestamp": "2026-11-15T16:37:18+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "preview",
+      "title": "Открыт PR #3 для Preview-проверки GPS Follow / Free View",
+      "summary": "PR #3 открыт: feature/map-navi-integration-2026-11-15 → main. GitHub подтвердил mergeable=true, mergeable_state=clean; PR не объединён. Netlify Deploy Preview URL и device tests пока не подтверждены. Не выполнять merge и production deploy.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/pull/3"
+    },
     {
       "date": "2026-11-15",
       "timestamp": "2026-11-15T16:36:58+01:00",
