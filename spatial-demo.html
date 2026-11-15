@@ -47,13 +47,13 @@ svg{display:block;width:100%;height:auto;min-height:430px;touch-action:pan-y}\n.
 <header>
  <div class="kicker">MAP NAVI · spatial prototype 01</div>
  <h1>Один город. Три уровня пространства.</h1>
- <div class="sub">Basilika St. Kastor — первый демонстрационный объект. Нажмите на любое здание: композиция перестроится вокруг него, а связанные места станут заметнее.</div>
+ <div class="sub">Basilika St. Kastor — первый демонстрационный объект. Обычный режим показывает только непосредственное окружение выбранного места. Premium дополнительно раскрывает тематические и исторические связи.</div>
 </header>
 <main>
  <div class="toolbar" aria-label="Режим визуализации">
-  <button class="active" data-mode="all">Все три уровня</button>
-  <button data-mode="near">Главный + ближний</button>
-  <button data-mode="focus">Только главный</button>
+  <button class="active" data-mode="near">Рядом с базиликой</button>
+  <button data-mode="focus">Только базилика</button>
+  <button data-mode="premium">Premium · тематические связи</button>
   <button id="reset">Вернуть St. Kastor</button>
  </div>
  <section class="stage">
@@ -62,10 +62,10 @@ svg{display:block;width:100%;height:auto;min-height:430px;touch-action:pan-y}\n.
    <svg id="scene" viewBox="0 0 900 560" role="img" aria-label="Изометрическая схема достопримечательностей вокруг выбранного объекта"></svg>
   </div>
   <div class="info">
-   <div class="panel"><h2 id="selectedTitle">Basilika St. Kastor</h2><p id="selectedText">Главный объект: максимальная детализация, более насыщенный голубой цвет и визуальное приближение. От него рассчитываются два уровня связей.</p><p id="selectedMeta">Kastorhof · 56068 Koblenz</p></div>
+   <div class="panel"><h2 id="selectedTitle">Basilika St. Kastor</h2><p id="selectedText">Стандартный режим: сама базилика и только ближайшие объекты вокруг неё. Более дальние и тематические связи не отвлекают туриста от места, где он находится.</p><p id="selectedMeta">Kastorhof · 56068 Koblenz</p></div>
    <div class="panel levels">
-    <div class="level"><i class="swatch" style="background:#8fb8c9"></i><div><b>Уровень 1 · ближайшие связи</b>Средний масштаб, чёткие силуэты, активные связи.</div></div>
-    <div class="level"><i class="swatch" style="background:#bdd2d9"></i><div><b>Уровень 2 · городской контекст</b>Меньше размер и контраст; объекты остаются узнаваемыми.</div></div>
+    <div class="level"><i class="swatch" style="background:#8fb8c9"></i><div><b>Уровень 1 · ближайшие связи</b>Только непосредственно соседние объекты, помогающие сориентироваться на месте.</div></div>
+    <div class="level"><i class="swatch" style="background:#bdd2d9"></i><div><b>Уровень 2 · городской контекст</b>В обычном режиме скрыт. В Premium появляются тематически связанные места.</div></div>
     <div class="level"><i class="swatch" style="background:#8c4650"></i><div><b>Выбранный объект</b>Выдвигается вперёд и становится центром композиции.</div></div>
    </div>
   </div>
@@ -74,7 +74,7 @@ svg{display:block;width:100%;height:auto;min-height:430px;touch-action:pan-y}\n.
 </main>
 <script>
 const places=[
-{id:'kastor',name:'Basilika St. Kastor',short:'St. Kastor',type:'basilica',x:450,y:275,desc:'Главный объект пилота. Здесь позже появятся точные Storymarks: скульптуры, следы исторических событий, гербы и другие детали фасада.',meta:'Kastorhof · 56068 Koblenz',links:['deutsches','blumenhof','museum','florins']},
+{id:'kastor',name:'Basilika St. Kastor',short:'St. Kastor',type:'basilica',x:450,y:275,desc:'Главный объект пилота. Здесь позже появятся точные Storymarks: скульптуры, следы исторических событий, гербы и другие детали фасада.',meta:'Kastorhof · 56068 Koblenz',links:['deutsches','blumenhof','museum'],premiumLinks:['florins','liebfrauen']},
 {id:'deutsches',name:'Deutsches Eck',short:'Deutsches Eck',type:'monument',x:655,y:130,desc:'Знаковое место у слияния Рейна и Мозеля. В этом прототипе — ближайший пространственный сосед базилики.',meta:'Konrad-Adenauer-Ufer · Koblenz',links:['kastor','museum','blumenhof']},
 {id:'blumenhof',name:'Blumenhof',short:'Blumenhof',type:'garden',x:275,y:125,desc:'Открытое пространство рядом с базиликой и музейным комплексом. Здесь важны пешеходные связи и подходы к зданиям.',meta:'Am Deutschen Eck · Koblenz',links:['kastor','museum','deutsches']},
 {id:'museum',name:'Deutschherrenhaus · Ludwig Museum',short:'Ludwig Museum',type:'museum',x:725,y:340,desc:'Музейный объект у Deutsches Eck. В контексте St. Kastor показывает соседство церковного, городского и музейного пространства.',meta:'Danziger Freiheit · Koblenz',links:['kastor','deutsches','blumenhof']},
@@ -85,9 +85,9 @@ const places=[
 {id:'bridge',name:'Balduinbrücke',short:'Balduinbrücke',type:'bridge',x:825,y:485,desc:'Историческая переправа через Мозель. Более дальний контекстный объект, связанный с исторической структурой города.',meta:'Mosel · Koblenz',links:['alteburg','deutsches']}
 ];
 const edges=[];places.forEach(p=>p.links.forEach(id=>{if(!edges.some(e=>(e[0]===p.id&&e[1]===id)||(e[1]===p.id&&e[0]===id)))edges.push([p.id,id])}));
-let selected='kastor',mode='all';
+let selected='kastor',mode='near';
 const $=id=>document.getElementById(id);
-function tiers(){const p=places.find(x=>x.id===selected),one=new Set(p.links),two=new Set();one.forEach(id=>places.find(x=>x.id===id).links.forEach(k=>{if(k!==selected&&!one.has(k))two.add(k)}));return{one,two}}
+function tiers(){const p=places.find(x=>x.id===selected),one=new Set(p.links),two=new Set();if(mode==='premium'){(p.premiumLinks||[]).forEach(id=>two.add(id));one.forEach(id=>places.find(x=>x.id===id).links.forEach(k=>{if(k!==selected&&!one.has(k))two.add(k)}));}return{one,two}}
 function shape(type,fill,side,roof){
 const common='stroke="#718f9b" stroke-width="1.5" stroke-linejoin="round"';
 if(type==='basilica')return `
@@ -114,7 +114,7 @@ pos[selected]=center;placeRing(rings,215,-Math.PI/2);placeRing(outer,365,-Math.P
 const visible=new Set([selected,...one,...two]);let svg='';
 svg+='<ellipse cx="450" cy="300" rx="405" ry="235" fill="none" stroke="#d7d0c3" stroke-dasharray="3 8"/><ellipse cx="450" cy="300" rx="255" ry="150" fill="none" stroke="#d7d0c3" stroke-dasharray="3 8"/>';
 edges.forEach(([a,b])=>{if(!visible.has(a)||!visible.has(b))return;const active=(a===selected||b===selected);svg+='<line class="edge '+(active?'active':'dim')+'" x1="'+pos[a].x+'" y1="'+pos[a].y+'" x2="'+pos[b].x+'" y2="'+pos[b].y+'"/>'});
-places.filter(p=>visible.has(p.id)).forEach(p=>{const isSel=p.id===selected,isOne=one.has(p.id),isTwo=two.has(p.id);let tier=isSel?'selected':isOne?'level1':'level2';if(mode==='focus'&&!isSel)tier='dim';if(mode==='near'&&isTwo)tier='dim';let scale=isSel?1.85:isOne?0.78:0.48;let fill=isSel?'#8fb8c9':isOne?'#b4cbd3':'#d0dcdb',side=isSel?'#6e9bad':isOne?'#91b4c0':'#b8c9c8',roof=isSel?'#c6d9dc':isOne?'#d2dfe0':'#e1e6df';let x=pos[p.id].x,y=pos[p.id].y;
+places.filter(p=>visible.has(p.id)).forEach(p=>{const isSel=p.id===selected,isOne=one.has(p.id),isTwo=two.has(p.id);let tier=isSel?'selected':isOne?'level1':'level2';if(mode==='focus'&&!isSel)tier='dim';if(mode!=='premium'&&isTwo)tier='dim';let scale=isSel?1.85:isOne?0.78:0.48;let fill=isSel?'#8fb8c9':isOne?'#b4cbd3':'#d0dcdb',side=isSel?'#6e9bad':isOne?'#91b4c0':'#b8c9c8',roof=isSel?'#c6d9dc':isOne?'#d2dfe0':'#e1e6df';let x=pos[p.id].x,y=pos[p.id].y;
 svg+='<g class="node '+tier+'" data-id="'+p.id+'" transform="translate('+x+' '+y+') scale('+scale+')">'+shape(p.type,fill,side,roof)+'<text class="label" y="112">'+p.short+'</text><text class="sub-label" y="129">'+(isSel?'FOCUS':isOne?'LEVEL 1':'LEVEL 2')+'</text><circle cx="0" cy="0" r="'+(isSel?5:3)+'" fill="#8c4650" opacity="'+(isSel?1:.7)+'"/></g>';
 });
 $('scene').innerHTML=svg;
@@ -124,7 +124,7 @@ document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',
 }
 function select(id){selected=id;render()}
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;render()}));
-$('reset').addEventListener('click',()=>{selected='kastor';mode='all';render()});
+$('reset').addEventListener('click',()=>{selected='kastor';mode='near';render()});
 render();
 </script>
 </body>
