@@ -1,99 +1,95 @@
-# MAP NAVI — Implementation & Release Tracker
-**Last updated:** 15 November 2026, Europe/Berlin  
-**Purpose:** one checklist for transferring already-developed navigation improvements into the existing Netlify application before the first guided tour on 27 November 2026.
+# MAP NAVI — список изменений и календарь подготовки к первой экскурсии
 
-## Release target
+**Обновлено:** 15 ноября 2026 года, 14:00 (Europe/Berlin)  
+**Первая экскурсия:** 27 ноября 2026 года  
+**Цель:** стабильная версия обычной навигации должна быть опубликована и проверена до экскурсии. Пространственная трёхуровневая модель не блокирует этот выпуск.
 
-- **25 November 2026:** latest planned date for the user's Netlify deployment.
-- **26 November 2026:** verify the actual published Netlify site, not only a GitHub Preview.
-- **27 November 2026:** first guided tour; a stable conventional map/navigation version must be usable even if the 3-level spatial layer is not ready.
+> Важно о времени: в прежней записи были даты, но не были внесены часы выполнения. Поэтому ниже часы впервые зафиксированы как рабочий календарный план, а не как якобы ранее согласованные обязательства. Время указано по Германии (Europe/Berlin).
 
-The dates are a working plan, not a claim that any transfer, test, or deployment has already happened.
+## 1. Список изменений для переноса
 
-## Working agreement
+Переносим в существующий репозиторий приложения `basana/turret-tales-christmas`, отдельной рабочей веткой. Для каждого пункта отмечаем отдельно: перенесено → проверено в Preview → одобрено пользователем → опубликовано в Netlify.
 
-1. Keep the existing application and its existing Netlify publishing workflow.
-2. Make changes in a separate branch of `basana/turret-tales-christmas`.
-3. Do not change or merge into `main`, and do not publish to Netlify, without the user's explicit approval.
-4. Compare each change with the current source before transferring it. A feature seen in Preview is not automatically present in the production repository.
-5. Keep commits small and identifiable; record branch, commit SHA, test result, and remaining issues here.
-6. The user reviews the Preview / branch and makes the final Deploy.
-7. The spatial 3-level architecture and Storymarks remain a separate workstream; they must not block the stable navigation release.
+| № | Изменение | Источник / известное состояние | Статус |
+|---|---|---|---|
+| 1 | GPS Follow: следование за текущим местоположением | GPS-ветка, commit `666507c` | Требует сверки и переноса |
+| 2 | Free View: ручное перемещение карты без выключения GPS | GPS-ветка, commit `666507c` | Требует сверки и переноса |
+| 3 | Ручной возврат к GPS и кнопка `↻ Follow` | GPS-ветка, commit `02a2a82` | Требует сверки и переноса |
+| 4 | Правая вертикальная колонка Pharmacy / Toilets / Reset | GPS-ветка, commit `56e011e` | Требует сверки и переноса |
+| 5 | Автофокус ближайшей аптеки/туалета при включении соответствующего поиска | Preview: POI auto-focus | Требует сверки и переноса |
+| 6 | Приоритет выбранного POI: GPS не перетягивает камеру, пока активен POI | Preview: `_poiFocusActive` | Требует сверки и переноса |
+| 7 | Общая компоновка поиска и ticker/легенды | Preview-коммиты `db9f392`, `6d6a9bf` | Требует сверки и переноса |
+| 8 | Мобильная ширина и расположение элементов | Preview-коммиты `6d6a9bf` | Требует сверки и переноса |
+| 9 | Позиция информационного toast и z-index поиска | Preview-коммит `fc0078a` | Требует сверки и переноса |
+| 10 | Вертикальное положение zoom-кнопок карты рынков | Preview-коммит `b27c044` | Требует сверки и переноса |
+| 11 | Единообразная проверка основных карт на iPhone и iPad | Общий тест после интеграции | Не начато |
 
-## Existing work and evidence
+Ссылки:
+- [Репозиторий приложения](https://github.com/basana/turret-tales-christmas)
+- [GPS-ветка](https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01)
+- [Preview-ветка](https://github.com/basana/turret-tales-christmas/tree/preview/gps-follow-device-test-01)
+- [Preview shell](https://github.com/basana/turret-tales-preview)
+- [PR #2 — GPS Follow device test](https://github.com/basana/turret-tales-christmas/pull/2)
 
-### Application repository
-- Repository: [basana/turret-tales-christmas](https://github.com/basana/turret-tales-christmas)
-- Existing GPS work branch: [feature/map-navi-gps-follow-01](https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01)
-- Preview branch: [preview/gps-follow-device-test-01](https://github.com/basana/turret-tales-christmas/tree/preview/gps-follow-device-test-01)
-- Draft PR #2: [GPS Follow device test](https://github.com/basana/turret-tales-christmas/pull/2)
-- Known GPS branch commits: `666507c` (GPS Follow / Free View), `02a2a82` (manual recenter fix), `56e011e` (right-side POI/reset controls).
-- Known scope: `index.html` in the GPS branch. Syntax checks were reported for four inline JavaScript blocks; that is not the same as full browser/device verification.
-- The Preview repository `basana/turret-tales-preview` is a test shell and uses a `<base href="https://turrettales.de/">`; some assets/content may still come from the live site. Do not treat its changes as already transferred into the application repository.
+**Текущий фактический статус:** в Project Map зафиксирован перечень известных изменений. Перенос в исходный репозиторий приложения ещё не выполнен. Preview не считается доказательством наличия изменений в основном репозитории.
 
-### Preview-only improvements to compare and transfer if confirmed
-- POI auto-focus: selecting Pharmacy / Toilets should automatically focus the nearest relevant POI, with the same pan/zoom behavior as tapping its marker; active POI focus should not be overridden by GPS Follow.
-- Search and ticker layout adjustments.
-- Mobile width/layout refinements.
-- Toast positioning and search overlay stacking.
-- Market-map zoom-control vertical positioning.
-- Any additional visual or control fixes found in the current Preview.
+## 2. Календарь по дням и времени
 
-The above list is an inventory to verify against the actual repository and current Preview source. It does not certify that every item is complete or ready to merge.
+Все часы — местное время Германии (Europe/Berlin). Это рабочие окна плана; фактическое выполнение отмечается только после работы и проверки.
 
-## Transfer checklist
+| Дата | Время | Работа / ожидаемый результат |
+|---|---:|---|
+| **15 ноября, воскресенье** | 15:00–17:00 | Подготовить аудит: сверить GPS-ветку, Preview-ветку и текущую исходную ветку приложения; определить базовую ветку интеграции. |
+| **16 ноября, понедельник** | 10:00–12:00 | Проверить конфигурацию публикации Netlify и актуальные ветки; зафиксировать точную базу и файлы для переноса. |
+| **16 ноября, понедельник** | 13:00–16:00 | Перенести GPS Follow / Free View и ручной возврат к GPS отдельными коммитами. |
+| **17 ноября, вторник** | 10:00–13:00 | Перенести правые кнопки Pharmacy / Toilets / Reset и проверить общий интерфейс. |
+| **17 ноября, вторник** | 14:00–16:00 | Перенести POI auto-focus и приоритет камеры выбранного POI; проверить, что GPS не сбивает фокус. |
+| **18 ноября, среда** | 10:00–13:00 | Перенести поиск, ticker, мобильную компоновку, toast и zoom-кнопки рынков. |
+| **18 ноября, среда** | 14:00–16:00 | Проверить целостность кода, зависимости, Service Worker/manifest и работу после перезагрузки. |
+| **19 ноября, четверг** | 10:00–12:00 | Собрать Preview интеграционной ветки; пройти основной сценарий GPS Follow / Free View. |
+| **19 ноября, четверг** | 13:00–15:00 | Проверить поиск аптек и туалетов, расстояния, автофокус, Reset и приоритет POI. |
+| **20 ноября, пятница** | 10:00–12:00 | Проверить Koblenz / castle map на iPhone в портретном режиме. |
+| **20 ноября, пятница** | 13:00–15:00 | Проверить iPad в горизонтальном режиме; поиск, легенду, кнопки, toast и zoom. |
+| **21 ноября, суббота** | 10:00–12:00 | Проверить карту рынков и остальные применимые карты; отдельно отметить функции, которые ещё не перенесены на каждую карту. |
+| **22 ноября, воскресенье** | 10:00–12:00 | Повторный полный тест, список ошибок и исправление блокирующих дефектов. |
+| **23 ноября, понедельник** | 10:00–12:00 | Зафиксировать release candidate, проверить коммиты и точку отката. |
+| **24 ноября, вторник** | 10:00–12:00 | Финальная проверка кандидата; прекратить добавление рискованных новых функций. |
+| **25 ноября, среда** | 10:00–12:00 | Передать тебе готовый источник/ветку и инструкции; ты выполняешь Deploy на Netlify. |
+| **26 ноября, четверг** | 10:00–11:00 | Проверить именно опубликованный Netlify-сайт на устройстве; записать deployed commit и результат. |
+| **27 ноября, пятница** | До экскурсии | Использовать проверенную опубликованную версию; новые изменения в день экскурсии не вносить. |
 
-### A. Audit and prepare — 15 November
-- [ ] Read current default branch and working branches in `basana/turret-tales-christmas`.
-- [ ] Identify the exact Netlify-connected branch / publishing configuration; do not assume it is `main` without checking.
-- [ ] Compare the GPS branch, Preview branch, and Preview shell; list every relevant file and commit.
-- [ ] Identify dependencies and conflicts, especially `index.html`, `sw.js`, manifests and map-specific scripts.
-- [ ] Create or select one clean integration branch from the correct current base. Do not overwrite existing work.
+Если рабочее окно не подходит, его можно сдвинуть; сроки выпуска и первая экскурсия остаются контрольными датами. Важнее фиксировать реальное состояние, чем изображать выполнение по календарю.
 
-### B. Transfer ready improvements — target 15 November, continue as needed
-- [ ] GPS Follow / Free View.
-- [ ] Manual recenter and `↻ Follow` behavior.
-- [ ] Consistent right-side Pharmacy / Toilets / Reset controls.
-- [ ] POI auto-focus and camera-priority behavior.
-- [ ] Search / ticker / overlay layout.
-- [ ] Toast positioning and map zoom-control adjustments.
-- [ ] Record each transferred change with its commit SHA and source.
+## 3. Критерии готовности
 
-### C. Functional and device verification — 16–22 November
-- [ ] Main Koblenz / castle map: GPS on, Follow, manual pan/zoom, Free View, return to Follow.
-- [ ] Pharmacy search: nearest result, focus, distance/label, route action if available.
-- [ ] Toilets search: nearest result, focus, distance/label; no unrelated castle focus.
-- [ ] Confirm active POI focus is not pulled away by GPS updates.
-- [ ] Check reset-to-full-map behavior.
-- [ ] Check search, legend, buttons, toast and zoom controls on iPhone portrait and iPad landscape.
-- [ ] Check all relevant map pages, including markets; do not assume a fix on one map has propagated to others.
-- [ ] Check browser console / JavaScript errors and basic navigation after reload.
-- [ ] Record what was actually tested and what remains unverified.
+- GPS включается и корректно следует за пользователем.
+- Ручной pan/zoom переводит карту в Free View, GPS при этом остаётся включён.
+- `↻ Follow` возвращает карту к последним GPS-координатам.
+- Поиск аптеки/туалета сразу фокусирует ближайший подходящий POI.
+- Активный POI не теряет фокус из-за фоновых GPS-обновлений.
+- Reset возвращает общий обзор карты.
+- Поиск, легенда, кнопки, уведомления и zoom не перекрывают друг друга.
+- Основные сценарии проверены на iPhone и iPad.
+- После пользовательского Deploy отдельно проверен live-сайт Netlify.
 
-### D. Freeze and release — 23–26 November
-- [ ] 23–24 Nov: freeze the candidate; no risky new features.
-- [ ] 25 Nov: user reviews and performs Deploy to Netlify from the agreed GitHub source.
-- [ ] 26 Nov: test the live Netlify URL on the actual device and confirm the deployed commit/version.
-- [ ] Keep a rollback point and record the deployed commit SHA.
-- [ ] If a blocking issue remains, revert only the problematic change or deploy the last known-good version.
+## 4. Защита production
 
-## Release rule
+1. Работаем в отдельной ветке `basana/turret-tales-christmas`.
+2. Не меняем `main` и не делаем Deploy без явного разрешения пользователя.
+3. Не считаем функцию завершённой только потому, что она есть в Preview или прошла проверку синтаксиса.
+4. Для каждого изменения записываем commit SHA, дату и время, результат теста и оставшиеся проблемы.
+5. Сохраняем возможность вернуться к последней рабочей версии.
 
-A change is not considered complete merely because it exists in a branch or passes syntax checks. Track these separately:
-- **Transferred:** present in the integration branch.
-- **Preview-tested:** exercised in the browser / device Preview.
-- **User-approved:** user has accepted the behavior.
-- **Deployed:** present on the live Netlify site after the user's Deploy.
+## 5. Отдельная пространственная разработка
 
-## Out of scope for the 27 November safety release
+Трёхуровневая голубая архитектурная модель, связи и Storymarks развиваются параллельно. Они не являются обязательным условием готовности обычной навигации к 27 ноября.
 
-The 3-level isometric architecture, full spatial relationships, and Architectural Storymarks may continue in parallel. They are not prerequisites for a dependable conventional map, GPS and POI navigation.
+## Журнал изменений Project Map
 
-## Change log
-
-### 15 November 2026
-- User confirmed that all transfer work and release tracking must be recorded in the MAP NAVI Project Map.
-- Agreed to preserve the existing GitHub → Preview/review → user-controlled Netlify Deploy workflow.
-- Agreed not to modify production `main` or publish without explicit user approval.
-- Set the first-tour safety target: stable release ready for user deployment by 25 November; live-site verification on 26 November; first tour on 27 November.
-- No application code was changed by this tracker entry. Transfer and verification remain pending.
+### 15 ноября 2026 года, 14:00 (Europe/Berlin)
+- Зафиксирована просьба пользователя писать месяцы словами, а не цифрами.
+- Зафиксировано требование указывать не только даты, но и точное время и часовой пояс.
+- Подготовлен явный перечень из 11 пунктов для переноса и проверки.
+- Добавлен календарь по дням и рабочим временным окнам.
+- Уточнено, что ранее в трекере были даты без времени; часы ниже являются новым рабочим расписанием, а не восстановленной прежней договорённостью.
+- Код приложения не изменён; перенос ещё ожидает аудита и выполнения.
