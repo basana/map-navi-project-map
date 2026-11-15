@@ -2,8 +2,8 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-14",
-    "scope": "Совместные решения ChatGPT + пользователь; документ передачи контекста для независимой оценки Claude добавлен отдельно.",
+    "updated": "2026-11-15",
+    "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
     "branch": "Туристическое приложение: preview/gps-follow-device-test-01 (PR #2); исходная GPS-ветка: feature/map-navi-gps-follow-01; Project Map: main",
     "mainProtected": true,
     "legend": {
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Надёжная навигация и подготовка офлайн-режима; затем интеграция пространственного SVG-слоя.",
-    "updatedAt": "2026-11-14T15:53:48+01:00",
+    "currentFocus": "Перенос проверенных улучшений обычной навигации в существующий Netlify-проект; стабильная версия к 25 ноября, первая экскурсия 27 ноября. Пространственный слой развивается отдельно.",
+    "updatedAt": "2026-11-15T16:18:00+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -489,6 +489,35 @@
           "url": "https://operations.osmfoundation.org/policies/tiles/"
         }
       ]
+    },
+    {
+      "id": "release-tracker",
+      "group": "technical",
+      "title": "Перенос улучшений и релиз 27 ноября",
+      "subtitle": "Существующее приложение → Preview → Deploy Netlify",
+      "status": "progress",
+      "summary": "Согласован перенос уже разработанных улучшений навигации в существующий репозиторий приложения с сохранением привычного процесса GitHub → проверка → пользовательский Deploy на Netlify.",
+      "details": "Не создавать новое приложение и не переписывать старые карты с нуля. Сначала сопоставить GPS Follow/Free View, manual recenter, правую колонку Pharmacy/Toilets/Reset, POI auto-focus, поиск/ticker, toast и мобильные корректировки между рабочей GPS-веткой, Preview и актуальным исходным кодом. Переносить в отдельную ветку basana/turret-tales-christmas. Не менять production main и не публиковать без явного разрешения пользователя. Статусы строго разделять: перенесено, проверено в Preview, одобрено пользователем, опубликовано.",
+      "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md",
+      "next": "Провести аудит актуального приложения и Preview, затем переносить изменения небольшими коммитами; вести контрольный список и фиксировать SHA/результаты тестов.",
+      "links": [
+        {
+          "label": "Контрольный список переноса и релиза",
+          "url": "https://github.com/basana/map-navi-project-map/blob/main/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md"
+        },
+        {
+          "label": "Репозиторий приложения",
+          "url": "https://github.com/basana/turret-tales-christmas"
+        },
+        {
+          "label": "Известная GPS-ветка",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+        },
+        {
+          "label": "Preview-ветка",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/preview/gps-follow-device-test-01"
+        }
+      ]
     }
   ],
   "edges": [
@@ -611,6 +640,14 @@
     [
       "core",
       "offline-navigation"
+    ],
+    [
+      "github-branch",
+      "release-tracker"
+    ],
+    [
+      "project-map",
+      "release-tracker"
     ]
   ],
   "views": [
@@ -621,6 +658,15 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-15",
+      "timestamp": "2026-11-15T16:18:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "decision",
+      "title": "Зафиксирован план переноса улучшений и релиз к первой экскурсии",
+      "summary": "Все переносы и проверки фиксируются в отдельном контрольном списке Project Map. Используем существующий репозиторий приложения и процесс GitHub → Preview → Deploy пользователем в Netlify. Цель: подготовить стабильную версию к 25 ноября, проверить live 26 ноября; первая экскурсия 27 ноября. Production main не менять без разрешения.",
+      "nodeId": "release-tracker"
+    },
     {
       "date": "2026-11-13",
       "timestamp": "2026-11-13T23:04:51+01:00",
@@ -741,6 +787,14 @@
     }
   ],
   "decisions": [
+    {
+      "date": "2026-11-15",
+      "timestamp": "2026-11-15T16:18:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "title": "Существующий MAP NAVI остаётся резервной рабочей версией",
+      "summary": "Исправления обычных карт и навигации переносятся в текущий репозиторий basana/turret-tales-christmas отдельной веткой. Трёхуровневая пространственная навигация и Storymarks не являются условием готовности к первой экскурсии. Пользователь сохраняет контроль над Deploy в Netlify.",
+      "nodeId": "release-tracker"
+    },
     {
       "date": "2026-11-13",
       "timestamp": "2026-11-13T23:04:32+01:00",
