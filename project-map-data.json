@@ -15,7 +15,7 @@
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
     "currentFocus": "Перенос проверенных улучшений обычной навигации в существующий Netlify-проект; стабильная версия к 25 ноября, первая экскурсия 27 ноября. Пространственный слой развивается отдельно.",
-    "updatedAt": "2026-11-15T16:18:00+01:00",
+    "updatedAt": "2026-11-15T17:05:00+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -496,26 +496,30 @@
       "title": "Перенос улучшений и релиз 27 ноября",
       "subtitle": "Существующее приложение → Preview → Deploy Netlify",
       "status": "progress",
-      "summary": "Согласован перенос уже разработанных улучшений навигации в существующий репозиторий приложения с сохранением привычного процесса GitHub → проверка → пользовательский Deploy на Netlify.",
-      "details": "Не создавать новое приложение и не переписывать старые карты с нуля. Сначала сопоставить GPS Follow/Free View, manual recenter, правую колонку Pharmacy/Toilets/Reset, POI auto-focus, поиск/ticker, toast и мобильные корректировки между рабочей GPS-веткой, Preview и актуальным исходным кодом. Переносить в отдельную ветку basana/turret-tales-christmas. Не менять production main и не публиковать без явного разрешения пользователя. Статусы строго разделять: перенесено, проверено в Preview, одобрено пользователем, опубликовано.",
+      "summary": "Первичный аудит GitHub выполнен 15 ноября. Выявлено, что GPS Follow, текущий main с унифицированными кнопками и последние POI/UI-исправления Preview находятся в разных ветках/репозиториях; интеграционный пакет ещё не собран.",
+      "details": "Подтверждено: application main = 2291e55a513eadb6ff00b7011cfc74d9b25ef947; в нём есть коммит унификации кнопок Pharmacy/Toilets/Reset, но device-test всех взаимодействий не подтверждён. GPS branch = 56e011ee73c76eea72e97bc1f682292972d88868, сравнение с main: diverged, 3 ahead / 1 behind, изменён index.html. Preview branch = b5a48df004a07d37f2ee84963edeff0f5e693a39, 2 ahead of main, изменены index.html и sw.js; PR #2 открыт и не объединён, помечен Preview/device-test only. Отдельный Preview repo имеет более поздние POI/UI commits до a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5. Ничего не перенесено этим аудитом; нет нового подтверждения device-test, пользовательского одобрения или live deploy. Подробности и статусы по функциям в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
       "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md",
-      "next": "Провести аудит актуального приложения и Preview, затем переносить изменения небольшими коммитами; вести контрольный список и фиксировать SHA/результаты тестов.",
+      "next": "Сопоставить файлы GPS branch и Preview repo с текущим application main, разрешить расхождение 3 ahead / 1 behind и подготовить чистую интеграционную ветку без изменения main. Отдельно запросить подтверждение актуального POI auto-focus на Preview.",
       "links": [
         {
-          "label": "Контрольный список переноса и релиза",
+          "label": "Подробный аудит и блокеры",
           "url": "https://github.com/basana/map-navi-project-map/blob/main/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md"
         },
         {
-          "label": "Репозиторий приложения",
-          "url": "https://github.com/basana/turret-tales-christmas"
+          "label": "Application main commit 2291e55",
+          "url": "https://github.com/basana/turret-tales-christmas/commit/2291e55a513eadb6ff00b7011cfc74d9b25ef947"
         },
         {
-          "label": "Известная GPS-ветка",
+          "label": "GPS branch",
           "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
         },
         {
-          "label": "Preview-ветка",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/preview/gps-follow-device-test-01"
+          "label": "Preview PR #2 (open, unmerged)",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/2"
+        },
+        {
+          "label": "Preview repository",
+          "url": "https://github.com/basana/turret-tales-preview"
         }
       ]
     }
@@ -658,6 +662,15 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-15",
+      "timestamp": "2026-11-15T17:05:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Первичный аудит GitHub: обнаружены разделённые ветки и Preview-фиксы",
+      "summary": "Application main 2291e55 содержит унификацию кнопок; GPS branch 3 ahead/1 behind относительно main; PR #2 открыт и не объединён; отдельный Preview repo содержит более поздние POI/UI fixes. Код не переносился, main не менялся, deploy не выполнялся. Подробности — в контрольном документе.",
+      "nodeId": "release-tracker"
+    },
     {
       "date": "2026-11-15",
       "timestamp": "2026-11-15T16:18:00+01:00",
