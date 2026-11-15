@@ -125,3 +125,14 @@ Read-only GitHub audit performed after the tracker was created. No application f
 
 ### Audit conclusion
 The work is **not a two-day code-copy task**, but it is also **not yet a single integrated release package**. The GPS changes, the current application main's newer shared-control commit, and the Preview repository's later POI/UI fixes live in different refs/repositories. A careful comparison and small integration commits are required. No feature is marked transferred, freshly device-tested, approved, or deployed solely on the basis of its existence in a branch.
+
+
+## 15 ноября 2026 года, 16:25 (Europe/Berlin) — обновление отображения Project Map
+
+- На главной панели добавлен видимый календарь подготовки, сгруппированный по дням и рабочим временным окнам.
+- Журнал изменений теперь сгруппирован по календарным дням; для записей с timestamp отображаются часы и минуты по Europe/Berlin.
+- Формат дат изменён: название месяца показывается словом (например, «15 ноября 2026 года»), а не числом месяца.
+- Для старых записей без timestamp показывается «время не зафиксировано». Точное время задним числом не восстанавливается.
+- Календарь добавлен также в структурированные данные Project Map, чтобы он был виден непосредственно на Dashboard, а не только внутри Markdown-файла.
+- Коммиты Project Map: интерфейс календаря и журнала `e29243a042bbe5013c1093a2ec876d79c39ae889`; обновление данных и расписания `ff51df3eb05a6837a345eff28440055e440b0320`; формат даты в верхней панели `28dce1c70657540aa5aa1fe18f36bc0201f149ce`.
+- Репозиторий приложения, его `main`, ветки и Netlify не затрагивались.
