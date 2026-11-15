@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Перенос проверенных улучшений обычной навигации в существующий Netlify-проект; стабильная версия к 25 ноября, первая экскурсия 27 ноября. Пространственный слой развивается отдельно.",
-    "updatedAt": "2026-11-15T16:33:30+01:00",
+    "currentFocus": "GPS Follow / Free View перенесены в отдельную integration-ветку поверх актуального main; следующий шаг — Preview и проверка POI camera priority на iPhone/iPad. Production main не изменён.",
+    "updatedAt": "2026-11-15T16:36:58+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -662,6 +662,16 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-15",
+      "timestamp": "2026-11-15T16:36:58+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "integration",
+      "title": "GPS Follow / Free View перенесены в чистую integration-ветку",
+      "summary": "Создана feature/map-navi-integration-2026-11-15 от актуального main 2291e55. Перенесены Follow/Free View, ручное управление камерой и кнопка возврата к GPS. Добавлено правило приоритета: выбор аптеки/туалета передаёт камеру POI, GPS продолжает обновлять маркер, Follow возвращает слежение. Сохранена актуальная компоновка main: кнопки POI 56×56 px внизу справа; устаревшая раскладка PR #2 72×72 сверху не переносилась. Проверка: одна изменённая index.html, JS syntax check прошёл для всех 4 inline script blocks. main не изменён; merge и production deploy не выполнялись. Следующий шаг — открыть Preview и проверить на устройствах.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/e094b25e8742c151f3cc5c215c221d8a91481bb9"
+    },
     {
       "date": "2026-11-15",
       "timestamp": "2026-11-15T16:33:30+01:00",
