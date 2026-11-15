@@ -93,3 +93,35 @@
 - Добавлен календарь по дням и рабочим временным окнам.
 - Уточнено, что ранее в трекере были даты без времени; часы ниже являются новым рабочим расписанием, а не восстановленной прежней договорённостью.
 - Код приложения не изменён; перенос ещё ожидает аудита и выполнения.
+
+
+## Initial repository audit — 15 November 2026
+
+Read-only GitHub audit performed after the tracker was created. No application files, branches, pull requests, merges, or deployments were changed.
+
+### Confirmed repository state
+- Application default branch `main`: `2291e55a513eadb6ff00b7011cfc74d9b25ef947` (latest commit message: unify map buttons; all maps use a shared POI toggle bar; reset/pharmacy/toilets controls; legend position restored). This is present in the application repository's current `main`, but this audit does not establish that every interaction was tested on devices.
+- GPS work branch `feature/map-navi-gps-follow-01`: `56e011ee73c76eea72e97bc1f682292972d88868`. Compared with current `main`, GitHub reports it is diverged: 3 commits ahead and 1 behind; only `index.html` differs in the comparison summary. Do not merge it as-is; reconcile the new main commit first.
+- Preview branch `preview/gps-follow-device-test-01`: `b5a48df004a07d37f2ee84963edeff0f5e693a39`. It is 2 commits ahead of current `main`; changes are in `index.html` and `sw.js`.
+- PR #2 remains OPEN and UNMERGED: https://github.com/basana/turret-tales-christmas/pull/2. It is explicitly labelled preview/device-test only. Head `b5a48df004a07d37f2ee84963edeff0f5e693a39`, base `2291e55a513eadb6ff00b7011cfc74d9b25ef947`. No merge or production deployment was performed.
+- Separate Preview repository `basana/turret-tales-preview` has additional commits through `a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5` (15 Nov): POI toast action focus, pharmacy/toilet POI centering, market zoom controls, toast/search stacking, narrow-screen search width, search/ticker and shared control layout. These commits are in the Preview repository, not thereby transferred into the application repository.
+
+### Current status by feature
+| Feature | Present in application main | Preview / branch evidence | User/device approval | Live deployed |
+|---|---|---|---|---|
+| Shared Pharmacy / Toilets / Reset controls | Present in latest main commit `2291e55` (code commit evidence) | Also present in preview work | Not freshly verified in this audit | Not verified |
+| GPS Follow / Free View | Not confirmed in current main by this audit | Present in GPS branch and PR #2 preview branch | Prior user-reported Preview GPS test exists in project history; no new device test today | Not verified |
+| Manual recenter / Follow return | Not confirmed in current main | Included in GPS work branch/PR scope | Prior Preview test history; no new test today | Not verified |
+| POI auto-focus / camera priority | Not confirmed in current main | Preview repo commits `57408be` and `a1ea99e` | Awaiting explicit user confirmation on current Preview build | Not verified |
+| Search / ticker / overlays / mobile width | Not confirmed in current main | Preview repo commits `db9f392`, `6d6a9bf`, `fc0078a` | Not freshly device-verified | Not verified |
+| Toast positioning / market zoom controls | Not confirmed in current main | Preview repo commits `fc0078a`, `b27c044` | Not freshly device-verified | Not verified |
+
+### Immediate blockers / next actions
+1. Reconcile the GPS branch's 3-ahead / 1-behind divergence against current `main`; do not merge blindly.
+2. Compare the separate Preview repository's latest `index.html` with the application repository and identify precisely which preview-only fixes are portable, with attention to the Preview shell's external `<base href>` and service-worker scope.
+3. Prepare a clean integration branch in `basana/turret-tales-christmas` only after the comparison; keep `main` untouched.
+4. User should confirm the latest POI auto-focus behavior on the Preview URL when convenient. Until then it remains code-present / user-verification-pending, not user-approved.
+5. Confirm the Netlify-connected branch and deployment settings before release; no deployment state was inspected in this audit.
+
+### Audit conclusion
+The work is **not a two-day code-copy task**, but it is also **not yet a single integrated release package**. The GPS changes, the current application main's newer shared-control commit, and the Preview repository's later POI/UI fixes live in different refs/repositories. A careful comparison and small integration commits are required. No feature is marked transferred, freshly device-tested, approved, or deployed solely on the basis of its existence in a branch.
