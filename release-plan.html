@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101722">
+<title>MAP NAVI — план переноса и релиза</title>
+<style>
+:root{color-scheme:dark;--bg:#101722;--panel:#172231;--panel2:#1d2a3a;--line:#2b3b4e;--text:#edf3fa;--muted:#a7b5c6;--accent:#8fc4ff;--green:#34d399;--amber:#fbbf24;--blue:#60a5fa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:22px 18px;background:linear-gradient(135deg,#1c3048,#121d2b);border-bottom:1px solid var(--line)}
+.wrap{max-width:1050px;margin:auto}h1{font-size:clamp(25px,4vw,36px);line-height:1.15;margin:7px 0 9px}.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#9ab8d8;font-weight:700}.lead{color:#c3d1e0;max-width:780px}
+nav{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}a.btn{display:inline-block;padding:9px 13px;border:1px solid #4b6684;border-radius:9px;color:#d9eaff;text-decoration:none;background:#23364b;font-size:13px}a.btn:hover{background:#2c4561}
+main{max-width:1050px;margin:auto;padding:18px 16px 48px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{font-size:12px;padding:5px 10px;border:1px solid #40546b;border-radius:20px;color:#c7d5e5}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px;margin:0 0 14px}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:0 0 7px}.muted{color:var(--muted);font-size:13px}.callout{background:#1d2d40;border-left:3px solid var(--accent);padding:12px 14px;border-radius:8px;color:#d6e3f1;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:#a9c7e8;font-weight:650;background:#202f41}th,td{padding:10px 9px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}.tablewrap{overflow-x:auto}
+.status{display:inline-block;border-radius:20px;padding:3px 8px;background:#2a3a4c;color:#d5e3f2;font-size:11px;white-space:nowrap}.status.pending{color:#f9d98a;background:#493b22}.status.present{color:#9bd8ff;background:#213e55}
+.schedule{display:grid;gap:9px}.day{background:#1c2939;border:1px solid var(--line);border-radius:11px;overflow:hidden}.dayhead{padding:10px 13px;background:#24364a;color:#dcecff;font-weight:700}.slot{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:11px 13px;border-top:1px solid #304156}.slot time{font-size:12px;color:#9fc8f2;font-weight:700}.slot p{margin:0;font-size:13px;color:#d0dbe7}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{padding:10px 12px;background:#1d2a3a;border:1px solid var(--line);border-radius:9px;font-size:13px}
+ul{padding-left:20px;margin:8px 0}li{margin:6px 0;color:#d0dbe7}.foot{color:#8194aa;font-size:12px;margin:18px 3px}
+@media(max-width:650px){main{padding:12px 10px 35px}section{padding:13px}.slot{grid-template-columns:1fr;gap:2px}.checks{grid-template-columns:1fr}th,td{min-width:120px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">MAP NAVI · release control</div><h1>План переноса и подготовки к первой экскурсии</h1><div class="lead">Единый рабочий план для существующего приложения: сначала стабильная обычная навигация, затем проверка на Preview и только после этого пользовательская публикация в Netlify.</div><div class="meta"><span class="pill">Первая экскурсия · 27 ноября 2026 года</span><span class="pill">Все часы · Europe/Berlin</span><span class="pill">Application main защищена</span></div><nav><a class="btn" href="./">← Вернуться в Project Map</a><a class="btn" href="IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md" target="_blank" rel="noopener">Технический журнал (Markdown)</a></nav></div></header>
+<main>
+<section><h2>Главный принцип</h2><div class="callout">Не создаём новое приложение и не переписываем существующее. Переносим проверенные улучшения в отдельную ветку текущего MAP NAVI. <b>main не менять, merge и Netlify Deploy без отдельного разрешения не выполнять.</b></div><p class="muted">Трёхуровневая пространственная модель и Storymarks развиваются отдельно и не блокируют готовность обычной навигации к экскурсии.</p></section>
+<section><h2>1. Что необходимо перенести и проверить</h2><div class="tablewrap"><table><thead><tr><th style="width:42px">№</th><th>Функция</th><th>Где находится / источник</th><th>Статус на 15 ноября</th></tr></thead><tbody>
+<tr><td>1</td><td><b>GPS Follow</b> — следование за местоположением</td><td>GPS branch · <code>666507c</code></td><td><span class="status pending">Нужна интеграция</span></td></tr>
+<tr><td>2</td><td><b>Free View</b> — ручное перемещение при включённом GPS</td><td>GPS branch · <code>666507c</code></td><td><span class="status pending">Нужна интеграция</span></td></tr>
+<tr><td>3</td><td><b>Manual recenter / ↻ Follow</b> — возврат к GPS</td><td>GPS branch · <code>02a2a82</code></td><td><span class="status pending">Нужна интеграция</span></td></tr>
+<tr><td>4</td><td><b>Pharmacy / Toilets / Reset</b> — правая вертикальная колонка</td><td>Application main содержит унификацию кнопок · <code>2291e55</code></td><td><span class="status present">Код есть в main; тест нужен</span></td></tr>
+<tr><td>5</td><td><b>POI auto-focus</b> — автоматический фокус ближайшей аптеки/туалета</td><td>Отдельный Preview · POI commits</td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>6</td><td><b>Приоритет выбранного POI</b> — GPS не сбивает фокус POI</td><td>Preview · <code>_poiFocusActive</code></td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>7</td><td><b>Search / ticker / legend</b> — общая компоновка поиска и легенды</td><td>Preview · <code>db9f392</code></td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>8</td><td><b>Mobile layout</b> — ширина и расположение элементов</td><td>Preview · <code>6d6a9bf</code></td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>9</td><td><b>Toast / overlay / z-index</b> — уведомления и слои поиска</td><td>Preview · <code>fc0078a</code></td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>10</td><td><b>Market map zoom</b> — положение кнопок масштаба</td><td>Preview · <code>b27c044</code></td><td><span class="status pending">Нужна сверка и перенос</span></td></tr>
+<tr><td>11</td><td><b>iPhone / iPad device test</b> — проверка основных карт</td><td>Интеграционный Preview</td><td><span class="status pending">Не начато</span></td></tr>
+</tbody></table></div><p class="muted">Статусы не смешиваются: «перенесено», «проверено в Preview», «одобрено пользователем» и «опубликовано» — четыре отдельных отметки. Наличие кода в ветке само по себе не означает проверку.</p></section>
+<section><h2>2. Календарь подготовки — по дням и времени</h2><p class="muted">Плановые рабочие окна. Если время потребуется сдвинуть, фиксируем фактическое изменение отдельно; не выдаём план за выполненную работу.</p><div id="schedule" class="schedule"><p class="muted">Загружается календарь…</p></div></section>
+<section><h2>3. Критерии готовности</h2><div class="checks">
+<div class="check">GPS следует за пользователем, пока включён Follow.</div><div class="check">Ручной pan/zoom включает Free View, GPS остаётся активным.</div>
+<div class="check">↻ Follow возвращает карту к последним GPS-координатам.</div><div class="check">Pharmacy / Toilets сразу фокусируют ближайший POI.</div>
+<div class="check">Активный POI не теряет фокус из-за обновлений GPS.</div><div class="check">Reset возвращает полный обзор карты.</div>
+<div class="check">Поиск, легенда, кнопки, toast и zoom не перекрывают друг друга.</div><div class="check">Основные сценарии проверены на iPhone и iPad.</div>
+<div class="check">После пользовательского Deploy проверен live Netlify.</div></div></section>
+<section><h2>4. Контрольные даты релиза</h2><div class="tablewrap"><table><tbody>
+<tr><td><b>23–24 ноября</b></td><td>Freeze release candidate; только блокирующие исправления.</td></tr>
+<tr><td><b>25 ноября</b></td><td>Передача готовой ветки и инструкций. Deploy на Netlify выполняет пользователь.</td></tr>
+<tr><td><b>26 ноября</b></td><td>Проверка опубликованного Netlify-сайта и фиксация deployed commit.</td></tr>
+<tr><td><b>27 ноября</b></td><td>Первая экскурсия. Используется проверенная версия; без рискованных изменений в этот день.</td></tr>
+</tbody></table></div></section>
+<section><h2>5. Текущие технические блокеры</h2><ul><li>GPS branch расходится с текущим application main: три коммита впереди и один позади. Нужна аккуратная интеграция, не слепое объединение.</li><li>Последние POI и UI-исправления находятся в отдельном Preview-репозитории; нужно проверить переносимость кода и Service Worker scope.</li><li>PR #2 остаётся открытым и не объединённым. Это Preview/device-test ветка, а не опубликованный релиз.</li><li>Netlify deployment settings и фактический live статус ещё требуют отдельной проверки.</li></ul><p class="muted">Ни один из этих пунктов не считается решённым без коммита и проверяемого результата.</p></section>
+<div class="foot">Данные календаря загружаются из project-map-data.json · Часовой пояс: Europe/Berlin · Обновлено: 15 ноября 2026 года.</div>
+</main>
+<script>
+const host=document.getElementById('schedule');
+fetch('project-map-data.json?ts='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{
+ const fmt=d=>new Intl.DateTimeFormat('ru-RU',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Berlin'}).format(new Date(d+'T12:00:00+01:00'));
+ const days={};(data.releaseSchedule||[]).forEach(x=>(days[x.date]??=[]).push(x));
+ host.innerHTML=Object.keys(days).sort().map(date=>'<div class="day"><div class="dayhead">'+fmt(date)+'</div>'+days[date].map(x=>'<div class="slot"><time>'+x.time+'</time><p>'+x.task+'</p></div>').join('')+'</div>').join('')||'<p class="muted">Календарь пока пуст.</p>';
+}).catch(e=>host.innerHTML='<p class="muted">Не удалось загрузить календарь: '+e.message+'</p>');
+</script>
+</body></html>
