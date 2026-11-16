@@ -2,9 +2,9 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-15",
+    "updated": "2026-11-16",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
-    "branch": "Приложение: feature/map-navi-integration-2026-11-15 (PR #3); PR #2 остаётся отдельной открытой preview-веткой; main защищён; Project Map: main",
+    "branch": "Приложение: feature/map-navi-integration-2026-11-15 (PR #3, open/unmerged); PR #2 open/unmerged; application main unchanged; Project Map: main",
     "mainProtected": true,
     "legend": {
       "done": "Сделано / зафиксировано",
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Integration branch / PR #3 обновлены: GPS Follow / Free View, приоритет POI (включая запрос до первого GPS fix), верхняя правая адаптивная колонка Pharmacy / Toilets / Reset и изолированный Service Worker cache. Следующий шаг — подтвердить Deploy Preview и проверить iPhone/iPad; main и production не трогать.",
-    "updatedAt": "2026-11-15T17:07:00+01:00",
+    "currentFocus": "Аудит 16 ноября: integration branch f29ad217 на 4 commits ahead / 0 behind; PR #3 открыт, check runs отсутствуют, Deploy Preview и device tests не подтверждены. Follow/Free View действует только на основной карте; controls есть на обеих картах. Preview-only search/ticker/mobile/toast/zoom refinements не перенесены. Следующий шаг — получить Preview именно PR #3, проверить iPhone/iPad и Netlify settings; main не трогать.",
+    "updatedAt": "2026-11-16T09:12:20+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -120,9 +120,9 @@
       "subtitle": "Категория, поиск, выбранный объект",
       "status": "progress",
       "summary": "Расстояние, направление, подпись и карточка должны относиться к одной и той же активной цели.",
-      "details": "Приоритет цели: выбранный объект → активная категория или поиск → стандартное содержание Map Profile. Если человек ищет туалеты, нельзя показывать расстояние до замка. Нельзя автоматически менять selectedIndex/Guide на ближайший объект другого типа.",
-      "where": "MAP_STANDARD.md, раздел 17",
-      "next": "Проверить на устройстве автофокус ближайшего POI, приоритет камеры, выбор до первого GPS fix и переключение Pharmacy / Toilets.",
+      "details": "В application main уже существует базовый _zoomToNearestPoi. В integration PR #3 добавлены pauseGpsFollowForPoi и сохранение запроса POI до первого GPS fix (commit f29ad2179d2449a7b7f8e3ec622021556b3c8dcb): GPS продолжает обновлять координаты, но camera-follow приостанавливается на основной карте. Улучшенное центрирование POI и сохранение фокуса toast-action из отдельного Preview repo (commits 57408be и a1ea99e) в PR #3 не перенесены. Поведение не проверено на устройстве.",
+      "where": "application main + feature/map-navi-integration-2026-11-15, index.html; commit f29ad2179d2449a7b7f8e3ec622021556b3c8dcb; Preview repo commits 57408be / a1ea99e",
+      "next": "Проверить на Preview PR #3 включение Pharmacy/Toilets до и после первого GPS fix, выбор отдельного POI, удержание камеры и возврат Follow; отдельно решить перенос Preview centering refinement.",
       "links": [
         {
           "label": "Стандарт Map Navi",
@@ -137,25 +137,21 @@
       "subtitle": "GPS Follow / Free View — первая реализация",
       "status": "progress",
       "summary": "Free View приостанавливает автоматическое движение камеры, сохраняя GPS и активную цель.",
-      "details": "Техническое изменение внесено в отдельную ветку действующего приложения basana/turret-tales-christmas: GPS продолжает сопровождение по умолчанию; ручное перемещение или масштабирование переводит карту в Free View; кнопка ↻ Follow возвращает сопровождение. Проверен синтаксис всех четырёх inline scripts. Реальный тест в браузере и на устройстве ещё не выполнен. 14.11.2026 создана отдельная preview-ветка от актуального main и черновой PR #2; PR #1 закрыт как конфликтующий, без слияния. В PR #2 сохранён sw.js v306 из main и перенесена GPS-реализация; опубликованный Deploy Preview пока не подтверждён (GitHub не показывает check runs/status).",
-      "where": "basana/turret-tales-christmas, feature/map-navi-gps-follow-01, index.html; commits 666507c, 02a2a82",
-      "next": "Подтвердить Deploy Preview PR #3; затем проверить GPS Follow / Free View и POI priority на iPhone/iPad.",
+      "details": "В application repo basana/turret-tales-christmas интеграционная ветка feature/map-navi-integration-2026-11-15 на commit f29ad2179d2449a7b7f8e3ec622021556b3c8dcb (4 commits ahead / 0 behind main); PR #3 открыт, не слит. В коде основной карты leafletMap есть GPS Follow, Free View при ручных pan/zoom и кнопка ↻ Follow для возврата к последним координатам. Проверка исходника показывает, что аналогичный Follow/Free View не подключён к Christmas/market map. Нет подтверждённого Deploy Preview, check runs или device test; пользовательское одобрение и live deploy не подтверждены.",
+      "where": "basana/turret-tales-christmas, feature/map-navi-integration-2026-11-15, index.html; integration commit e094b25e8742c151f3cc5c215c221d8a91481bb9; PR #3",
+      "next": "Получить подтверждённый Preview именно PR #3; проверить Follow, Free View, возврат и GPS marker на iPhone/iPad. Отдельно решить, требуется ли перенос Follow/Free View на Christmas/market map до release.",
       "links": [
         {
-          "label": "Рабочая ветка приложения",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+          "label": "Integration branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
         },
         {
-          "label": "Изменённый index.html",
-          "url": "https://github.com/basana/turret-tales-christmas/blob/feature/map-navi-gps-follow-01/index.html"
+          "label": "PR #3 — Preview only",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/3"
         },
         {
-          "label": "Черновой PR для тестирования",
-          "url": "https://github.com/basana/turret-tales-christmas/pull/2"
-        },
-        {
-          "label": "Preview-ветка",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/preview/gps-follow-device-test-01"
+          "label": "GPS implementation commit",
+          "url": "https://github.com/basana/turret-tales-christmas/commit/e094b25e8742c151f3cc5c215c221d8a91481bb9"
         }
       ]
     },
@@ -166,17 +162,17 @@
       "subtitle": "Три круглые кнопки в одной правой колонке",
       "status": "progress",
       "summary": "Кнопки аптек, туалетов и возврата к полной карте собраны в единый вертикальный блок справа; пиктограмма полного охвата заменена на более крупные расходящиеся стрелки.",
-      "details": "В отдельной ветке действующего приложения кнопки аптеки, туалета и reset объединены в одну вертикальную колонку справа, начиная ниже поисковой строки. Все используют общий размер и интервал; кнопка полного охвата получила пиктограмму ⤢. Требуется визуальная проверка на разных экранах. Для тестового preview сохранено прежнее расположение кнопок справа сверху (top:100px), поскольку нижнее расположение из коммита Claude от 14.11 не соответствует ранее согласованному требованию. Это решение пока проверяется визуально.",
-      "where": "basana/turret-tales-christmas, feature/map-navi-gps-follow-01, index.html; commit 56e011e",
-      "next": "Проверить верхнюю правую адаптивную колонку из трёх кнопок, легенду и отсутствие перекрытий на iPhone/iPad portrait/landscape.",
+      "details": "В integration PR #3 (commit 943801e75033c51c09943e79038caad799ec3baa) Pharmacy / Toilets / Reset собраны в адаптивный вертикальный стек справа сверху (top:180px; размеры 48–68 px; Reset — стрелки ⤢). Код добавляет такой стек на основную карту и Christmas/market map. Это пока только code-present: реальный визуальный тест на iPhone/iPad не подтверждён. Search/ticker/overlay, mobile-width, toast/z-index и market-zoom fixes из отдельного Preview repo не перенесены.",
+      "where": "basana/turret-tales-christmas, feature/map-navi-integration-2026-11-15, index.html; commit 943801e75033c51c09943e79038caad799ec3baa; PR #3",
+      "next": "Проверить колонку на iPhone portrait и iPad landscape, отсутствие перекрытий с search/legend/toast; затем переносить только нужные и совместимые Preview UI fixes.",
       "links": [
         {
-          "label": "Рабочая ветка приложения",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+          "label": "Integration branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
         },
         {
-          "label": "Изменённый index.html",
-          "url": "https://github.com/basana/turret-tales-christmas/blob/feature/map-navi-gps-follow-01/index.html"
+          "label": "PR #3 — Preview only",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/3"
         }
       ]
     },
@@ -354,18 +350,26 @@
       "title": "GitHub и тестовая ветка",
       "subtitle": "Отдельная ветка в репозитории действующего приложения",
       "status": "progress",
-      "summary": "Изменения текущей версии туристического приложения вносятся в feature/map-navi-gps-follow-01; опубликованная main не меняется.",
-      "details": "Для работы с актуальным кодом действующего сайта создана ветка basana/turret-tales-christmas/feature/map-navi-gps-follow-01 от main. В ней изменён только index.html. Отдельная ветка basana/rhein-guide-publicD_A/feature/map-navi-standard сохраняет спецификацию и изолированный прототип; её index.html — более старая копия, поэтому не переносить её поверх актуального сайта.",
+      "summary": "Application main остаётся на 2291e55a; отдельная integration branch для Preview/device test — f29ad217, PR #3 открыт и не слит.",
+      "details": "Текущий application main: 2291e55a513eadb6ff00b7011cfc74d9b25ef947. Integration branch feature/map-navi-integration-2026-11-15: f29ad2179d2449a7b7f8e3ec622021556b3c8dcb, 4 commits ahead / 0 behind; изменены index.html и sw.js; PR #3 открыт/unmerged, 0 check runs и 0 status checks. PR #2 также открыт/unmerged. Исходная GPS branch 56e011ee73c76eea72e97bc1f682292972d88868 остаётся diverged 3 ahead / 1 behind. Application main не менялся.",
       "where": "GitHub: basana/turret-tales-christmas и basana/rhein-guide-publicD_A",
-      "next": "Продолжать только в feature/map-navi-integration-2026-11-15 / PR #3; main не менять и не сливать без явного разрешения.",
+      "next": "Получить Deploy Preview именно для PR #3, проверить Netlify-connected branch/settings и провести device tests; не менять application main, не merge и не deploy без отдельного разрешения.",
       "links": [
         {
-          "label": "Ветка актуального приложения",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+          "label": "Application main",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/main"
         },
         {
-          "label": "Ветка спецификации и прототипа",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/tree/feature/map-navi-standard"
+          "label": "Integration branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
+        },
+        {
+          "label": "PR #3",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/3"
+        },
+        {
+          "label": "PR #2",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/2"
         }
       ]
     },
@@ -496,29 +500,25 @@
       "title": "Перенос улучшений и релиз 27 ноября",
       "subtitle": "Существующее приложение → Preview → Deploy Netlify",
       "status": "progress",
-      "summary": "Первичный аудит GitHub выполнен 15 ноября. Выявлено, что GPS Follow, текущий main с унифицированными кнопками и последние POI/UI-исправления Preview находятся в разных ветках/репозиториях; интеграционный пакет ещё не собран.",
-      "details": "Подтверждено: application main = 2291e55a513eadb6ff00b7011cfc74d9b25ef947; в нём есть коммит унификации кнопок Pharmacy/Toilets/Reset, но device-test всех взаимодействий не подтверждён. GPS branch = 56e011ee73c76eea72e97bc1f682292972d88868, сравнение с main: diverged, 3 ahead / 1 behind, изменён index.html. Preview branch = b5a48df004a07d37f2ee84963edeff0f5e693a39, 2 ahead of main, изменены index.html и sw.js; PR #2 открыт и не объединён, помечен Preview/device-test only. Отдельный Preview repo имеет более поздние POI/UI commits до a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5. Ничего не перенесено этим аудитом; нет нового подтверждения device-test, пользовательского одобрения или live deploy. Подробности и статусы по функциям в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
+      "summary": "На 16 ноября подтверждено: integration branch f29ad217 (4 ahead / 0 behind) и PR #3 open/unmerged; кодовые изменения внесены, но Deploy Preview, device tests, user approval и live Netlify deployment не подтверждены.",
+      "details": "16.11.2026 09:12 audit: application main 2291e55a513eadb6ff00b7011cfc74d9b25ef947; integration branch f29ad2179d2449a7b7f8e3ec622021556b3c8dcb; commits e094b25 (GPS Follow/Free View), 943801e (controls), c84a69a (Service Worker cache isolation), f29ad217 (pending POI first fix). PR #3 open/unmerged, no check runs/status checks, Deploy Preview URL not confirmed. Follow/Free View wired only to main map; Pharmacy/Toilets/Reset controls are in both maps. Preview-only POI centering, search/ticker/overlay, mobile, toast/z-index and market-zoom fixes remain outside PR #3. Separate Preview repo a1ea99e Pages build succeeded but it is not the integration branch and uses base href to production. iPhone/iPad device tests and user approval not recorded; live Netlify status cannot be verified from available access. See release tracker for exact details.",
       "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md",
-      "next": "Получить подтверждённый Deploy Preview для PR #3 и выполнить реальные device tests; отмечать отдельно code-present, device-tested и deployed.",
+      "next": "Obtain a real Deploy Preview for PR #3 and test on iPhone/iPad; confirm Netlify branch settings. Keep main untouched and do not merge or deploy without explicit user permission.",
       "links": [
         {
-          "label": "Подробный аудит и блокеры",
+          "label": "Release tracker",
           "url": "https://github.com/basana/map-navi-project-map/blob/main/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md"
         },
         {
-          "label": "Application main commit 2291e55",
-          "url": "https://github.com/basana/turret-tales-christmas/commit/2291e55a513eadb6ff00b7011cfc74d9b25ef947"
+          "label": "PR #3",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/3"
         },
         {
-          "label": "GPS branch",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-gps-follow-01"
+          "label": "Integration branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
         },
         {
-          "label": "Preview PR #2 (open, unmerged)",
-          "url": "https://github.com/basana/turret-tales-christmas/pull/2"
-        },
-        {
-          "label": "Preview repository",
+          "label": "Separate Preview repo",
           "url": "https://github.com/basana/turret-tales-preview"
         }
       ]
@@ -846,6 +846,16 @@
       "title": "GPS / POI / controls интегрированы в отдельную ветку",
       "summary": "В integration-ветке реализованы GPS Follow/Free View, возврат к GPS, приоритет выбранного POI с обработкой запроса до первого GPS fix, адаптивная верхняя правая колонка Pharmacy/Toilets/Reset на обеих картах и изоляция Service Worker cache. PR #3 обновлён. Требуются Deploy Preview и реальные проверки на iPhone/iPad; main и production не затрагивались.",
       "nodeId": "camera",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/f29ad2179d2449a7b7f8e3ec622021556b3c8dcb"
+    },
+    {
+      "date": "2026-11-16",
+      "timestamp": "2026-11-16T09:12:20+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Ежедневная проверка релиза MAP NAVI",
+      "summary": "Подтверждены integration branch f29ad217 (4 ahead / 0 behind) и PR #3 open/unmerged; check runs отсутствуют. Follow/Free View подключены только к основной карте, controls — к обеим. Preview-only UI/POI refinements не перенесены; Deploy Preview, device tests, user approval и live Netlify status не подтверждены. Application main не менялся.",
+      "nodeId": "release-tracker",
       "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/f29ad2179d2449a7b7f8e3ec622021556b3c8dcb"
     }
   ],
