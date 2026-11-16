@@ -1,6 +1,6 @@
 # MAP NAVI — список изменений и календарь подготовки к первой экскурсии
 
-**Обновлено:** 15 ноября 2026 года, 14:00 (Europe/Berlin)  
+**Обновлено:** 16 ноября 2026 года, 09:12 (Europe/Berlin)  
 **Первая экскурсия:** 27 ноября 2026 года  
 **Цель:** стабильная версия обычной навигации должна быть опубликована и проверена до экскурсии. Пространственная трёхуровневая модель не блокирует этот выпуск.
 
@@ -12,12 +12,12 @@
 
 | № | Изменение | Источник / известное состояние | Статус |
 |---|---|---|---|
-| 1 | GPS Follow: следование за текущим местоположением | GPS-ветка, commit `666507c` | В integration-ветке и PR #3; требуется Preview/device test |
-| 2 | Free View: ручное перемещение карты без выключения GPS | GPS-ветка, commit `666507c` | В integration-ветке и PR #3; требуется Preview/device test |
-| 3 | Ручной возврат к GPS и кнопка `↻ Follow` | GPS-ветка, commit `02a2a82` | В integration-ветке и PR #3; требуется Preview/device test |
-| 4 | Правая вертикальная колонка Pharmacy / Toilets / Reset | GPS-ветка, commit `56e011e` | В integration-ветке: верхнее правое положение, адаптивный размер, reset-стрелки; требуется Preview/device test |
-| 5 | Автофокус ближайшей аптеки/туалета при включении соответствующего поиска | Preview: POI auto-focus | Код присутствует; требуется Preview/device test |
-| 6 | Приоритет выбранного POI: GPS не перетягивает камеру, пока активен POI | Preview: `_poiFocusActive` | В integration-ветке: POI удерживает камеру, GPS продолжает обновлять позицию; учтён запрос до первого GPS fix; требуется тест |
+| 1 | GPS Follow: следование за текущим местоположением | Integration commit `e094b25e8742c151f3cc5c215c221d8a91481bb9` | Код в PR #3; реализован только для основной карты `leafletMap`; Preview/device test не подтверждён |
+| 2 | Free View: ручное перемещение карты без выключения GPS | Integration commit `e094b25e8742c151f3cc5c215c221d8a91481bb9` | Код в PR #3; ручные pan/zoom отключают Follow на основной карте, GPS остаётся включён; Preview/device test не подтверждён |
+| 3 | Ручной возврат к GPS и кнопка `↻ Follow` | Integration commit `e094b25e8742c151f3cc5c215c221d8a91481bb9` | Кнопка возвращает к последним GPS-координатам на основной карте; Preview/device test не подтверждён |
+| 4 | Правая вертикальная колонка Pharmacy / Toilets / Reset | Integration commit `943801e75033c51c09943e79038caad799ec3baa` | Код в PR #3: верхний правый стек, адаптивные 48–68 px, кнопки на основной и Christmas map; Preview/device test не подтверждён |
+| 5 | Автофокус ближайшей аптеки/туалета при включении соответствующего поиска | Базовый `_zoomToNearestPoi` уже есть в application main; Preview commits `57408be`, `a1ea99e` | Базовый автофокус есть; улучшенное центрирование выбранного POI и toast-action focus из отдельного Preview repo в PR #3 не перенесены; требуется тест |
+| 6 | Приоритет выбранного POI: GPS не перетягивает камеру, пока активен POI | Integration commit `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb` | Код в PR #3: GPS camera-follow приостанавливается для POI; запрос до первого GPS fix сохраняется; только кодовая проверка, device test не подтверждён |
 | 7 | Общая компоновка поиска и ticker/легенды | Preview-коммиты `db9f392`, `6d6a9bf` | Не перенесено; остаётся в отдельном Preview repo |
 | 8 | Мобильная ширина и расположение элементов | Preview-коммиты `6d6a9bf` | Не перенесено; остаётся в отдельном Preview repo |
 | 9 | Позиция информационного toast и z-index поиска | Preview-коммит `fc0078a` | Не перенесено; остаётся в отдельном Preview repo |
@@ -31,7 +31,7 @@
 - [Preview shell](https://github.com/basana/turret-tales-preview)
 - [PR #2 — GPS Follow device test](https://github.com/basana/turret-tales-christmas/pull/2)
 
-**Текущий фактический статус на 15 ноября 2026 года:** GPS Follow / Free View, возврат к GPS, приоритет POI и обновлённая колонка Pharmacy / Toilets / Reset находятся в отдельной integration-ветке `feature/map-navi-integration-2026-11-15`; открыт PR #3. Ветка на 4 коммита впереди `main`, отстающих коммитов нет. В `index.html` и `sw.js` внесены изменения. Код ещё не проверен на устройствах; Deploy Preview и live Netlify не подтверждены. `main` не изменён, merge и production deploy не выполнялись. PR #2 остаётся отдельной открытой preview-веткой и не является актуальной интеграционной веткой.
+**Текущий фактический статус на 16 ноября 2026 года, 09:12 (Europe/Berlin):** application `main` по-прежнему на `2291e55a513eadb6ff00b7011cfc74d9b25ef947`. Интеграционная ветка `feature/map-navi-integration-2026-11-15` — `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`, на 4 коммита впереди `main`, 0 позади; изменены `index.html` и `sw.js`. Четыре коммита: `e094b25e8742c151f3cc5c215c221d8a91481bb9` (GPS Follow / Free View), `943801e75033c51c09943e79038caad799ec3baa` (controls), `c84a69a0d9920aa3a584f581caed800377d0384b` (Service Worker cache isolation), `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb` (pending POI first fix). PR #3 открыт и не слит; GitHub сообщает 0 check runs и 0 status checks, Deploy Preview URL не подтверждён. По исходному коду GPS Follow / Free View и `↻ Follow` подключены к основной карте `leafletMap`; для Christmas/market map аналогичный режим не подтверждён, хотя Pharmacy / Toilets / Reset присутствуют на обеих картах. Базовый `_zoomToNearestPoi` уже был в `main`; улучшенное центрирование POI и toast-action focus из Preview commits `57408be` и `a1ea99e` в PR #3 не перенесены. Search/ticker/overlay, mobile-width, toast/z-index и market-zoom исправления из Preview commits `db9f392`, `6d6a9bf`, `fc0078a`, `b27c044` также не перенесены. Отдельный `turret-tales-preview` достиг commit `a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5`; GitHub Pages build для него завершился успешно, но это другой репозиторий/сборка, а его `index.html` содержит `<base href="https://turrettales.de/">`, поэтому он не подтверждает тестирование PR #3. PR #2 остаётся открытым и не слитым; GPS-ветка по-прежнему diverged: 3 ahead / 1 behind. Device test на iPhone/iPad, отдельное пользовательское одобрение и live Netlify deployment не подтверждены. Проверить Netlify-конфигурацию и live-сайт через доступные GitHub-данные не удалось; deployed status остаётся неизвестным. В рамках этой проверки application `main` не изменялся, merge и Deploy не выполнялись.
 
 ## 2. Календарь по дням и времени
 
@@ -149,3 +149,14 @@ The work is **not a two-day code-copy task**, but it is also **not yet a single 
 - PR #3 обновлён: https://github.com/basana/turret-tales-christmas/pull/3. Он открыт, не слит. PR #2 также остаётся открытым и не слитым.
 - Это проверка исходного кода, не проверка рендеринга или поведения на устройстве. Следующий шаг — подтвердить Deploy Preview и протестировать iPhone/iPad в портретной и альбомной ориентации.
 - Production `main` и Netlify не затрагивались; merge и deployment не выполнялись.
+## Ежедневная проверка — 16 ноября 2026 года, 09:12 (Europe/Berlin)
+
+- Read-only сверены ветки, PR #2/#3, diff, commits, status checks, integration `index.html` / `sw.js` и отдельный Preview repo.
+- Подтверждено: integration branch `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`, 4 commits ahead / 0 behind от application `main` `2291e55a513eadb6ff00b7011cfc74d9b25ef947`; PR #3 открыт, не слит.
+- Проверены commit IDs: `e094b25e8742c151f3cc5c215c221d8a91481bb9`, `943801e75033c51c09943e79038caad799ec3baa`, `c84a69a0d9920aa3a584f581caed800377d0384b`, `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`.
+- По коду Follow/Free View и ручной возврат подключены к основной карте; для Christmas/market map тот же режим Follow не подтверждён. Общие Pharmacy / Toilets / Reset controls присутствуют в коде обеих карт.
+- PR #3 не имеет check runs/status checks; его Deploy Preview не подтверждён. Device test, user approval и live Netlify status не подтверждены.
+- Отдельный Preview repo: последний commit `a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5`, GitHub Pages build success; это не сборка integration branch.
+- Preview-only улучшения центрирования POI, search/ticker/overlay, mobile layout, toast/z-index и market zoom в PR #3 не перенесены.
+- Следующий блокер: получить доступный Deploy Preview именно PR #3 и провести реальные тесты; отдельно проверить Netlify branch/deploy settings. До этого не отмечать функции Preview-tested, user-approved или deployed.
+- Application `main` не изменялся; merge и Netlify Deploy не выполнялись.
