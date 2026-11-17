@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eee7d7">
+<title>MAP NAVI — Popup System Prototype</title>
+<style>
+:root{--paper:#f4efdf;--paper2:#ebe2ce;--ink:#293b4d;--muted:#66717a;--blue:#405a70;--blue2:#6c8293;--gold:#b49a65;--wine:#783d43;--line:#d2c5a8;--shadow:0 18px 48px #15243535}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#e8e4dc;color:#263746;font-family:Arial,Helvetica,sans-serif}
+body{padding:20px}
+button,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1180px;margin:0 auto}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 14px}
+.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7b6c54;font-weight:700}
+h1{font:500 27px Georgia,serif;margin:4px 0 0;color:#263b4f}
+.sub{font-size:12px;color:#6e7478;margin-top:5px}
+.status{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid #b9ad94;border-radius:30px;padding:7px 10px;color:#6a6256;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(320px,1fr) 330px;gap:16px;align-items:start}
+.stage{position:relative;min-height:740px;height:min(82vh,850px);border:1px solid #c9c1b2;border-radius:20px;overflow:hidden;background:#d9e0dc;box-shadow:0 8px 28px #273b4b12}
+.maphead{position:absolute;z-index:2;top:14px;left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{background:#f6f0e2eF;border:1px solid #c6b58f;border-radius:10px;padding:8px 11px;box-shadow:0 2px 8px #24374812}
+.brand strong{display:block;font:600 13px Georgia,serif;letter-spacing:.08em;color:#33485b}
+.brand span{font-size:9px;color:#756b5a;letter-spacing:.13em}
+.search{background:#f8f5ec;border:1px solid #c7c2b5;border-radius:22px;padding:10px 13px;font-size:11px;color:#65717a;min-width:42%;box-shadow:0 2px 8px #24374812}
+.mapbg{position:absolute;inset:0;background:linear-gradient(145deg,#d9e1dd,#e5e1d4 48%,#d8e0db)}
+.river{position:absolute;left:-12%;top:33%;width:125%;height:32%;background:#9fb9c1;transform:rotate(-13deg);border-top:3px solid #eef0e7;border-bottom:3px solid #eef0e7;opacity:.95}
+.river:after{content:"RHINE";position:absolute;left:18%;top:44%;font:italic 15px Georgia,serif;letter-spacing:.28em;color:#f8f7ed}
+.road{position:absolute;height:3px;background:#f5f0df;border:1px solid #c8c4b5;transform-origin:left center;border-radius:8px;opacity:.9}
+.r1{width:110%;left:-4%;top:18%;transform:rotate(24deg)}.r2{width:95%;left:10%;top:75%;transform:rotate(-27deg)}.r3{width:88%;left:35%;top:5%;transform:rotate(73deg)}.r4{width:78%;left:-3%;top:90%;transform:rotate(-7deg)}
+.block{position:absolute;background:#c9d0c6;border:1px solid #b6c1b6;border-radius:7px;opacity:.7}
+.b1{width:18%;height:12%;left:10%;top:17%}.b2{width:20%;height:10%;left:62%;top:13%}.b3{width:18%;height:14%;left:73%;top:75%}.b4{width:22%;height:11%;left:12%;top:77%}.b5{width:14%;height:10%;left:42%;top:9%}
+.pin{position:absolute;width:22px;height:22px;border:3px solid #f8f3e5;background:#45677a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 5px #1c334355}
+.pin:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;left:6px;top:6px}
+.p1{left:35%;top:43%}.p2{left:66%;top:58%;background:#8b5550}.p3{left:79%;top:35%;background:#a58a50}
+.maplabel{position:absolute;font:italic 13px Georgia,serif;color:#69756d;opacity:.8}
+.l1{left:13%;top:56%}.l2{right:10%;top:68%}
+.maptools{position:absolute;right:13px;top:43%;display:grid;gap:9px}
+.maptools span{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#f7f1e3;border:1px solid #b8a77f;color:#40586c;font-size:16px;box-shadow:0 2px 6px #24374820}
+.bottomhint{position:absolute;bottom:14px;left:14px;right:14px;background:#f7f2e8ed;border:1px solid #c9b98f;border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bottomhint strong{font:600 14px Georgia,serif;color:#30465a}.bottomhint small{display:block;color:#7a766d;font-size:10px;margin-top:3px}
+.bottomhint .mini{font-size:10px;color:#8a6d40;letter-spacing:.08em;text-transform:uppercase}
+.overlay{position:absolute;inset:0;z-index:5;background:#1c2b3a66;display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(1.5px)}
+.overlay.hidden{display:none}
+.modal{position:relative;width:min(100%,410px);max-height:84%;overflow:auto;background:var(--paper);border:1px solid #b69c67;border-radius:12px;box-shadow:var(--shadow);padding:28px 28px 24px;text-align:center;color:#344353}
+.modal:before{content:"";position:absolute;inset:5px;border:1px solid #d4c49f;border-radius:8px;pointer-events:none}
+.corner{position:absolute;width:76px;height:76px;object-fit:contain;opacity:.74;pointer-events:none;mix-blend-mode:multiply}
+.cbr{right:4px;bottom:4px}.ctl{left:4px;top:4px;transform:rotate(180deg)}.ctr{right:4px;top:4px;transform:rotate(270deg)}.cbl{left:4px;bottom:4px;transform:rotate(90deg)}
+.close{position:absolute;right:12px;top:12px;width:44px;height:44px;border:1px solid #c8b990;border-radius:50%;background:#f8f4e9;color:#526273;font-size:23px;line-height:1;z-index:2}
+.eyebrow{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a744b;margin:4px 0 12px}
+.emblem{width:112px;height:112px;object-fit:contain;display:block;margin:0 auto 12px;position:relative;z-index:1}
+.modal h2{font:500 27px/1.12 Georgia,serif;color:#34495c;margin:7px 0 10px;position:relative;z-index:1}
+.modal p{font-size:14px;line-height:1.55;color:#59636a;margin:0 auto 18px;max-width:310px;position:relative;z-index:1}
+.actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.primary,.secondary{min-height:44px;border-radius:24px;padding:0 19px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.primary{border:1px solid #3d566d;background:#405b73;color:#fff}
+.secondary{border:1px solid #b9aa89;background:#eee6d4;color:#536170}
+.footnote{font-size:9px;color:#94866e;letter-spacing:.08em;margin-top:17px;text-transform:uppercase}
+.plain-symbol{width:72px;height:72px;margin:6px auto 14px;border:1px solid #c4ae7d;border-radius:50%;display:grid;place-items:center;color:#7b6947;font:30px Georgia,serif;background:#f7f1e3;position:relative;z-index:1}
+.panel{background:#f5f1e8;border:1px solid #d1c8b8;border-radius:16px;padding:17px;box-shadow:0 8px 22px #2437480b}
+.panel h2{font:500 20px Georgia,serif;margin:0 0 5px;color:#354b5e}
+.panel .intro{font-size:11px;line-height:1.5;color:#70777a;margin:0 0 14px}
+.fieldlabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#82745d;font-weight:700;display:block;margin:14px 0 6px}
+select{width:100%;border:1px solid #c8bda8;background:#fffdf7;border-radius:9px;padding:11px;color:#35495a;font-size:12px}
+.toggle{display:flex;align-items:center;gap:9px;font-size:12px;color:#4e5c64;margin:12px 0}
+.toggle input{accent-color:#526c7e;width:17px;height:17px}
+.demo-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.demo-buttons button{min-height:42px;border:1px solid #c7b99c;border-radius:9px;background:#eee7d7;color:#46596a;font-size:11px;padding:7px}
+.demo-buttons button:hover{background:#e6dac0}
+.demo-buttons .wide{grid-column:1/-1}
+.rule{height:1px;background:#ddd3c0;margin:15px 0}
+.notice{min-height:45px;border-radius:9px;padding:10px;background:#e8e3d7;color:#69716e;font-size:11px;line-height:1.45}
+.notice.good{background:#e2eadf;color:#45604d}.notice.warn{background:#f0e5d9;color:#805a3d}
+.key{font-size:10px;line-height:1.5;color:#7b7b73;margin-top:12px}
+.key b{color:#536779}
+@media(max-width:800px){
+ body{padding:10px}
+ .top{align-items:flex-start}.top h1{font-size:22px}.status{font-size:8px;padding:6px 8px}
+ .layout{display:flex;flex-direction:column}
+ .stage{order:1;width:100%;height:min(68svh,680px);min-height:500px;border-radius:15px}
+ .panel{order:2;width:100%}
+ .demo-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .modal{padding:25px 20px 20px}
+ .modal h2{font-size:25px}
+ .emblem{width:96px;height:96px}
+ .corner{width:62px;height:62px}
+}
+@media(max-height:720px) and (max-width:800px){.stage{height:64svh;min-height:440px}.modal{max-height:88%;padding-top:22px;padding-bottom:18px}.emblem{width:78px;height:78px;margin-bottom:7px}.modal h2{font-size:22px}.modal p{font-size:13px;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div class="page">
+ <header class="top">
+  <div><div class="kicker">MAP NAVI · Design study 01</div><h1>Система всплывающих окон</h1><div class="sub">Интерактивный прототип · не подключён к рабочему приложению</div></div>
+  <div class="status">ручной запуск · demo</div>
+ </header>
+ <main class="layout">
+  <section class="stage" aria-label="Демонстрация окна поверх карты">
+   <div class="mapbg">
+    <div class="river"></div><div class="road r1"></div><div class="road r2"></div><div class="road r3"></div><div class="road r4"></div>
+    <div class="block b1"></div><div class="block b2"></div><div class="block b3"></div><div class="block b4"></div><div class="block b5"></div>
+    <div class="maplabel l1">Altstadt</div><div class="maplabel l2">Rheinanlagen</div>
+    <div class="pin p1"></div><div class="pin p2"></div><div class="pin p3"></div>
+   </div>
+   <div class="maphead"><div class="brand"><strong>MAP NAVI</strong><span>KOBLENZ · RHINE</span></div><div class="search">⌕ &nbsp; Search places…</div></div>
+   <div class="maptools"><span>✚</span><span>⌖</span><span>↗</span></div>
+   <div class="bottomhint"><div><strong id="mapTitle">Explore Koblenz</strong><small id="mapSub">Choose a place on the map</small></div><span class="mini">Map view</span></div>
+   <div class="overlay" id="overlay">
+    <article class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+     <img class="corner ctl" src="https://raw.githubusercontent.com/basana/turret-tales-christmas/main/border_image_eck.png" alt="">
+     <img class="corner ctr" src="https://raw.githubusercontent.com/basana/turret-tales-christmas/main/border_image_eck.png" alt="">
+     <img class="corner cbl" src="https://raw.githubusercontent.com/basana/turret-tales-christmas/main/border_image_eck.png" alt="">
+     <img class="corner cbr" src="https://raw.githubusercontent.com/basana/turret-tales-christmas/main/border_image_eck.png" alt="">
+     <button class="close" id="closePopup" aria-label="Close">×</button>
+     <div id="modalContent"></div>
+    </article>
+   </div>
+  </section>
+  <aside class="panel">
+   <h2>Проверка сценариев</h2>
+   <p class="intro">Меняйте контекст карты и запускайте примеры вручную. Это позволяет проверить не только внешний вид, но и запреты диспетчера.</p>
+   <label class="fieldlabel" for="context">Текущий раздел / задача</label>
+   <select id="context">
+    <option value="browse">Спокойный просмотр карты</option>
+    <option value="christmas">Christmas Markets</option>
+    <option value="wine">Wine / Winemakers</option>
+    <option value="castles">Castles</option>
+    <option value="ship">My Ship / поиск причала</option>
+    <option value="toilets">Toilets</option>
+    <option value="pharmacy">Pharmacy</option>
+    <option value="route">Активный GPS-маршрут</option>
+    <option value="poi">Открыта карточка POI / Storymark</option>
+   </select>
+   <label class="toggle"><input type="checkbox" id="partner"> <span>Вход по партнёрскому QR-коду</span></label>
+   <div class="rule"></div>
+   <span class="fieldlabel">Открыть пример окна</span>
+   <div class="demo-buttons">
+    <button data-popup="cafe">Партнёр · Café</button>
+    <button data-popup="souvenir">Партнёр · Souvenir</button>
+    <button data-popup="tour">Guided Tours</button>
+    <button data-popup="wine">Wine tasting</button>
+    <button data-popup="help">Сервисная помощь</button>
+    <button data-popup="feedback">Feedback</button>
+    <button data-popup="system" class="wide">Системное сообщение GPS</button>
+   </div>
+   <div class="rule"></div>
+   <div class="notice" id="notice" aria-live="polite">Выберите сценарий и нажмите на пример окна. Автоматических таймеров в прототипе нет.</div>
+   <div class="key"><b>Правило:</b> My Ship, Toilets, Pharmacy, активный маршрут и открытая карточка блокируют коммерческие окна и поведенческие подсказки. Системные сообщения проверяются отдельно.</div>
+  </aside>
+ </main>
+</div>
+<script>
+const assets = {
+ cafe:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-food.webp",
+ souvenir:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-souvenir.webp",
+ tour:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/xmas-tour-emblem-engraved.webp",
+ wine:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/wine-tasting-emblem.webp"
+};
+const contexts = {
+ browse:{title:"Explore Koblenz",sub:"Choose a place on the map"},
+ christmas:{title:"Christmas Markets",sub:"Discover the festive city"},
+ wine:{title:"Wine & Winemakers",sub:"Explore wine experiences"},
+ castles:{title:"Castles of the Rhine",sub:"Discover castles and stories"},
+ ship:{title:"Find your ship",sub:"Berths and boarding points"},
+ toilets:{title:"Toilets nearby",sub:"Find the nearest facilities"},
+ pharmacy:{title:"Pharmacies nearby",sub:"Find a pharmacy"},
+ route:{title:"Your route",sub:"Navigation is active"},
+ poi:{title:"Place details",sub:"Reading a place or Storymark"}
+};
+const overlay=document.getElementById("overlay");
+const content=document.getElementById("modalContent");
+const notice=document.getElementById("notice");
+const context=document.getElementById("context");
+const partner=document.getElementById("partner");
+let helpDismissed=false;
+let active=null;
+const urgent=()=>["ship","toilets","pharmacy","route","poi"].includes(context.value);
+function setNotice(message,kind=""){
+ notice.textContent=message;notice.className="notice"+(kind?" "+kind:"");
+}
+function closePopup(){
+ overlay.classList.add("hidden");
+ if(active==="help") helpDismissed=true;
+ active=null;
+ setNotice("Окно закрыто. В этой демонстрации оно не появится повторно само по себе.");
+}
+document.getElementById("closePopup").addEventListener("click",closePopup);
+function showPopup(type){
+ const c=context.value;
+ const partnerOffer=["cafe","souvenir"].includes(type);
+ if(partnerOffer&&!partner.checked){setNotice("Этот пример доступен в режиме партнёрского QR. Включите переключатель выше.","warn");return}
+ if(partnerOffer&&urgent()){setNotice("Заблокировано: партнёрские предложения запрещены во время срочной навигации и чтения карточки.","warn");return}
+ if(type==="tour"&&!["christmas","castles"].includes(c)){setNotice("Экскурсии показываются только в релевантном туристическом разделе: Christmas Markets или Castles.","warn");return}
+ if(type==="wine"&&c!=="wine"){setNotice("Дегустация доступна только в разделе Wine / Winemakers.","warn");return}
+ if(type==="help"&&urgent()){setNotice("Подсказка не прерывает поиск, маршрут или чтение карточки. Сначала завершите текущую задачу.","warn");return}
+ if(type==="help"&&helpDismissed){setNotice("Вы уже закрыли подсказку помощи в этой сессии. Повторно она не предлагается.","warn");return}
+ if(type==="feedback"&&urgent()){setNotice("Запрос отзыва заблокирован во время навигационной задачи.","warn");return}
+ const data={
+  cafe:{tag:"PARTNER · CAFÉ",image:assets.cafe,title:"A warm stop nearby",body:"Take a short break with a hot drink and something freshly baked. See the partner café and its current offer.",primary:"Explore café",secondary:"Not now",foot:"Partner offer · demo"},
+  souvenir:{tag:"PARTNER · SOUVENIRS",image:assets.souvenir,title:"A little piece of Koblenz",body:"Discover local keepsakes, illustrated postcards and books from the region at our partner shop.",primary:"Explore souvenirs",secondary:"Not now",foot:"Partner offer · demo"},
+  tour:{tag:"LOCAL EXPERIENCE",image:assets.tour,title:"See the city with a local guide",body:"Discover the stories behind Koblenz and its historic places on a guided walk. Choose an experience that fits your visit.",primary:"Explore guided tours",secondary:"Not now",foot:"Contextual offer · demo"},
+  wine:{tag:"WINE EXPERIENCE",image:assets.wine,title:"Discover the wines of the Rhine",body:"Explore local vineyards and wine tasting experiences in the Rhine region.",primary:"Explore wine tasting",secondary:"Not now",foot:"Wine section only · demo"},
+  help:{tag:"VISITOR ASSISTANCE",symbol:"?",title:"Need a hand?",body:"If something is unclear or the map is not behaving as expected, help is available. You can contact the guide for assistance.",primary:"Contact the guide",secondary:"No, thank you",foot:"Service help · concept"},
+  feedback:{tag:"YOUR EXPERIENCE",symbol:"✎",title:"How is your visit going?",body:"A short note about your experience can help us make the guide more useful for future visitors.",primary:"Leave feedback",secondary:"Maybe later",foot:"Feedback · demo"},
+  system:{tag:"NAVIGATION · GPS",symbol:"⌖",title:"Location access is off",body:"Your selected places are still visible. Turn on location access only if you want to see your position and distances from where you are.",primary:"How to enable GPS",secondary:"Continue without GPS",foot:"System message · demo"}
+ };
+ const d=data[type];if(!d)return;
+ active=type;
+ content.innerHTML="";
+ const tag=document.createElement("div");tag.className="eyebrow";tag.textContent=d.tag;content.appendChild(tag);
+ if(d.image){const img=document.createElement("img");img.className="emblem";img.src=d.image;img.alt="";content.appendChild(img)}
+ else{const sym=document.createElement("div");sym.className="plain-symbol";sym.textContent=d.symbol;content.appendChild(sym)}
+ const h=document.createElement("h2");h.id="modalTitle";h.textContent=d.title;content.appendChild(h);
+ const p=document.createElement("p");p.textContent=d.body;content.appendChild(p);
+ const actions=document.createElement("div");actions.className="actions";
+ const primary=document.createElement("button");primary.className="primary";primary.textContent=d.primary;
+ primary.addEventListener("click",()=>{overlay.classList.add("hidden");active=null;setNotice("Демонстрационное действие выполнено. Реального перехода или звонка прототип не делает.","good")});
+ const secondary=document.createElement("button");secondary.className="secondary";secondary.textContent=d.secondary;secondary.addEventListener("click",closePopup);
+ actions.append(primary,secondary);content.appendChild(actions);
+ const foot=document.createElement("div");foot.className="footnote";foot.textContent=d.foot;content.appendChild(foot);
+ overlay.classList.remove("hidden");
+ setNotice("Окно открыто вручную для визуальной проверки. Автоматического показа нет.","good");
+}
+document.querySelectorAll("[data-popup]").forEach(btn=>btn.addEventListener("click",()=>showPopup(btn.dataset.popup)));
+context.addEventListener("change",()=>{
+ const d=contexts[context.value];document.getElementById("mapTitle").textContent=d.title;document.getElementById("mapSub").textContent=d.sub;
+ if(active){overlay.classList.add("hidden");active=null}
+ setNotice("Контекст изменён. Проверьте, какие предложения теперь разрешены.");
+});
+partner.addEventListener("change",()=>setNotice(partner.checked?"Партнёрский режим включён для демонстрации. Срочные навигационные блокировки остаются активны.":"Обычный режим: партнёрские предложения недоступны."));
+</script>
+</body>
+</html>
