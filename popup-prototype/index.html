@@ -155,8 +155,10 @@ select{width:100%;border:1px solid #c8bda8;background:#fffdf7;border-radius:9px;
 const assets = {
  cafe:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-food.webp",
  souvenir:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-souvenir.webp",
- tour:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/xmas-tour-emblem-engraved.webp",
- wine:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/wine-tasting-emblem.webp"
+ tour:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-tours.webp",
+ wine:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/wine-tasting-emblem.webp",
+ tour:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-tours.webp",
+ help:"https://raw.githubusercontent.com/basana/turret-tales-christmas/main/icon-contact.webp"
 };
 const contexts = {
  browse:{title:"Explore Koblenz",sub:"Choose a place on the map"},
@@ -202,7 +204,7 @@ function showPopup(type){
   souvenir:{tag:"PARTNER · SOUVENIRS",image:assets.souvenir,title:"A little piece of Koblenz",body:"Discover local keepsakes, illustrated postcards and books from the region at our partner shop.",primary:"Explore souvenirs",secondary:"Not now",foot:"Partner offer · demo"},
   tour:{tag:"LOCAL EXPERIENCE",image:assets.tour,title:"See the city with a local guide",body:"Discover the stories behind Koblenz and its historic places on a guided walk. Choose an experience that fits your visit.",primary:"Explore guided tours",secondary:"Not now",foot:"Contextual offer · demo"},
   wine:{tag:"WINE EXPERIENCE",image:assets.wine,title:"Discover the wines of the Rhine",body:"Explore local vineyards and wine tasting experiences in the Rhine region.",primary:"Explore wine tasting",secondary:"Not now",foot:"Wine section only · demo"},
-  help:{tag:"VISITOR ASSISTANCE",symbol:"?",title:"Need a hand?",body:"If something is unclear or the map is not behaving as expected, help is available. You can contact the guide for assistance.",primary:"Contact the guide",secondary:"No, thank you",foot:"Service help · concept"},
+  help:{tag:"VISITOR ASSISTANCE",image:assets.help,title:"Need a hand?",body:"If something is unclear or the map is not behaving as expected, help is available. You can contact the guide for assistance.",primary:"Contact the guide",secondary:"No, thank you",foot:"Service help · concept"},
   feedback:{tag:"YOUR EXPERIENCE",symbol:"✎",title:"How is your visit going?",body:"A short note about your experience can help us make the guide more useful for future visitors.",primary:"Leave feedback",secondary:"Maybe later",foot:"Feedback · demo"},
   system:{tag:"NAVIGATION · GPS",symbol:"⌖",title:"Location access is off",body:"Your selected places are still visible. Turn on location access only if you want to see your position and distances from where you are.",primary:"How to enable GPS",secondary:"Continue without GPS",foot:"System message · demo"}
  };
