@@ -191,6 +191,7 @@ function closePopup(){
 document.getElementById("closePopup").addEventListener("click",closePopup);
 function showPopup(type){
  const c=context.value;
+ if(active && type!=="system"){setNotice("Уже открыто одно окно. Сначала закройте его; второе поверх него не запускается.","warn");return}
  const partnerOffer=["cafe","souvenir"].includes(type);
  if(partnerOffer&&!partner.checked){setNotice("Этот пример доступен в режиме партнёрского QR. Включите переключатель выше.","warn");return}
  if(partnerOffer&&urgent()){setNotice("Заблокировано: партнёрские предложения запрещены во время срочной навигации и чтения карточки.","warn");return}
