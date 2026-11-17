@@ -2,9 +2,9 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-16",
+    "updated": "2026-11-17",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
-    "branch": "Приложение: feature/map-navi-integration-2026-11-15 (PR #3, open/unmerged); PR #2 open/unmerged; application main unchanged; Project Map: main",
+    "branch": "Приложение: main 2291e55a; feature/map-navi-integration-2026-11-15 f29ad217 (PR #3 open/unmerged); Project Map: main",
     "mainProtected": true,
     "legend": {
       "done": "Сделано / зафиксировано",
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Аудит 16 ноября: integration branch f29ad217 на 4 commits ahead / 0 behind; PR #3 открыт, check runs отсутствуют, Deploy Preview и device tests не подтверждены. Follow/Free View действует только на основной карте; controls есть на обеих картах. Preview-only search/ticker/mobile/toast/zoom refinements не перенесены. Следующий шаг — получить Preview именно PR #3, проверить iPhone/iPad и Netlify settings; main не трогать.",
-    "updatedAt": "2026-11-16T09:12:20+01:00",
+    "currentFocus": "Аудит 17 ноября: новых application commits нет. main 2291e55a, integration f29ad217 (4 ahead / 0 behind), PR #3 open/unmerged, 0 reviews/comments, 0 check runs. Code present: GPS Follow/Free View/manual recenter только на основной карте; Pharmacy/Toilets/Reset на обеих; POI camera-priority/pending first fix. Preview-only POI centering/toast, search/ticker, mobile-width, toast/overlay and market-zoom fixes не перенесены. Нет подтверждённого PR #3 Preview, iPhone/iPad test, user approval или Netlify deployment. Следующий шаг — доступный Preview именно PR #3; main не трогать.",
+    "updatedAt": "2026-11-17T09:25:33+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -857,6 +857,16 @@
       "summary": "Подтверждены integration branch f29ad217 (4 ahead / 0 behind) и PR #3 open/unmerged; check runs отсутствуют. Follow/Free View подключены только к основной карте, controls — к обеим. Preview-only UI/POI refinements не перенесены; Deploy Preview, device tests, user approval и live Netlify status не подтверждены. Application main не менялся.",
       "nodeId": "release-tracker",
       "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/f29ad2179d2449a7b7f8e3ec622021556b3c8dcb"
+    },
+    {
+      "date": "2026-11-17",
+      "timestamp": "2026-11-17T09:25:33+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Ежедневная проверка релиза MAP NAVI",
+      "summary": "Новых application commits нет: main 2291e55a; integration f29ad217, 4 ahead / 0 behind. PR #3 open/unmerged, 0 reviews/comments, 0 statuses/check-runs, Deploy Preview не подтверждён. Код GPS Follow/Free View/manual recenter есть только на основной карте; Pharmacy/Toilets/Reset — на обеих; POI camera-priority/pending first fix — в integration. Отдельный Preview repo a1ea99e4 имеет успешный Pages workflow, но это не PR #3 и не device test. POI centering/toast, search/ticker, mobile-width, overlay и market-zoom fixes не перенесены. iPhone/iPad test, user approval и Netlify deployed status не подтверждены. main не менялся; merge/Deploy не выполнялись.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/f29ad2179d2449a7b7f8e3ec622021556b3c8dcb"
     }
   ],
   "decisions": [
@@ -958,12 +968,12 @@
     {
       "date": "2026-11-17",
       "time": "10:00–13:00",
-      "task": "Перенести и проверить Pharmacy / Toilets / Reset controls."
+      "task": "Проверить Pharmacy / Toilets / Reset controls в Preview интеграционной ветки. Код уже перенесён в PR #3; Preview и device test пока не подтверждены."
     },
     {
       "date": "2026-11-17",
       "time": "14:00–16:00",
-      "task": "Перенести POI auto-focus и приоритет камеры выбранного POI."
+      "task": "Проверить POI auto-focus и приоритет камеры выбранного POI. Код pending first fix уже в PR #3; проверка ожидает доступного Preview."
     },
     {
       "date": "2026-11-18",
