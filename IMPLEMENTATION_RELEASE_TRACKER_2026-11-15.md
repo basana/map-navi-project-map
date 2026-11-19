@@ -1,6 +1,6 @@
 # MAP NAVI — список изменений и календарь подготовки к первой экскурсии
 
-**Обновлено:** 18 ноября 2026 года, 09:16 (Europe/Berlin)  
+**Обновлено:** 19 ноября 2026 года, 09:34 (Europe/Berlin)  
 **Первая экскурсия:** 27 ноября 2026 года  
 **Цель:** стабильная версия обычной навигации должна быть опубликована и проверена до экскурсии. Пространственная трёхуровневая модель не блокирует этот выпуск.
 
@@ -23,7 +23,7 @@
 | 9 | Toast / overlay / z-index | Preview-коммит `fc0078a`; PR #6 Reset / Popup Manager | PR #6 добавляет закрытие конфликтующих окон и подавление повторного nearest-toast после Reset; визуальный toast positioning / z-index fix из Preview не перенесён |
 | 10 | Вертикальное положение zoom-кнопок карты рынков | Preview-коммит `b27c044` | Не перенесено в PR #3/#6; требуется отдельная сверка |
 | 11 | Единообразная проверка основных карт на iPhone и iPad | Интеграционный Preview | Не подтверждено; реальный браузерный и device test не зафиксирован |
-| 12 | Полный Reset состояния и Popup Manager | Draft PR #6, head `8beefcecc1e6c5d2db5fc32e7d9f5bf58cf1a2ca` | Код в отдельной ветке, 10 commits ahead / 0 behind integration; PR #6 draft, не слит; harness результаты заявлены в PR body, независимо не воспроизведены; CI/device test отсутствуют |
+| 12 | Полный Reset состояния и Popup Manager | Draft PR #6, актуальный head `4c0d6d28c413fbc0d255cedef03091183837d188` | 13 commits ahead / 0 behind integration; Reset cleanup реализован для основной карты, Christmas map Reset пока только возвращает bounds; PopupManager есть; PR #6 draft, не слит; harness результаты заявлены в PR body, независимо не воспроизведены; CI/device test отсутствуют |
 
 Ссылки:
 - [Репозиторий приложения](https://github.com/basana/turret-tales-christmas)
@@ -33,8 +33,7 @@
 - [PR #2 — GPS Follow device test](https://github.com/basana/turret-tales-christmas/pull/2)
 - [PR #6 — Reset / Popup Manager / map stabilization, draft](https://github.com/basana/turret-tales-christmas/pull/6)
 
-**Последний подтверждённый фактический статус на 17 ноября 2026 года, 09:25 (Europe/Berlin):** application `main` остаётся на commit `2291e55a513eadb6ff00b7011cfc74d9b25ef947`; новых application-коммитов после 14 ноября в `main` не обнаружено. Integration branch `feature/map-navi-integration-2026-11-15` остаётся на `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`; GitHub compare подтверждает 4 commits ahead / 0 behind и изменения только в `index.html` и `sw.js`. PR #3 открыт, не слит; новых reviews и комментариев нет, commit status `pending` с 0 statuses, check-runs — 0. Ветка содержит GPS Follow / Free View и ручной возврат `↻ Follow` только для основной карты; Pharmacy / Toilets / Reset — на обеих картах; POI camera-priority и сохранение запроса до первого GPS fix — в integration commit `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`. Улучшенное центрирование POI и toast-action focus из Preview repo не перенесены. Search/ticker/overlay, mobile-width, toast/z-index и market-zoom fixes также не перенесены. Отдельный `turret-tales-preview` остаётся на `a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5`; его GitHub Pages workflow завершился success, но `index.html` содержит `<base href="https://turrettales.de/">`, а доступ к опубликованной странице через текущий инструмент проверки не получен. Поэтому это не считается Preview/device test интеграционной ветки. PR #3 Deploy Preview не подтверждён. iPhone/iPad device test, user approval и live Netlify deployment не подтверждены; Netlify branch/settings и deployed commit через доступные GitHub-данные проверить не удалось. Application `main` не изменялся; merge и Netlify Deploy не выполнялись.
-
+**Последний подтверждённый фактический статус на 19 ноября 2026 года, 09:34 (Europe/Berlin):** application `main` остаётся на `2291e55a513eadb6ff00b7011cfc74d9b25ef947`; integration `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb` — 4 commits ahead / 0 behind, PR #3 open/unmerged. Stabilized integration `4c0d6d28c413fbc0d255cedef03091183837d188` — 13 commits ahead / 0 behind integration и 17 ahead / 0 behind main; PR #6 open/draft, base integration. В PR #6 подтверждены Reset cleanup для основной карты, PopupManager, частичная Christmas map layout, GPS panel/halo adjustments и camera priority; на Christmas map Reset пока только восстанавливает bounds, а GPS Follow/Free View отсутствует. POI auto-focus и pending first fix присутствуют на основной карте; Christmas map повторно фокусирует активный POI при первом GPS fix. Полный search/ticker/legend, visual toast/z-index, mobile-width и market zoom Preview fixes не перенесены. PR #6 сообщает harness 6/6 и статические проверки, но независимое воспроизведение отсутствует; script block 4 имеет заявленную pre-existing parse failure. Для PR #3/#6 нет check-runs/statuses, реального Preview, iPhone/iPad tests и user approval. Отдельный Preview repo `a1ea99e4` с `<base href="https://turrettales.de/">` не считается интеграционным Preview. Netlify live/deployed commit проверить не удалось. Сегодняшнее окно тестов ещё не началось на момент аудита. Main не менялся; merge/Deploy не выполнялись.
 ## 2. Календарь по дням и времени
 
 Все часы — местное время Германии (Europe/Berlin). Это рабочие окна плана; фактическое выполнение отмечается только после работы и проверки.
@@ -193,4 +192,37 @@ The work is **not a two-day code-copy task**, but it is also **not yet a single 
 - Ближайший блокер: получить настоящий Preview URL для PR #6 или PR #3 и провести runtime/device test; отдельно проверить/разобрать parse failure script block 4, прежде чем считать интеграцию готовой. Сегодняшнее запланированное окно переноса начинается в 10:00; на момент проверки оно ещё не началось.
 - Application `main` не изменялся; merge, Netlify Deploy и публикация приложения не выполнялись.
 - Project Map audit records committed: tracker update `a274963b52d42b05c4f341dc1dbe9f43c9d7125d`; dashboard data `6a9d02f25779fb3132b36d3ab23217a1ab84d09d`; release-plan page `4cdc5737fa4021aeb3e62476a33e2e5c82cae388`. GitHub Pages workflow run `44265994360` for the Project Map completed with conclusion `success` on commit `4cdc5737fa4021aeb3e62476a33e2e5c82cae388`. Direct HTTP verification of the published Pages URL was unavailable through the current page checker; workflow success is confirmed, independent visual rendering is not.
+
+
+## Ежедневная проверка — 19 ноября 2026 года, 09:34 (Europe/Berlin)
+
+### GitHub: актуальные ветки и PR
+
+- Application `main` не изменился: commit `2291e55a513eadb6ff00b7011cfc74d9b25ef947`; blob `index.html` — `59e4db3c19d2380a4f18d58b38270426e45d956e`, `sw.js` — `e2ea1a5fb5b54ae20ebb08be70337eda30c90552`.
+- Integration `feature/map-navi-integration-2026-11-15`: `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`, 4 commits ahead / 0 behind `main`; PR #3 открыт, не объединён.
+- Stabilized integration `feature/map-navi-stabilized-integration-2026-11-17`: текущий HEAD `4c0d6d28c413fbc0d255cedef03091183837d188`; GitHub compare подтверждает 13 commits ahead / 0 behind integration и 17 ahead / 0 behind `main`. По сравнению с integration изменён только `index.html` (+364/−110); по сравнению с `main` изменены `index.html` (+435/−122) и `sw.js` (+13/−11). Blob `index.html` — `ee4145a5a79eb273fca9b3c435edf18087e51d64`, `sw.js` — `147b50ddcfa78743c3cf9a9d8aadb025ef361fbe`.
+- PR #6 остаётся open/draft, base — integration, head — `4c0d6d28...`; 0 reviews, 0 comments, 0 check-runs и 0 commit statuses. Дополнительная ветка `fix/map-navi-xmas-poi-reset-2026-11-19` указывает на тот же SHA `4c0d6d28...`, отдельного нового коммита не добавляет. PR #4 и #5 остаются отдельными open/draft; PR #2 и #3 открыты и не объединены; PR #1 закрыт без merge.
+
+### Код, подтверждённый чтением текущего `index.html` PR #6
+
+- **GPS Follow / Free View / manual recenter:** `gpsFollowMode`, `gpsFollowBtn`, `leaveGpsFollowMode`, обработчики `dragstart` и `zoomstart`, возврат к последним GPS-координатам присутствуют на основной карте `leafletMap`. На Christmas/market map есть отдельные `xmasGpsWatch`/`xmasGpsPos` и первоначальное кадрирование по GPS, но нет отдельного Follow/Free View и кнопки ручного возврата. Перенос Follow на эту карту не подтверждён.
+- **Pharmacy / Toilets / Reset controls:** три кнопки присутствуют на обеих картах. На основной карте `resetRhineMap` очищает POI layers, состояния кнопок, pending focus, уведомления и выбранную карточку, оставляя GPS активным и переводя камеру в Free View. На Christmas map `xResetBtn` только восстанавливает bounds/view; очистка активных POI layers и уведомлений этим обработчиком не выполняется. Полный Reset на обеих картах не завершён.
+- **POI auto-focus:** `_zoomToNearestPoi` и marker click focus присутствуют; на основной карте запрос сохраняется до первого GPS fix. На Christmas map первый GPS fix повторно фокусирует активный POI. Отдельный helper `_focusPoiOnMap` и флаг `_poiFocusActive` из `turret-tales-preview` в приложение не перенесены.
+- **POI camera priority / map focus:** commit `4c0d6d28` принудительно центрирует выбранный castle marker/search result (zoom не ниже 14), скрывает конкурирующие castle distance/route/toast элементы при активном Pharmacy/Toilets mode и не позволяет GPS обновлениям незаметно менять выбранный guide/story.
+- **Popup / toast:** центральный `PopupManager` и контекстные правила есть в PR #6; визуальные toast positioning/z-index исправления из отдельного Preview repo не подтверждены в приложении.
+- **Search / ticker / overlay / mobile / zoom:** PR #6 содержит частичную компоновку Christmas map (search и GPS над картой), изменения размеров GPS panel и GPS halo. Полный пакет search/ticker/legend, отдельный mobile-width fix, visual toast/z-index и market zoom-control fix из Preview repo не перенесён. Эти изменения нельзя считать Preview-tested.
+
+### Проверки и Preview
+
+- PR #6 body заявляет Reset harness 6/6, Popup Manager harness 6/6, tour-context harness и статические syntax checks для script blocks 1–3 и 5–7. Это результаты, заявленные автором PR; независимо воспроизвести их не удалось. В том же описании сообщается о прежней parse failure в inline script block 4, присутствовавшей в integration base; это требует отдельной проверки.
+- Для текущего PR #6 GitHub возвращает 0 check-runs и 0 statuses; браузерный runtime test и тесты на iPhone/iPad не подтверждены.
+- Отдельный `turret-tales-preview` остаётся на `a1ea99e4d3b6bd0b00f6d26e096b6ec46f8c6ca5`; Pages workflow run `43725058073` завершился success 15 ноября. Его `index.html` содержит `<base href="https://turrettales.de/">`; это не независимый Preview PR #3/#6. Прямое открытие Pages URL через доступные средства проверки не удалось.
+- User approval не подтверждено. Netlify deployed commit/live status проверить не удалось; в PR #6 нет CI/deployment status. Не отмечать как deployed.
+
+### Сроки и ближайший блокер
+
+- На момент проверки 09:34 рабочее окно 19 ноября 10:00–12:00 ещё не началось; следующее окно — 13:00–15:00. Интеграционный Preview URL отсутствует, поэтому фактические runtime/device tests заблокированы.
+- Freeze остаётся 23–24 ноября; пользовательский Netlify Deploy — не позднее 25 ноября; live-проверка — 26 ноября; первая экскурсия — 27 ноября.
+- Ближайшие блокеры: получить Preview именно PR #6/интеграционной ветки; проверить script block 4; завершить Reset cleanup Christmas map; решить Follow/Free View для market map; перенести оставшиеся search/ticker/overlay/mobile/zoom fixes.
+- Application `main` не менялся; merge и Netlify Deploy не выполнялись.
 
