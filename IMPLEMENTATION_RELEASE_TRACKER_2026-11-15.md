@@ -1,6 +1,6 @@
 # MAP NAVI — список изменений и календарь подготовки к первой экскурсии
 
-**Обновлено:** 20 ноября 2026 года, 09:52 (Europe/Berlin)  
+**Обновлено:** 21 ноября 2026 года, 09:35:51 (Europe/Berlin)  
 **Первая экскурсия:** 27 ноября 2026 года  
 **Цель:** стабильная версия обычной навигации должна быть опубликована и проверена до экскурсии. Пространственная трёхуровневая модель не блокирует этот выпуск.
 
@@ -272,3 +272,48 @@ The work is **not a two-day code-copy task**, but it is also **not yet a single 
 - Главный блокер: новая, более полная candidate branch пока не оформлена в PR и не имеет Preview/checks; тесты на iPhone/iPad и пользовательское одобрение отсутствуют. Перед freeze нужно выбрать один кандидат, получить доступный Preview и пройти реальные сценарии.
 - Действие пользователя сегодня не требуется немедленно; для завершения проверки понадобится открыть именно candidate build на iPhone и iPad после появления Preview.
 - Application `main` не изменялся; merge не выполнялся; Netlify Deploy не запускался.
+
+
+## Ежедневная проверка — 21 ноября 2026 года, 09:35:51 (Europe/Berlin)
+
+### 1. Application repository: актуальный main и рабочие ветки
+
+- Текущий application main: `212334d45d04e1021270e8a9854c0b771ee7dfbc` (20 ноября, 17:23:41 UTC). GitHub показывает один изменённый файл — `Rahmen KO kurz.webp`, добавленный через upload. Это asset-only commit: `index.html` остаётся blob `59e4db3c19d2380a4f18d58b38270426e45d956e`, `sw.js` — `e2ea1a5fb5b54ae20ebb08be70337eda30c90552`; изменения логики приложения в main не обнаружены.
+- Integration `feature/map-navi-integration-2026-11-15`: HEAD `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`; PR #3 открыт, не объединён. Его base SHA — прежний main `2291e55a513eadb6ff00b7011cfc74d9b25ef947`; GitHub сейчас возвращает `mergeable=false`. Не трактовать это автоматически как доказанный конфликт: требуется повторная проверка после обновления base. Сравнение с текущим main: 4 commits ahead / 1 behind; отставание связано с asset-only commit `212334d45`.
+- Stabilized integration `feature/map-navi-stabilized-integration-2026-11-17`: HEAD `4c0d6d28c413fbc0d255cedef03091183837d188`; PR #6 открыт в Draft, base `f29ad217`, head `4c0d6d28`, 13 commits, GitHub `mergeable=true`. PR #6 не содержит более новую candidate-реализацию.
+- Candidate `feature/map-navi-poi-pulse-states-2026-11-19`: HEAD по Git refs остаётся `80f542b3d7a5c51123ff9b129b0d59374762d439`. Сравнение: 33 commits ahead / 0 behind integration; 20 ahead / 0 behind PR #6; относительно текущего main — 37 ahead / 1 behind. Единственный behind commit main — добавление файла `Rahmen KO kurz.webp`; candidate не содержит этот asset commit. Ветка меняет `index.html` и `sw.js`; отдельного PR нет.
+- Для candidate commit `80f542b3` GitHub возвращает 0 commit statuses и 0 PR-triggered workflow runs. Нет PR, нет подтверждённого Deploy Preview именно этой ветки.
+
+### 2. Дополнительные рабочие ветки — отдельно от release candidate
+
+- `map-navi-poi-persistence-and-focus`, HEAD `7d1a4ac6979660d8d343fbf0d4d468d2a318236a`, 2 commits ahead / 0 behind current main, без PR. Предыдущий commit `259d2fa7044fe2ef6910049469f5eeb425b783c3` добавляет `_fitActivePoiAndUser`: Reset при активном Pharmacy/Toilets должен кадрировать пользователя и ближайший активный POI; GPS pan при активном POI подавляется, чтобы не уводить цель из кадра. Последний commit `7d1a4ac` только добавляет новое фото в Centralplatz gallery. Эти изменения не входят в candidate `80f542b3`.
+- `map-navi-my-ship-panel-fix`, HEAD `3c6cc68c30940e96ba70f321754baffd5815255d`, 3 commits ahead / 0 behind main, без PR. Commit `3c6cc68` уменьшает кнопки карты с 56×56 до 42×42 px, уменьшает расстояние и меняет reset glyph на `⤢`. Это отдельная альтернатива, не включённая в candidate и не одобренная/проверенная на устройствах.
+- `map-navi-ship-time-and-map-controls`, HEAD `38c8f0dbc72b650f66569969def65476d8c59c91`, 1 commit ahead / 0 behind main, без PR. Перестраивает ship controls / departure-time panel и также уменьшает кнопки до 42×42 px. Не включена в candidate; не считать частью релизной интеграции.
+
+### 3. Отдельный Preview repo — новые изменения 20 ноября
+
+- `basana/turret-tales-preview` main: HEAD `52c0f3f6367267ede619cc5f896c5c24df99645e`; `index.html` blob `39f8d18636c2cb58b9e6f67b3253fb8b4b087f9a`, `sw.js` blob `23cd26581242dfc9667384d0a2c5c680ab47cbb5`.
+- GitHub Pages workflow run `44777266157` (`pages build and deployment`) завершился `success` 20 ноября 2026 года, 16:50:20 UTC. Предыдущий run `44777250490` для commit `8ca039a` завершился `cancelled`; последующий run для `52c0f3` успешен.
+- В Preview repo подтверждены отдельные изменения: `6d89650d99312df6bf2f57327434e66359621365` — поиск Christmas map с autocomplete после 3 символов, явным списком результатов и input 16px/44px для предотвращения iPhone zoom; `0dc8656275eca50dc8d3f9a014263f78b7d44229` — повторный tap по выбранному рынку открывает карточку/прокручивает к ней, а Christmas GPS Follow остаётся доступен после выбора рынка и GPS fix; `8ca039a60af88e63a0e65af62b67626c63fddd5d` — нормализация введённого времени HHMM в HH:MM, сохранение в localStorage и защита от iPhone auto-zoom. `52c0f3f` обновляет только Service Worker cache version до v7.
+- Preview `index.html` по-прежнему содержит `<base href="https://turrettales.de/">`; carousel отсутствует. Это отдельный Preview shell, не candidate branch `80f542b3`. Pages workflow success подтверждает публикацию GitHub Pages, но не браузерный runtime test. Прямое открытие `https://basana.github.io/turret-tales-preview/` через доступный web checker вернуло недоступность; iPhone/iPad test и пользовательское одобрение не подтверждены.
+
+### 4. Функциональная матрица — четыре независимые стадии
+
+| Функция | Перенесено в candidate `80f542b3` | Preview/runtime-tested | User-approved (текущая сборка) | Netlify deployed |
+|---|---|---|---|---|
+| GPS Follow / Free View / manual recenter | Да, код на main, Christmas и winery maps | Нет; отдельный Preview repo содержит Christmas Follow fixes, но не candidate build | Нет | Не подтверждено |
+| Pharmacy / Toilets / Reset controls | Да, кнопки на main и Christmas; полный Reset cleanup в коде обеих карт | Нет | Нет | Не подтверждено |
+| POI auto-focus / camera priority | Да, shared focus intent и pending first GPS fix; отдельная ветка `259d2fa` содержит дополнительный Reset/POI focus helper | Нет | Нет | Не подтверждено |
+| Search / ticker / overlay | Не полностью; полный Preview search/ticker/stacking пакет не перенесён | Отдельный Preview Pages build опубликован; runtime не проверен | Нет | Не подтверждено |
+| Toast / zoom / mobile fixes | Частично; точные Preview fixes не подтверждены в candidate | Отдельный Preview содержит toast/search stacking, market zoom placement и iPhone input zoom fixes | Нет | Не подтверждено |
+| Нижняя swipeable carousel | Да, только основная карта; пока castle/town items, без подтверждённой динамической замены POI categories | Нет; в отдельном Preview carousel отсутствует | Концепция согласована ранее, реализация не одобрена | Не подтверждено |
+
+### 5. Тесты, блокеры и сроки
+
+- Ни для candidate `80f542b3`, ни для PR #6 нет подтверждённых GitHub status checks/workflow runs. Harness 6/6 в PR #6 остаются заявлениями в PR body, независимо не воспроизведены. Browser/device tests на iPhone и iPad не зафиксированы.
+- Отдельный Preview Pages build опубликован успешно, но это не candidate build и прямое открытие Preview через web checker не удалось. Поэтому не ставить `Preview-tested`.
+- Основные блокеры: candidate не оформлена PR и не имеет своего Preview; ветки расходятся; current main получил один asset-only commit, поэтому candidate теперь 37 ahead / 1 behind; PR #3 базируется на прежнем main и GitHub возвращает `mergeable=false`; search/ticker/overlay/mobile refinements остаются в отдельном Preview repo; dynamic POI carousel categories не подтверждены.
+- Дополнительные side branches по POI focus и My Ship controls не включены в candidate; не переносить их автоматически без сверки diff. В частности, уменьшение controls до 42×42 px требует отдельного визуального решения.
+- Проверка выполнена в 09:35:51; запланированное окно 21 ноября 10:00–12:00 ещё не началось. Следующее окно 22 ноября — полный повторный тест. Freeze остаётся 23–24 ноября; пользовательский Netlify Deploy — не позднее 25 ноября; live check — 26 ноября; первая экскурсия — 27 ноября.
+- Действие пользователя немедленно не требуется. Для завершения release проверки всё ещё нужны candidate Preview и реальные проверки на iPhone/iPad; текущая сборка не одобрена.
+- Application main не изменялся в рамках этой проверки; merge не выполнялся; Netlify Deploy не запускался.
