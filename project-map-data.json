@@ -2,9 +2,9 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-21",
+    "updated": "2026-11-22",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
-    "branch": "Application main 212334d45 (asset-only addition of Rahmen KO kurz.webp; index.html 59e4db3c and sw.js e2ea1a5 unchanged); integration f29ad217 / PR #3 open/unmerged, base remains 2291e55a; PR #6 draft/open head 4c0d6d28; candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3 (33 ahead / 0 behind integration, 20 ahead / 0 behind PR #6, 37 ahead / 1 behind current main because of the asset-only commit); separate Preview repo main 52c0f3f with Pages run 44777266157 success, not candidate build; no candidate PR/Preview/checks; no device tests, current-build user approval or Netlify deployment confirmed.",
+    "branch": "Application main 212334d45 (asset-only image addition; index.html 59e4db3c and sw.js e2ea1a5 unchanged); candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3 (33 ahead / 0 behind integration f29ad217; 20 ahead / 0 behind PR #6 4c0d6d28; 37 ahead / 1 behind current main, behind only asset commit); candidate has no PR, Preview, checks or device tests. PR #3 open/unmerged and current GitHub fetch_pr says mergeable=true; PR #6 open/Draft/unmerged, mergeable=true. Separate Preview repo main bd7dc83, Pages run 44952056944 success; it is not candidate build and index.html still has <base href=https://turrettales.de/>. Candidate code contains Follow/Free View/manual recenter on main, Christmas and wine maps; Pharmacy/Toilets/full Reset on main and Christmas; POI auto-focus on main and Christmas; carousel currently castles/towns only. Candidate Preview-tested, current-build user-approved and Netlify deployed are not confirmed.",
     "mainProtected": true,
     "legend": {
       "done": "Сделано / зафиксировано",
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Аудит 21 ноября 2026, 09:35:51: application main обновился до 212334d45 только за счёт asset upload Rahmen KO kurz.webp; index.html и sw.js не изменились. Candidate 80f542b3 остаётся без PR/Preview/checks и теперь 37 ahead / 1 behind current main (behind commit — только asset). Отдельный Preview repo обновлён до 52c0f3f; Pages run 44777266157 success. В Preview есть iPhone search autocomplete 6d89650, market second-tap/Christmas Follow fix 0dc865 и departure-time persistence/iPhone zoom fix 8ca039, но base href указывает на production и browser/device test не подтверждён. Отдельные POI/ship side branches не входят в candidate. Preview-tested, user-approved current build и Netlify deployed не подтверждены. Freeze 23–24 Nov; user deploy by 25 Nov; live check 26 Nov; first tour 27 Nov. Main не изменялся в рамках аудита; no merge/deploy.",
-    "updatedAt": "2026-11-21T09:35:51+01:00",
+    "currentFocus": "Аудит 22 ноября 2026, 09:09:24 Europe/Berlin: candidate 80f542b3 остаётся без PR/Preview/checks; GitHub check-runs=0 и commit statuses=0. По коду подтверждены Follow/Free View/manual recenter на основной, Christmas и wine maps; Pharmacy/Toilets/full Reset на основной и Christmas; POI auto-focus на основной и Christmas; carousel только castles/towns. Отдельный Preview repo обновлён до bd7dc83; commit 5960ea4 переписал подсказки рынков на 7 языках; Pages run 44952056944 success, но Preview index.html по-прежнему ссылается на production через <base>. PR #3 open/unmerged и теперь mergeable=true; PR #6 open/Draft/mergeable=true. Preview-tested, iPhone/iPad tests, current-build user approval и Netlify deployment не подтверждены. Главный блокер — получить Preview именно candidate до freeze 23–24 Nov. User Netlify Deploy до 25 Nov; live check 26 Nov; экскурсия 27 Nov. Application main не менялся; merge/deploy не выполнялись.",
+    "updatedAt": "2026-11-22T09:09:24+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -662,6 +662,16 @@
     "links"
   ],
   "activity": [
+    {
+      "date": "2026-11-22",
+      "timestamp": "2026-11-22T09:09:24+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Проверен release candidate и отдельный Preview перед freeze",
+      "summary": "Candidate feature/map-navi-poi-pulse-states-2026-11-19 остаётся на 80f542b3: 33 ahead/0 behind integration, 20 ahead/0 behind PR #6, 37 ahead/1 behind current main (единственный behind commit — asset-only upload). У candidate нет PR, Preview и CI: check-runs 0, statuses 0. По исходному коду Follow/Free View/manual recenter присутствуют на main, Christmas и wine maps; Pharmacy/Toilets/full Reset — на main и Christmas; POI auto-focus — на main и Christmas; carousel пока только castles/towns. Отдельный Preview repo достиг bd7dc83; commit 5960ea4 изменил только подсказки рынков на 7 языках, Pages run 44952056944 success; <base href> всё ещё указывает на production, поэтому это не candidate Preview. PR #3 open/unmerged, GitHub mergeable=true; PR #6 open/Draft/unmerged, mergeable=true. Device tests, user approval current build и Netlify deployed не подтверждены. До freeze нужен Preview candidate и проверка на iPhone/iPad. main не менялся, merge/deploy не выполнялись.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/80f542b3d7a5c51123ff9b129b0d59374762d439"
+    },
     {
       "date": "2026-11-15",
       "timestamp": "2026-11-15T16:37:18+01:00",
