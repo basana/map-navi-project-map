@@ -17,6 +17,7 @@
 |---|---|---|
 | [Project handoff — 13 Nov 2026](CLAUDE_HANDOFF_MAP_NAVI_2026-11-13.md) | Project context and handoff reference | Existing |
 | [Implementation & release tracker — 15 Nov 2026](IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md) | Implementation / release tracking | Existing |
+| [Build, assets and release procedure — 22 Nov 2026](BUILD_AND_RELEASE_PROCEDURE_2026-11-22.md) | Mandatory working procedure for asset paths, completeness checks, Preview and controlled production release | Active working rule; repository audit still required |
 | [Popup system specification — 16 Nov 2026](https://github.com/basana/map-navi-project-map/blob/docs/popup-system-spec-2026-11-16/POPUP_SYSTEM_SPEC_2026-11-16.md) | Approved popup rules and implementation specification | Separate branch; not merged |
 | [Popup Manager implementation PR #4](https://github.com/basana/turret-tales-christmas/pull/4) | Implementation review | Draft PR; not merged or deployed |
 
