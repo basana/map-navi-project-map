@@ -375,7 +375,7 @@ The work is **not a two-day code-copy task**, but it is also **not yet a single 
 
 ### 1. Application repository и candidate
 
-- Application `main`: HEAD `212334d45d04e1021270e8a9854c0b771ee7dfbc`. Новых коммитов после asset-only изменения 21 ноября не обнаружено; по последней подтверждённой проверке кодовые blobs `index.html` `59e4db3c19d2380a4f18d58fce079084e08d900d` и `sw.js` `e2ea1a5fb5b54ae20ebb08be70337eda30c90552` остаются прежними. Application main в рамках этой проверки не изменялся.
+- Application `main`: HEAD `212334d45d04e1021270e8a9854c0b771ee7dfbc`. Новых коммитов после asset-only изменения 21 ноября не обнаружено; по последней подтверждённой проверке кодовые blobs `index.html` `59e4db3c19d2380a4f18d58b38270426e45d956e` и `sw.js` `e2ea1a5fb5b54ae20ebb08be70337eda30c90552` остаются прежними. Application main в рамках этой проверки не изменялся.
 - Candidate `feature/map-navi-poi-pulse-states-2026-11-19`: HEAD `80f542b3d7a5c51123ff9b129b0d59374762d439`; последний commit датирован 19 ноября 2026 года, 09:11:50 UTC. Новых commits candidate после 19 ноября не обнаружено. Файлы: `index.html` blob `43cc9949a104b06ad02e177a9eca0a1d7f9332bd`; `sw.js` blob `5fdf2b838a0a4fbd95e9b58fce079084e08d900d`.
 - GitHub compare: candidate на 37 commits впереди / 1 позади current main; 33 впереди / 0 позади integration `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`; 20 впереди / 0 позади stabilized PR #6 branch `4c0d6d28c413fbc0d255cedef03091183837d188`. Единственный commit позади main — asset-only commit; compare показывает изменения только в `index.html` и `sw.js`.
 - Candidate по-прежнему не имеет Pull Request. Для SHA `80f542b3`: check-runs = 0; commit statuses total_count = 0, aggregate state `pending`. Это отсутствие CI-сигналов, а не успешная проверка.
