@@ -2,9 +2,9 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-23",
+    "updated": "2026-11-24",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
-    "branch": "Application main 212334d45 (no code changes since asset-only commit); candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3 (last commit 2026-11-19 09:11:50 UTC; 37 ahead / 1 behind current main, 33 ahead / 0 behind integration f29ad217, 20 ahead / 0 behind PR #6 4c0d6d28); candidate has no PR, Preview or checks (0 check-runs, 0 statuses). Separate Preview repo main bd7dc83, Pages run #91 success, but it is not candidate build and its index.html retains <base href=https://turrettales.de/>. Candidate code has Follow/Free View/manual recenter on main, Christmas and wine maps; Pharmacy/Toilets/full Reset on main and Christmas; POI auto-focus on main and Christmas; carousel castles/towns only. Candidate Preview-tested, current-build user-approved and Netlify deployed are not confirmed.",
+    "branch": "Application main 212334d45 (asset-only commit; index.html blob 59e4db3c unchanged); candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3 (37 ahead / 1 behind main; 33 ahead integration f29ad217; 20 ahead PR #6 4c0d6d28). Candidate index.html blob 43cc9949; sw.js blob 5fdf2b83. No candidate PR/Preview; check-runs=0 and commit statuses=0. Separate POI persistence branch 7d1a4ac (2 ahead main) and ship-controls branches 38c8f0d / 3c6cc68 are not integrated. Separate Preview repo bd7dc83 Pages run #91 success, but it is not candidate build and retains base href to production.",
     "mainProtected": true,
     "legend": {
       "done": "Сделано / зафиксировано",
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Аудит 23 ноября 2026, 10:24:33 Europe/Berlin: candidate 80f542b3 не менялся с 19 ноября, не имеет PR/Preview/checks; check-runs=0 и commit statuses=0. Compare: 37 ahead / 1 behind current main (asset-only), 33 ahead / 0 behind integration f29ad217, 20 ahead / 0 behind PR #6 4c0d6d28. По коду: Follow/Free View/manual recenter на main/Christmas/wine maps; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus на main/Christmas; carousel castles/towns only. Отдельный Preview repo bd7dc83, Pages run #91 success, но это не candidate и base href указывает на production. Preview и Project Map не открылись через browser checker; runtime/device tests, current-build user approval и Netlify deployed status не подтверждены. Freeze 23–24 Nov; нужен candidate Preview и iPhone/iPad tests. User Netlify Deploy до 25 Nov; live check 26 Nov; экскурсия 27 Nov. Application main не менялся; merge/deploy не выполнялись.",
-    "updatedAt": "2026-11-23T10:24:33+01:00",
+    "currentFocus": "Аудит 24 ноября 2026, 09:18:03 Europe/Berlin: candidate 80f542b3 не изменялся с 19 ноября, без собственного PR/Preview; check-runs=0, commit statuses=0. Кодом подтверждены Follow/Free View/manual recenter на main/Christmas/wine maps; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus/camera intent на main/Christmas; carousel только castle/town. Search/ticker/overlay и toast/zoom/mobile fixes частичные. Обнаружены отдельные неинтегрированные ветки: POI persistence/focus 7d1a4ac (Reset сохраняет пользователя + ближайший POI и ограничивает GPS pan), ship controls 38c8f0d (кнопки 42x42), My Ship panel 3c6cc68. Отдельный Preview bd7dc83 и Pages run #91 success, но это не candidate и base href указывает на production. Browser/runtime/device test, current-build user approval и Netlify deployed status не подтверждены. Freeze 23–24 Nov не может быть подписан без Preview именно 80f542b3 и тестов iPhone/iPad. User Deploy до 25 Nov; live check 26 Nov; экскурсия 27 Nov. Application main не менялся; merge/deploy не выполнялись.",
+    "updatedAt": "2026-11-24T09:18:03+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -500,22 +500,38 @@
       "title": "Перенос улучшений и релиз 27 ноября",
       "subtitle": "Существующее приложение → Preview → Deploy Netlify",
       "status": "progress",
-      "summary": "На 21 ноября: main 212334d45 (asset-only); candidate 80f542b3 37 ahead / 1 behind main, 33 ahead integration, 20 ahead PR #6, без PR/Preview/checks. Separate Preview repo 52c0f3f Pages success, но не candidate build; runtime/device tests, user approval и Netlify deployed не подтверждены.",
-      "details": "См. IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md: ежедневная проверка 21 ноября 2026, 09:35:51 Europe/Berlin. Зафиксированы main asset-only commit, candidate branch divergence, side branches, Preview commits 6d89650 / 0dc865 / 8ca039 / 52c0f3f, Pages run 44777266157 success и остающиеся release blockers.",
-      "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md; GitHub PR #3 and draft PR #6",
-      "next": "Получить доступный Preview именно candidate branch; провести end-to-end iPhone/iPad tests и записать отдельные статусы переноса, Preview test, user approval и Netlify deployment. До этого не отмечать готовность; сохранить main и production без изменений.",
+      "summary": "На 24 ноября: main 212334d45 (asset-only; index.html blob 59e4db3c unchanged); candidate 80f542b3 37 ahead / 1 behind main, 33 ahead integration, 20 ahead PR #6; candidate без PR/Preview/checks. Дополнительные POI persistence и ship-controls ветки содержат полезные fixes, но не интегрированы. Отдельный Preview bd7dc83 Pages success, но не candidate build. Browser/device tests, user approval и Netlify deployed не подтверждены.",
+      "details": "См. IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md: ежедневная проверка 24 ноября 2026, 09:18:03 Europe/Berlin. Candidate source проверен: Follow/Free View/manual recenter на main/Christmas/wine; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus/camera intent на main/Christmas; carousel только castle/town. Search/ticker/overlay и toast/zoom/mobile fixes частичные. Candidate SHA 80f542b3, index blob 43cc9949, sw blob 5fdf2b83; 0 check-runs и 0 commit statuses; нет PR/Preview. Side branches: POI persistence 7d1a4ac (commit 259d2fa); ship controls 38c8f0d (42x42); My Ship panel 3c6cc68 — не включены в candidate. Preview repo bd7dc83, Pages run #91 success, base href на production. Прямой browser access и Netlify deployed commit не удалось проверить. Freeze 23–24 Nov не подтверждён тестами.",
+      "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md; candidate branch 80f542b3; side branches 7d1a4ac / 38c8f0d / 3c6cc68; PR #3/#6; separate Preview repo bd7dc83",
+      "next": "До подписания freeze получить Preview, собранный именно из candidate SHA 80f542b3; провести и зафиксировать end-to-end tests на iPhone portrait и iPad landscape. Сверить отдельно, нужны ли side-branch fixes для POI persistence и My Ship/42px controls; не объединять их автоматически во время freeze. Затем зафиксировать пользовательское одобрение SHA; пользователь выполняет Netlify Deploy до 25 Nov, live check 26 Nov. До этого не отмечать готовность; сохранить main и production без изменений.",
       "links": [
         {
           "label": "Release tracker",
           "url": "https://github.com/basana/map-navi-project-map/blob/main/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md"
         },
         {
+          "label": "Candidate branch 80f542b3",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-poi-pulse-states-2026-11-19"
+        },
+        {
+          "label": "POI persistence branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/map-navi-poi-persistence-and-focus"
+        },
+        {
+          "label": "Ship controls branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/map-navi-ship-time-and-map-controls"
+        },
+        {
+          "label": "My Ship panel branch",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/map-navi-my-ship-panel-fix"
+        },
+        {
           "label": "PR #3",
           "url": "https://github.com/basana/turret-tales-christmas/pull/3"
         },
         {
-          "label": "Integration branch",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
+          "label": "PR #6",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/6"
         },
         {
           "label": "Separate Preview repo",
@@ -927,6 +943,16 @@
       "summary": "Candidate feature/map-navi-poi-pulse-states-2026-11-19 остаётся на 80f542b3 (последний commit 19 Nov 09:11:50 UTC): 37 ahead / 1 behind current main (asset-only), 33 ahead / 0 behind integration f29ad217, 20 ahead / 0 behind PR #6 4c0d6d28. Нет собственного PR, Preview, check-runs (0) и commit statuses (0). Отдельный Preview repo bd7dc83 имеет успешный Pages run #91, но не является candidate и сохраняет base href на production; web browser checker не смог открыть Preview. По source подтверждены Follow/Free View/manual recenter на main/Christmas/wine maps; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus на main/Christmas; carousel только castles/towns. Search/ticker/overlay и toast/zoom/mobile fixes перенесены частично. Preview-tested, iPhone/iPad tests, current-build user approval и Netlify deployed status не подтверждены. Freeze 23–24 Nov; необходим candidate Preview и device test; user Deploy до 25 Nov, live check 26 Nov, экскурсия 27 Nov. Application main не изменён; merge/Netlify Deploy не выполнялись.",
       "nodeId": "release-tracker",
       "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/80f542b3d7a5c51123ff9b129b0d59374762d439"
+    },
+    {
+      "date": "2026-11-24",
+      "timestamp": "2026-11-24T09:18:03+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Ежедневная проверка релиза MAP NAVI — freeze не подтверждён тестами",
+      "summary": "Application main 212334d45 не изменялся (asset-only commit; index.html blob 59e4db3c). Candidate feature/map-navi-poi-pulse-states-2026-11-19 остаётся на 80f542b3; index.html blob 43cc9949, sw.js blob 5fdf2b83; 37 ahead / 1 behind main, 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28. Candidate не имеет PR/Preview; check-runs=0, commit statuses=0. Source-level: Follow/Free View/manual recenter на main/Christmas/wine; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus/camera intent на main/Christmas; carousel castle/town only. Search/ticker/overlay и toast/zoom/mobile fixes частичные. Найдены side branches не включённые в candidate: POI persistence 7d1a4ac (commit 259d2fa: Reset сохраняет user + nearest active POI, GPS не перетягивает камеру при активном POI); ship controls 38c8f0d (42×42); My Ship panel 3c6cc68. Отдельный Preview repo bd7dc83, Pages run #91 success, но не candidate и base href указывает на production. Browser access к Preview/Project Map/live недоступен; iPhone/iPad tests, current-build user approval и Netlify deployed commit не подтверждены. Freeze 23–24 Nov не может быть подписан без candidate Preview и device tests. User Deploy до 25 Nov, live check 26 Nov, экскурсия 27 Nov. Main не менялся; merge/Deploy не выполнялись.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/80f542b3d7a5c51123ff9b129b0d59374762d439"
     }
   ],
   "decisions": [
@@ -1078,12 +1104,12 @@
     {
       "date": "2026-11-23",
       "time": "10:00–12:00",
-      "task": "Release candidate и freeze: зафиксировать коммиты и точку отката."
+      "task": "Freeze day 1: candidate 80f542b3 remains unchanged; no candidate PR/Preview/checks/device tests. Freeze not signed off."
     },
     {
       "date": "2026-11-24",
       "time": "10:00–12:00",
-      "task": "Финальная проверка freeze; не добавлять рискованные функции."
+      "task": "Final freeze check: candidate 80f542b3 still has no Preview, 0 checks/statuses and no iPhone/iPad tests; side-branch fixes remain separate. Do not approve release until exact candidate Preview and device tests exist."
     },
     {
       "date": "2026-11-25",
