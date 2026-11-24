@@ -1,6 +1,6 @@
 # MAP NAVI — список изменений и календарь подготовки к первой экскурсии
 
-**Обновлено:** 23 ноября 2026 года, 10:24:33 (Europe/Berlin)
+**Обновлено:** 24 ноября 2026 года, 09:18:03 (Europe/Berlin)
 **Первая экскурсия:** 27 ноября 2026 года  
 **Цель:** стабильная версия обычной навигации должна быть опубликована и проверена до экскурсии. Пространственная трёхуровневая модель не блокирует этот выпуск.
 
@@ -426,3 +426,62 @@ The work is **not a two-day code-copy task**, but it is also **not yet a single 
 - User Netlify Deploy — не позднее 25 ноября; live check — 26 ноября; первая экскурсия — 27 ноября.
 - Требуется действие со стороны разработки/CI: опубликовать candidate Preview. После этого нужна проверка пользователем на iPhone/iPad. Немедленного действия по production от пользователя не требуется.
 - Application `main` не изменялся; merge не выполнялся; Netlify Deploy не запускался.
+
+
+## Daily audit — 24 November 2026, 09:18:03 (Europe/Berlin)
+
+### 1. Current application repository state
+
+Read-only audit of `basana/turret-tales-christmas`.
+
+- Application `main`: `212334d45d04e1021270e8a9854c0b771ee7dfbc`. The latest main commit is dated 20 November 2026 17:23:41 UTC and its message is `Add files via upload`; it adds only `Rahmen KO kurz.webp`. Current `main/index.html` blob remains `59e4db3c19d2380a4f18d58b38270426e45d956e`; no application-code change is present in main.
+- Candidate `feature/map-navi-poi-pulse-states-2026-11-19`: HEAD `80f542b3d7a5c51123ff9b129b0d59374762d439`; no newer commit since 19 November. Candidate `index.html` blob `43cc9949a104b06ad02e177a9eca0a1d7f9332bd`; candidate `sw.js` blob `5fdf2b838a0a4fbd95e9b58fce079084e08d900d`.
+- GitHub compare: candidate is 37 commits ahead / 1 behind current main (the behind commit is the asset-only upload); 33 ahead / 0 behind integration `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`; 20 ahead / 0 behind PR #6 head `4c0d6d28c413fbc0d255cedef03091183837d188`. Candidate diff from main is `index.html` and `sw.js`.
+- Candidate still has no Pull Request and no candidate-specific Preview. Its check-runs endpoint returns `total_count=0`; commit status endpoint returns `state=pending` with `total_count=0` and no statuses. This is absence of registered checks, not a passing test.
+- PR #3 remains open/unmerged, head `f29ad217`, base main SHA `2291e55a`, mergeable=true. PR #6 remains open Draft/unmerged, head `4c0d6d28`, base integration `f29ad217`, mergeable=true. Neither PR contains candidate HEAD `80f542b3`; PR #2/#4/#5 also remain separate open PRs. The open PR list contains no PR for the candidate.
+
+### 2. Source-level verification of the candidate
+
+The following are confirmed by reading candidate `index.html`; they are not browser/device test results:
+
+- GPS Follow / Free View / manual recenter code is present for the main map, Christmas map and wine map.
+- Pharmacy/Toilets controls are present on the main and Christmas maps. The wine map has its own GPS/search/Follow/Reset controls, but not the same Pharmacy/Toilets vertical bar.
+- Full Reset cleanup is present for the main and Christmas maps, including removal of active POI layers, pending POI focus, temporary UI states and return to overview.
+- POI auto-focus / camera intent priority and pending request before first GPS fix are present on the main and Christmas maps.
+- Search and ticker elements are present, but full migration of the separate Preview search/ticker/legend package is not established.
+- Toast/overlay and mobile/layout changes are partial. Exact transfer of every separate Preview fix, including the market zoom-button positioning change, is not established.
+- Candidate POI buttons use responsive dimensions `clamp(48px, 9vw, 62px)`; a separate ship/map-controls branch changes them to 42×42 px. That 42×42 adjustment is not in the candidate.
+- `renderMapCarousel()` currently builds cards from castle/town entries with coordinates. Dynamic replacement of the carousel by Pharmacy, Toilets, My Ship and other categories is not established.
+
+### 3. Additional branches found — not integrated into the candidate
+
+These branches are separate work, not evidence of release readiness:
+
+- `map-navi-poi-persistence-and-focus`, HEAD `7d1a4ac6979660d8d343fbf0d4d468d2a318236a`, is 2 commits ahead of current main. Commit `259d2fa7044fe2ef6910049469f5eeb425b783c3` adds `_fitActivePoiAndUser()`: Reset can keep the user's position and nearest active pharmacy/restroom in view, and GPS updates do not keep panning while a POI layer is active. This branch is not included in candidate `80f542b3`; compare shows it has 3 commits not in candidate and is 37 commits behind candidate.
+- `map-navi-ship-time-and-map-controls`, HEAD `38c8f0dbc72b650f66569969def65476d8c59c91`, is 1 commit ahead of main. It reduces POI controls to 42×42 px and adjusts ship/departure-time layout. Not included in candidate.
+- `map-navi-my-ship-panel-fix`, HEAD `3c6cc68c30940e96ba70f321754baffd5815255d`, is 3 commits ahead of main. It cleans stale Christmas-map markers and adjusts return-to-ship controls and departure-time handling. Not included in candidate.
+- No open PR for these side branches was found in the current open PR list. Do not combine them automatically during freeze; inspect diffs and preserve the approved UI behavior first.
+
+### 4. Preview, Project Map publication and deployed status
+
+- Separate Preview repo `basana/turret-tales-preview` remains at main `bd7dc83f949c26149c4f3b068266515244fc2a4b`; its latest Pages workflow run #91 (`44952056944`) completed successfully. Its `index.html` still contains `<base href="https://turrettales.de/">`, so it is not an independent candidate build and loads some resources from production.
+- Direct browser access to both `https://basana.github.io/turret-tales-preview/` and `https://basana.github.io/map-navi-project-map/` was unavailable in the browser checker. Therefore neither published page was visually/runtime-tested in this audit.
+- The latest Project Map Pages workflow before this audit, run `45147135870`, completed successfully for Project Map commit `d64eb4f39c1c759da4cad15e05e3ddee2f50281e`. This confirms that previous documentation was published by Pages; it does not confirm visual correctness of the page.
+- Netlify deployed commit and live status could not be verified from the available GitHub endpoints. Direct access to `https://turrettales.de/` and `/sw.js` was unavailable. Do not mark deployed.
+
+### 5. Four readiness stages and freeze
+
+| Feature group | Transferred to candidate | Candidate Preview-tested | Current build user-approved | Netlify deployed |
+|---|---|---|---|---|
+| GPS Follow / Free View / manual recenter | Source code present on main, Christmas and wine maps | No | No | Not confirmed |
+| Pharmacy / Toilets / Reset | Source code present on main and Christmas maps; wine has separate controls | No | No | Not confirmed |
+| POI auto-focus / camera priority | Source code present on main and Christmas maps | No | No | Not confirmed |
+| Search / ticker / overlay | Partial | No | No | Not confirmed |
+| Toast / zoom / mobile fixes | Partial | No | No | Not confirmed |
+| Bottom carousel | Main map, castle/town cards only | No | Concept agreed; current implementation not approved | Not confirmed |
+
+- 24 November is the second and final planned freeze day. Freeze cannot be signed off as a tested release candidate: candidate `80f542b3` has no PR, candidate Preview, CI checks, browser test, iPhone/iPad test or current-build user approval.
+- Immediate blocker: provide a Preview built from exactly candidate SHA `80f542b3`; then run the required iPhone portrait and iPad landscape tests and record the result against that SHA. Until then, do not mark Preview-tested, approved or ready.
+- User action: no production action now. Once the exact candidate Preview is available, the user must verify it on iPhone/iPad before approval. The user, not automation, performs Netlify Deploy.
+- Deadlines remain: user Netlify Deploy no later than 25 November; live check 26 November; first excursion 27 November.
+- Application `main` was not changed; no merge and no Netlify Deploy were performed. Only this Project Map documentation repository was updated.
