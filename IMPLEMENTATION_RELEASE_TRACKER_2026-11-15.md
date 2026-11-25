@@ -485,3 +485,42 @@ These branches are separate work, not evidence of release readiness:
 - User action: no production action now. Once the exact candidate Preview is available, the user must verify it on iPhone/iPad before approval. The user, not automation, performs Netlify Deploy.
 - Deadlines remain: user Netlify Deploy no later than 25 November; live check 26 November; first excursion 27 November.
 - Application `main` was not changed; no merge and no Netlify Deploy were performed. Only this Project Map documentation repository was updated.
+
+
+## Daily audit — 25 November 2026, 09:42 (Europe/Berlin)
+
+### Confirmed GitHub state
+
+- Application repository `basana/turret-tales-christmas` still has `main` at `212334d45d04e1021270e8a9854c0b771ee7dfbc`. Its latest commit (20 Nov, `Add files via upload`) adds only `Rahmen KO kurz.webp`; the main `index.html` blob remains `59e4db3c19d2380a4f18d58b38270426e45d956e`.
+- Candidate `feature/map-navi-poi-pulse-states-2026-11-19` remains at `80f542b3d7a5c51123ff9b129b0d59374762d439`; candidate `index.html` blob `43cc9949a104b06ad02e177a9eca0a1d7f9332bd`, `sw.js` blob `5fdf2b838a0a4fbd95e9b58fce079084e08d900d`.
+- GitHub compare confirms candidate is 37 commits ahead / 1 behind current main (the behind commit is asset-only), 33 ahead / 0 behind integration `f29ad2179d2449a7b7f8e3ec622021556b3c8dcb`, and 20 ahead / 0 behind PR #6 head `4c0d6d28c413fbc0d255cedef03091183837d188`. Candidate diff against main changes `index.html` and `sw.js`.
+- Candidate still has no Pull Request. PR #3 is open/unmerged at `f29ad217`; PR #6 is open, Draft and unmerged at `4c0d6d28`. PR #3 and #6 have no submitted reviews. Candidate workflow-run query returned no runs; check-runs total_count = 0; commit statuses total_count = 0 (combined status endpoint reports pending with no individual statuses). No candidate CI result is available.
+- Branch list still includes separate, unintegrated branches `map-navi-poi-persistence-and-focus` (`7d1a4ac`), `map-navi-ship-time-and-map-controls` (`38c8f0d`) and `map-navi-my-ship-panel-fix` (`3c6cc68`). No new PR for these was found. Their fixes are not part of candidate `80f542b3`.
+
+### Preview update — no application-code change
+
+- Separate Preview repo `basana/turret-tales-preview` advanced from `bd7dc83f949c26149c4f3b068266515244fc2a4b` to `dcdb65639f1f2b8b4387b6a6af28dfdbacbfd1dd`.
+- Compare confirms the only two files added by this commit are `screentest.JPG` and `screentest_1JPG.JPG`; no `index.html` or `sw.js` code changed. The screenshot files could not be opened by the available inspection tools, so they are not treated as verified test evidence.
+- Preview Pages workflow run [45484710442](https://github.com/basana/turret-tales-preview/actions/runs/45484710442) completed successfully for `dcdb656`. This is a successful Pages build of the separate Preview repo, not a build of candidate `80f542b3`.
+- Preview `index.html` remains blob `bf307ff0662966618787dfe41b6fa480a4299184` and still contains `<base href="https://turrettales.de/">`; Preview `sw.js` remains blob `23cd26581242dfc9667384d0a2c5c680ab47cbb5`. It is therefore not an isolated candidate environment.
+- Direct opening of Project Map, Preview and `turrettales.de` failed in the available browser tools. Visual/runtime testing and live Netlify status remain unverified.
+
+### Readiness stages — 25 November
+
+| Feature group | Transferred to candidate | Candidate Preview-tested | Current build user-approved | Netlify deployed |
+|---|---|---|---|---|
+| GPS Follow / Free View / manual recenter | Source code present in candidate | No | No | Not confirmed |
+| Pharmacy / Toilets / Reset | Source code present on main + Christmas maps; wine map has separate controls | No | No | Not confirmed |
+| POI auto-focus / camera priority | Source code present in candidate | No | No | Not confirmed |
+| Search / ticker / overlay | Partial | No | No | Not confirmed |
+| Toast / zoom / mobile fixes | Partial; exact transfer of all Preview fixes not established | No | No | Not confirmed |
+| Bottom carousel | Main-map castle/town cards only; dynamic category replacement not established | No | Concept agreed; current build not approved | Not confirmed |
+
+### Blockers and deadline
+
+- Freeze on 23–24 November was not supported by a candidate Preview or device-test evidence. The freeze cannot be treated as signed off.
+- The most recent Preview change is screenshot-only and does not unblock testing of candidate `80f542b3`.
+- Immediate blocker: no Preview built from the exact candidate SHA, no candidate CI checks, no browser test and no iPhone/iPad test. Current-build user approval is absent.
+- The 25 November user Netlify Deploy deadline is today. No Netlify deployment or deployed commit could be verified from the available GitHub data; direct live-site access also failed. Do not infer deployment from the successful GitHub Pages build.
+- User action is required before release: obtain/open a Preview of exact candidate SHA and test it on iPhone/iPad; only the user performs Netlify Deploy. Do not mark the release ready until the deployed live version is checked on 26 November.
+- Application `main` was not changed by this audit. No merge and no Netlify Deploy were performed. Only the requested Project Map documentation was updated.
