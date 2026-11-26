@@ -524,3 +524,49 @@ These branches are separate work, not evidence of release readiness:
 - The 25 November user Netlify Deploy deadline is today. No Netlify deployment or deployed commit could be verified from the available GitHub data; direct live-site access also failed. Do not infer deployment from the successful GitHub Pages build.
 - User action is required before release: obtain/open a Preview of exact candidate SHA and test it on iPhone/iPad; only the user performs Netlify Deploy. Do not mark the release ready until the deployed live version is checked on 26 November.
 - Application `main` was not changed by this audit. No merge and no Netlify Deploy were performed. Only the requested Project Map documentation was updated.
+
+
+## Финальная ежедневная проверка — 26 ноября 2026 года, 09:37 (Europe/Berlin)
+
+### 1. Application repository — состояние подтверждено через GitHub
+
+- `basana/turret-tales-christmas` остаётся доступен; default branch — `main`.
+- Application `main` — `212334d45d04e1021270e8a9854c0b771ee7dfbc`. Файлы приложения не изменились относительно предыдущей проверки: `index.html` blob `59e4db3c19d2380a4f18d58b38270426e45d956e`, `sw.js` blob `e2ea1a5fb5b54ae20ebb08be70337eda30c90552`.
+- Candidate `feature/map-navi-poi-pulse-states-2026-11-19` подтверждён точным SHA `80f542b3d7a5c51123ff9b129b0d59374762d439`: GitHub compare SHA → branch возвращает `identical`, 0 ahead / 0 behind. Файловые blob SHA без изменений: `index.html` `43cc9949a104b06ad02e177a9eca0a1d7f9332bd`, `sw.js` `5fdf2b838a0a4fbd95e9b58fce079084e08d900d`.
+- Сравнение candidate с актуальным `main`: 37 commits ahead / 1 behind; единственный отстающий commit в `main` — добавление изображения, при этом `index.html` и `sw.js` на `main` не менялись. Candidate на 33 commits впереди integration `f29ad217`; на 20 commits впереди PR #6 head `4c0d6d28`.
+- Candidate не имеет собственного PR. PR #3 открыт / не слит; PR #6 открыт / Draft / не слит. GitHub reviews для PR #3 и #6 пусты. Combined commit statuses для candidate, integration и PR #6 пусты; check-runs candidate — 0; PR-triggered workflow runs для этих SHA не возвращены. Это не доказывает отсутствие всех типов Actions runs, но подтверждённых CI-результатов нет.
+
+### 2. Новая экспериментальная сборка в отдельном Preview repository
+
+- В `basana/turret-tales-preview` обнаружена ветка `map-navi-interaction-build-2026-11-25` с точным HEAD `65facc6fa1f5150deb174d4fab816e3be4ae8059`. SHA подтверждён сравнением: `65facc6...` и branch ref — `identical`.
+- Текущий Preview `main` — `41d2f051dda4ca9b9629c068bd1d780dcc772a19`; экспериментальная ветка — 43 commits ahead / 1 behind. Diff: `index.html` +677 / -1 и новый `map-navi-full-panel.js` на 307 строк. Blob SHA: `index.html` `46d13413d988ed74329121b5a8855c1bf91e3852`, `map-navi-full-panel.js` `fb82b7331d408bf88151c90718322b82414a9896`.
+- Source-level проверка подтверждает новый полноэкранный режим основной карты, верхние категории Places / My Ship / Toilets / Pharmacy и нижний горизонтальный rail с карточками. Код переключает содержимое rail между местами, My Ship, туалетами и аптеками; swipe меняет активную карточку/цель, выбор карточки центрирует объект, POI selection вызывает focus/toast и подсветку маркера. Это существенно ближе к согласованной концепции нижней карусели, чем candidate `80f542b3`, где подтверждены только карточки замков/городов.
+- Это отдельная экспериментальная ветка Preview, не перенос в `basana/turret-tales-christmas` и не release candidate приложения. UI привязан к основной карте `#view-map` / `leafletMap`; единая реализация для Christmas/wine maps не подтверждена.
+- `index.html` экспериментальной ветки по-прежнему содержит `<base href="https://turrettales.de/">`. Внизу подключается внешний `map-navi-full-panel.js` с домена `turret-tales-experimental-preview`; исходный файл присутствует в ветке Preview, а workflow отдельного experimental-preview repo настроен забирать эту ветку. Но факт успешного Pages deployment именно SHA `65facc6...` не подтверждён.
+- В CSS экспериментального UI размер `.poi-toggle-btn` задан 84×84 px — требуется визуальная оценка, это заметно крупнее компактного управления. Внешний panel module вызывает `setState('quarter')`, но helper допускает только `compact` и `full`, остальные значения приводит к `third`; это source-level несоответствие, которое нужно проверить в браузере. Наличие этих особенностей не считается доказанным runtime-дефектом без теста.
+- Альтернативная ветка `golden-build/2026-11-24-red-labels-horizontal-my-ship-ok` сравнивается с Preview main как 17 ahead / 3 behind; её diff содержит `index.html` и `MAP-NAVI-NEXT-ARCHITECTURE.md`. Она не является подтверждённой release candidate и не имеет подтверждённого device test.
+
+### 3. Experimental Pages workflow и доступность Preview
+
+- В `basana/turret-tales-experimental-preview` main workflow file blob `c409f217376494f10130cc4c22a67d7d39ab185d` указывает source commit `65facc6fa1f5150deb174d4fab816e3be4ae8059` и checkout ветки `basana/turret-tales-preview:map-navi-interaction-build-2026-11-25`.
+- Ветка `preview-map-navi-interaction-build` в experimental-preview содержит workflow file blob `1b16d641037746892c567a74587fa234d4fd0aa5`; он разрешает push-trigger также для этой ветки и использует тот же source branch.
+- Combined statuses для source commit и двух workflow-file blobs пусты; доступные PR-triggered workflow runs не возвращены. Фактический Pages run/deployment не удалось подтвердить. Прямое открытие Project Map, Preview и live-сайта через доступный браузерный инструмент не удалось; загрузка Project Map также завершилась ошибкой. Поэтому Preview-tested и Pages-deployed для `65facc6...` не отмечаются.
+
+### 4. Итоговые стадии
+
+| Функция | Перенесено в application candidate | Есть в отдельном Preview source | Preview-tested | User-approved | Netlify deployed |
+|---|---|---|---|---|---|
+| GPS Follow / Free View / manual recenter | Да, main / Christmas / wine maps в `80f542b3` | Контролы переставлены в interaction build; новая логика не переносилась в app | Нет | Нет | Не подтверждено |
+| Pharmacy / Toilets / Reset | Да, main + Christmas maps в `80f542b3` | Категории Pharmacy / Toilets есть в interaction build; 84×84 px controls требуют проверки | Нет | Нет | Не подтверждено |
+| POI auto-focus / camera priority | Да, pending first fix и focus intent в `80f542b3` | POI cards, selection, focus/toast/highlight в interaction build | Нет | Нет | Не подтверждено |
+| Search / ticker / overlay | Частично | Search/ticker repositioning и fullscreen overlay в interaction build | Нет | Нет | Не подтверждено |
+| Toast / zoom / mobile fixes | Частично | Дополнительные panel/toast/mobile CSS в interaction build | Нет | Нет | Не подтверждено |
+| Bottom carousel | Только castles/towns | Places / My Ship / Toilets / Pharmacy dynamic rail в interaction build | Нет | Концепция согласована; этот build не одобрен | Не подтверждено |
+
+### 5. Дедлайны и блокеры — 26 ноября
+
+- Freeze 23–24 ноября не подтверждён Preview/device evidence и не может считаться подписанным.
+- Срок пользовательского Netlify Deploy 25 ноября прошёл. Доступные GitHub данные не подтверждают ни факт Deploy, ни deployed commit; это не означает, что Deploy точно не выполнялся.
+- Запланированная на 26 ноября live-проверка не может быть подтверждена: нет проверяемого Netlify deployment record и доступного live-site fetch. User approval конкретного SHA также не зафиксирован.
+- До экскурсии 27 ноября остаётся критический риск: нет подтверждённой цепочки candidate → Preview test → user approval → Netlify deployed commit → live check. Пользователю необходимо сегодня самостоятельно проверить Netlify live на iPhone/iPad и убедиться, что используется именно протестированная версия; не считать experimental Preview source доказательством готовности.
+- Application `main` не изменялся; merge не выполнялся; Netlify Deploy не запускался. Обновляются только запрошенные контрольные материалы.
