@@ -2,9 +2,9 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-25",
+    "updated": "2026-11-26",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
-    "branch": "Application main 212334d45 (asset-only; index.html blob 59e4db3c unchanged). Candidate feature/map-navi-poi-pulse-states-2026-11-19 remains 80f542b3 (37 ahead / 1 behind main; 33 ahead integration f29ad217; 20 ahead PR #6 4c0d6d28); index.html blob 43cc9949, sw.js blob 5fdf2b83. Candidate has no PR, no workflow runs, 0 check-runs and 0 commit statuses. Separate Preview repo advanced to dcdb656, but its only changes were two screenshot files; Preview index blob bf307ff still has base href to production. Preview Pages run 45484710442 succeeded, but it is not a candidate build.",
+    "branch": "Application main 212334d45 (index blob 59e4db3c, sw blob e2ea1a5f unchanged). Application candidate feature/map-navi-poi-pulse-states-2026-11-19 remains exact HEAD 80f542b3 (37 ahead / 1 behind main; 33 ahead integration f29ad217; 20 ahead PR #6 4c0d6d28); index blob 43cc9949, sw blob 5fdf2b83. Separate Preview interaction branch map-navi-interaction-build-2026-11-25 is exact HEAD 65facc6fa1f5150deb174d4fab816e3be4ae8059 (43 ahead / 1 behind Preview main 41d2f051), index blob 46d13413, module blob fb82b733; source contains full-screen map, dynamic Places/My Ship/Toilets/Pharmacy rail and POI cards, but Pages deployment, runtime/device tests and user approval are unverified. Its base href still points to production. No Netlify deployed commit confirmed.",
     "mainProtected": true,
     "legend": {
       "done": "Сделано / зафиксировано",
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Аудит 25 ноября 2026, 09:42:29 Europe/Berlin: candidate 80f542b3 не изменился; отдельного PR/Preview нет, workflow runs отсутствуют, check-runs=0, statuses=0. PR #3 open/unmerged; PR #6 open/Draft/unmerged; у обоих нет submitted reviews. Source-level перенос подтверждён ранее: Follow/Free View/manual recenter на main/Christmas/wine; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus/camera priority; search/ticker/overlay и toast/zoom/mobile fixes частичные; carousel только castle/town. Отдельный Preview repo обновился до dcdb656, но добавлены только screentest.JPG и screentest_1JPG.JPG; сами изображения недоступны для проверки. Preview Pages run 45484710442 success, но Preview не candidate и сохраняет base href на turrettales.de. Candidate Preview, runtime/browser test, iPhone/iPad test, user approval current SHA и Netlify deployed commit не подтверждены. Дедлайн пользовательского Netlify Deploy — 25 Nov; live check 26 Nov; экскурсия 27 Nov. Application main не менялся; merge/Netlify Deploy не выполнялись.",
-    "updatedAt": "2026-11-25T09:42:29+01:00",
+    "currentFocus": "Финальная проверка 26 Nov 2026, 09:37 Europe/Berlin: application main 212334d45 и candidate 80f542b3 не изменились; candidate exact HEAD подтверждён compare, 0 statuses/checks, PR #3 open/unmerged, PR #6 open/Draft/unmerged, reviews пусты. Новая отдельная Preview ветка map-navi-interaction-build-2026-11-25 exact SHA 65facc6 (43 ahead / 1 behind Preview main 41d2f051) содержит fullscreen main map, top categories Places/My Ship/Toilets/Pharmacy, dynamic horizontal card rail, POI cards/focus. Это не application candidate. index blob 46d13413, module blob fb82b733; base href всё ещё указывает на turrettales.de, Pages deployment из experimental-preview workflow не подтверждён, combined statuses и PR-triggered runs пусты. Browser access к Project Map/Preview/live недоступен. Candidate Preview/device tests, user approval, Netlify deployed commit и live check не подтверждены. 25 Nov deadline прошёл без доступного подтверждения Deploy; экскурсия завтра. Application main не менялся, merge/Netlify Deploy не выполнялись.",
+    "updatedAt": "2026-11-26T09:37:00+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -119,10 +119,10 @@
       "title": "POI и активная цель",
       "subtitle": "Категория, поиск, выбранный объект",
       "status": "progress",
-      "summary": "Candidate 80f542b3 содержит shared focus intent и pending POI до первого GPS fix; отдельная ветка 7d1a4ac с Reset/POI persistence helper остаётся неинтегрированной. Runtime/device test отсутствует.",
-      "details": "На 25 Nov: candidate 80f542b3 без изменений, PR/Preview/CI нет. Side branch map-navi-poi-persistence-and-focus HEAD 7d1a4ac содержит helper _fitActivePoiAndUser, но не включена в candidate. Preview repo dcdb656 изменил только screenshots, index.html не изменился; Preview Pages run success не доказывает поведение POI. Browser/device test и user approval не подтверждены.",
+      "summary": "Application candidate 80f542b3 содержит shared focus intent и pending POI до первого GPS fix. Отдельный Preview interaction build 65facc6 добавляет POI cards, динамическое переключение Pharmacy/Toilets и focus/highlight, но не проверен и не перенесён в приложение.",
+      "details": "На 26 Nov: application candidate остаётся exact HEAD 80f542b3; browser/device test отсутствует. В отдельном Preview branch 65facc6 `renderPoiCards()` создаёт карточки для Pharmacy/Toilets; swipe выбирает ближайшую карточку, tap выбирает POI, вызывает `_focusPoiOnMap` и `_showPoiToast`, добавляет pulse/highlight. Top categories переключают Places/My Ship/Toilets/Pharmacy. Это source-level факт отдельной ветки, не подтверждение runtime. Side branch `map-navi-poi-persistence-and-focus` остаётся отдельной от application candidate.",
       "where": "application main + feature/map-navi-integration-2026-11-15, index.html; commit f29ad2179d2449a7b7f8e3ec622021556b3c8dcb; Preview repo commits 57408be / a1ea99e",
-      "next": "На candidate Preview проверить Pharmacy/Toilets до и после первого GPS fix, удержание выбранного POI при GPS updates, Reset в активном POI режиме и переключение категорий; side-branch helper не переносить без отдельного diff/test.",
+      "next": "Не переносить экспериментальный код автоматически. Проверить на реальном Preview: переключение Pharmacy↔Toilets без наложения слоёв, первый GPS fix, удержание активной цели при GPS updates, swipe/tap card, Reset и возврат к Places.",
       "links": [
         {
           "label": "Стандарт Map Navi",
@@ -136,10 +136,10 @@
       "title": "Tourist Follow и Free View",
       "subtitle": "GPS Follow / Free View — первая реализация",
       "status": "progress",
-      "summary": "Candidate 80f542b3 содержит Follow / Free View / manual recenter на main, Christmas и wine maps; отдельный Preview обновился только двумя screenshot-файлами, candidate Preview и device tests отсутствуют.",
-      "details": "На 25 Nov: candidate HEAD 80f542b3, source code unchanged since 19 Nov. Проверка GitHub подтверждает blob index.html 43cc9949 и sw.js 5fdf2b83. Отдельный Preview repo dcdb656 добавил только screentest.JPG и screentest_1JPG.JPG; index.html blob bf307ff с base href на production не изменился. Pages run 45484710442 success не является сборкой candidate. Browser/runtime и iPhone/iPad тесты не подтверждены; current-build user approval отсутствует.",
+      "summary": "Application candidate 80f542b3 содержит Follow / Free View / manual recenter на main, Christmas и wine maps. Отдельный interaction build 65facc6 перестраивает основную карту в полноэкранный режим с верхними категориями и нижним rail, но не является проверенной сборкой.",
+      "details": "На 26 Nov: app candidate source unchanged; index blob 43cc9949, sw blob 5fdf2b83. Preview interaction branch 65facc6 содержит fullscreen `#view-map`, top category rail и bottom card rail; GPS toggle/Follow controls перемещаются в search/header rail. Прямой Pages deployment не подтверждён, `base href` остаётся на production. Runtime, GPS permission/first fix, Free View, `↻ Follow`, iPhone/iPad и user approval не подтверждены.",
       "where": "basana/turret-tales-christmas: PR #3 integration commit e094b25; draft PR #6 stabilized integration head 8beefce",
-      "next": "Проверить на Preview именно SHA 80f542b3: GPS permission/first fix, непрерывное обновление позиции, manual pan/zoom → Free View, ↻ Follow, POI priority и Reset на iPhone/iPad. Не считать отдельный Preview repo подтверждением candidate.",
+      "next": "Проверить только на опубликованном и доступном Preview: GPS permission/first fix, continuous updates, manual pan/zoom → Free View, ↻ Follow, POI priority и поведение при переключении категорий; затем отдельно live Netlify.",
       "links": [
         {
           "label": "Integration branch",
@@ -161,10 +161,10 @@
       "title": "Управление картой",
       "subtitle": "Три круглые кнопки в одной правой колонке",
       "status": "progress",
-      "summary": "Candidate 80f542b3 содержит Pharmacy / Toilets / Reset и полный Reset cleanup на main + Christmas maps; отдельные side branches предлагают 42px controls, но они не включены и не одобрены.",
-      "details": "Кнопки Pharmacy/Toilets/Reset перенесены в integration. Candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3 содержит full Reset cleanup на main и Christmas maps и state-aware POI pulses. Отдельная ветка map-navi-my-ship-panel-fix HEAD 3c6cc68 уменьшает кнопки с 56×56 до 42×42 px и меняет reset glyph на ⤢; map-navi-ship-time-and-map-controls HEAD 38c8f0d перестраивает ship panel и также уменьшает controls. Эти ветки не входят в candidate и не имеют пользовательского/device approval. Preview repo 52c0f3f опубликован на Pages, но не является candidate build; carousel отсутствует.",
+      "summary": "Application candidate 80f542b3 содержит Pharmacy/Toilets/Reset и полный Reset cleanup на main + Christmas maps. Отдельный Preview interaction build 65facc6 реализует категории Places/My Ship/Toilets/Pharmacy и динамический горизонтальный card rail, но остаётся экспериментом.",
+      "details": "На 26 Nov: candidate app controls не изменились и не тестировались. В отдельной Preview ветке 65facc6 подтверждены top categories Places/My Ship/Toilets/Pharmacy, нижний horizontal card rail, POI cards, My Ship status card и drag-expand panel. CSS задаёт `.poi-toggle-btn` 84×84 px; внешний module вызывает `setState('quarter')`, но helper сводит неизвестное состояние к `third` — требуется runtime/visual check. Interaction UI привязан к основной карте `#view-map`; одинаковая реализация на Christmas/wine maps не подтверждена. `base href` указывает на production; Pages deployment не подтверждён.",
       "where": "basana/turret-tales-christmas: integration PR #3 commit 943801e; draft PR #6 head 8beefce; separate Preview commits db9f392, 6d6a9bf, fc0078a, b27c044",
-      "next": "Проверить на iPhone portrait и iPad landscape размеры/позицию кнопок, search/ticker/legend, toast, zoom, полный Reset на обеих картах и carousel; не принимать 42px controls без отдельной визуальной проверки.",
+      "next": "Не принимать экспериментальный UI автоматически. Проверить размеры/расположение Pharmacy/Toilets/Reset, нижнюю карусель и категории на iPhone portrait и iPad landscape; убедиться, что все map profiles сохраняют согласованный интерфейс.",
       "links": [
         {
           "label": "Integration branch",
@@ -350,26 +350,34 @@
       "title": "GitHub и тестовая ветка",
       "subtitle": "Отдельная ветка в репозитории действующего приложения",
       "status": "progress",
-      "summary": "Application main 212334d45 не менялся; candidate 80f542b3 остаётся без PR/Preview/checks. Отдельный Preview repo получил только два скриншота в dcdb656; это не candidate build.",
-      "details": "На 25 ноября 2026: main 212334d45 (asset-only; index.html blob 59e4db3c). Candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3; 37 ahead / 1 behind main (asset-only), 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28; index blob 43cc9949, sw blob 5fdf2b83. Branch list подтверждает отсутствие новой candidate ветки/PR. PR #3 open/unmerged, PR #6 open/Draft/unmerged; нет submitted reviews. Candidate workflow runs пусты; check-runs=0; statuses=0. Preview repo main dcdb656: единственный новый commit добавил screentest.JPG и screentest_1JPG.JPG; index.html не изменился (blob bf307ff), base href по-прежнему https://turrettales.de/. Pages run 45484710442 success, но это не Preview candidate.",
-      "where": "GitHub: basana/turret-tales-christmas — main, integration PR #3, stabilized integration PR #6, source drafts PR #4/#5",
-      "next": "Не сливать ветки автоматически. Получить отдельный Preview точного candidate SHA 80f542b3, провести браузерные и device tests, зафиксировать user approval. Main защищён; никакого merge/deploy без отдельного разрешения.",
+      "summary": "Application main 212334d45 не менялся; application candidate 80f542b3 остаётся отдельной веткой без PR/Preview/CI. В отдельном Preview repo появился более полный interaction build 65facc6 с динамической нижней каруселью, но Pages deployment и device tests не подтверждены.",
+      "details": "На 26 Nov 2026: application main 212334d45; index blob 59e4db3c, sw blob e2ea1a5f. Candidate feature/map-navi-poi-pulse-states-2026-11-19 — exact HEAD 80f542b3, подтверждён compare identity; 37 ahead / 1 behind main, 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28; index blob 43cc9949, sw blob 5fdf2b83. Candidate no PR; 0 combined statuses, 0 check-runs, PR-triggered runs не возвращены. PR #3 open/unmerged, PR #6 open/Draft/unmerged; reviews пусты. Separate Preview repo: branch map-navi-interaction-build-2026-11-25 exact SHA 65facc6, 43 ahead / 1 behind Preview main 41d2f051; index blob 46d13413 (+677/-1), new map-navi-full-panel.js blob fb82b733 (307 lines). It contains fullscreen main map, categories Places/My Ship/Toilets/Pharmacy, dynamic card rail and POI selection. This is not app candidate. base href still points to production. Experimental Pages workflow exists but no run/deployment confirmation; direct Preview URL unavailable.",
+      "where": "basana/turret-tales-christmas: main, candidate 80f542b3, integration PR #3, stabilized PR #6; basana/turret-tales-preview: interaction branch 65facc6; basana/turret-tales-experimental-preview: Pages workflow",
+      "next": "Do not merge or deploy automatically. Before using tomorrow, the user must verify the actual Netlify live version on iPhone/iPad and record its deployed commit. Treat 65facc6 only as an unverified experimental Preview source, not as approved release code.",
       "links": [
         {
           "label": "Application main",
           "url": "https://github.com/basana/turret-tales-christmas/tree/main"
         },
         {
-          "label": "Integration branch",
-          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-integration-2026-11-15"
+          "label": "Application candidate 80f542b3",
+          "url": "https://github.com/basana/turret-tales-christmas/tree/feature/map-navi-poi-pulse-states-2026-11-19"
         },
         {
           "label": "PR #3",
           "url": "https://github.com/basana/turret-tales-christmas/pull/3"
         },
         {
-          "label": "PR #2",
-          "url": "https://github.com/basana/turret-tales-christmas/pull/2"
+          "label": "PR #6",
+          "url": "https://github.com/basana/turret-tales-christmas/pull/6"
+        },
+        {
+          "label": "Preview interaction branch 65facc6",
+          "url": "https://github.com/basana/turret-tales-preview/tree/map-navi-interaction-build-2026-11-25"
+        },
+        {
+          "label": "Experimental Preview workflow repo",
+          "url": "https://github.com/basana/turret-tales-experimental-preview"
         }
       ]
     },
@@ -396,18 +404,22 @@
       "title": "Карта совместного проекта",
       "subtitle": "Этот инструмент",
       "status": "progress",
-      "summary": "Project Map включает интерактивную карту и Dashboard с состоянием проекта, последними изменениями и журналом решений.",
-      "details": "Первая версия отделена от карты Claude. Содержание хранится в JSON, интерфейс — в HTML. Добавлен Dashboard: сводные показатели, текущий фокус, последние изменения и решения. Кнопка «Обновить данные» повторно загружает JSON из GitHub. Карта пока не опубликована как отдельная веб-страница.",
-      "where": "project-map.html и project-map-data.json",
-      "next": "Настроить безопасный предварительный просмотр на отдельном адресе, не затрагивая действующий сайт и main; затем проверить на iPhone.",
+      "summary": "Project Map имеет HTML-интерфейс и JSON-данные в отдельном репозитории basana/map-navi-project-map; GitHub Pages workflow настроен на push в main. Визуальная доступность опубликованной страницы в этой проверке не подтверждена.",
+      "details": "Содержание хранится в project-map-data.json, интерфейс — в index.html (также присутствует project-map.html). Workflow .github/workflows/deploy-pages.yml публикует содержимое main в GitHub Pages. На 26 Nov файлы доступны через GitHub, но прямое открытие https://basana.github.io/map-navi-project-map/ недоступно используемому браузерному инструменту; статус последнего Pages run для текущего коммита не удалось подтвердить.",
+      "where": "basana/map-navi-project-map: index.html, project-map.html, project-map-data.json, IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md",
+      "next": "Сверить опубликованную Project Map визуально после доступного Pages run; не путать GitHub commit документации с подтверждением успешной публикации страницы.",
       "links": [
         {
-          "label": "Файл интерфейса",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/blob/feature/map-navi-standard/project-map.html"
+          "label": "Project Map page source",
+          "url": "https://github.com/basana/map-navi-project-map/blob/main/index.html"
         },
         {
-          "label": "Файл данных",
-          "url": "https://github.com/basana/rhein-guide-publicD_A/blob/feature/map-navi-standard/project-map-data.json"
+          "label": "Project Map data",
+          "url": "https://github.com/basana/map-navi-project-map/blob/main/project-map-data.json"
+        },
+        {
+          "label": "Release tracker",
+          "url": "https://github.com/basana/map-navi-project-map/blob/main/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md"
         }
       ]
     },
@@ -500,10 +512,10 @@
       "title": "Перенос улучшений и релиз 27 ноября",
       "subtitle": "Существующее приложение → Preview → Deploy Netlify",
       "status": "progress",
-      "summary": "На 25 ноября 09:42: candidate 80f542b3 не изменился, не имеет PR/Preview/CI; отдельный Preview обновлён только скриншотами и не является candidate build. Device tests, user approval и Netlify deployed status не подтверждены.",
-      "details": "См. IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md, ежедневный аудит 25 ноября 2026, 09:42:29 Europe/Berlin. Application main 212334d45; index.html blob 59e4db3c. Candidate feature/map-navi-poi-pulse-states-2026-11-19 HEAD 80f542b3; index blob 43cc9949, sw blob 5fdf2b83; compare: 37 ahead / 1 behind main (asset-only behind), 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28. Candidate no PR, no workflow runs, 0 check-runs/statuses. PR #3 open/unmerged, PR #6 open/Draft/unmerged; no submitted reviews. Separate Preview repo advanced bd7dc83 → dcdb656, but commit added only screentest.JPG and screentest_1JPG.JPG; screenshot contents could not be inspected. Preview Pages run 45484710442 success; Preview index blob bf307ff retains base href to https://turrettales.de/ and is not candidate. Source-level status remains: Follow/Free View/manual recenter on main/Christmas/wine; Pharmacy/Toilets/full Reset on main/Christmas; POI auto-focus/camera priority present; search/ticker/overlay and toast/zoom/mobile fixes partial; carousel castle/town only. Candidate Preview, browser/runtime/device tests, current-SHA user approval and Netlify deployed commit not confirmed. GitHub Pages run for Project Map previous commit 9d046de success; visual page access unavailable. Netlify API deployment endpoint and live site were unavailable, so deployment status is unverified.",
-      "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md; candidate branch 80f542b3; side branches 7d1a4ac / 38c8f0d / 3c6cc68; PR #3/#6; separate Preview repo bd7dc83",
-      "next": "Сегодня 25 Nov — пользовательский Netlify Deploy deadline. Сначала получить Preview, собранный ровно из candidate SHA 80f542b3, и провести iPhone portrait/iPad landscape tests; зафиксировать user approval конкретного SHA. Пользователь выполняет Netlify Deploy. 26 Nov проверить именно live deployed commit и основные сценарии. Не отмечать release ready до подтверждения live. Не менять application main, не выполнять merge и не запускать Netlify Deploy.",
+      "summary": "На 26 Nov: application candidate 80f542b3 не изменился и не имеет Preview/CI/device tests. Отдельный Preview interaction build 65facc6 содержит динамический нижний rail и категории, но deployment/runtime/user approval не подтверждены. Netlify deployed commit не проверен.",
+      "details": "См. финальный аудит 26 ноября 2026, 09:37 Europe/Berlin в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md. Application main 212334d45; candidate 80f542b3 exact HEAD, 37 ahead / 1 behind main, index blob 43cc9949, sw blob 5fdf2b83; no PR, no statuses/check-runs, no user approval. PR #3 open/unmerged, PR #6 open/Draft/unmerged, reviews пусты. Отдельный Preview interaction branch 65facc6 (43 ahead / 1 behind Preview main 41d2f051) добавляет fullscreen main map, top categories Places/My Ship/Toilets/Pharmacy, dynamic horizontal card rail, POI cards/focus; index blob 46d13413, module blob fb82b733. Это не application candidate. base href остаётся на production; experimental Pages workflow существует, но deployment/run не подтверждены. Preview/runtime/iPhone/iPad tests и current-SHA approval отсутствуют. Deadline Deploy 25 Nov прошёл, но факт/commit Netlify Deploy не удалось проверить; live check 26 Nov также не подтверждён. Экскурсия 27 Nov.",
+      "where": "basana/map-navi-project-map/IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md; basana/turret-tales-christmas candidate 80f542b3; basana/turret-tales-preview interaction branch 65facc6; PR #3/#6",
+      "next": "Перед экскурсией пользователь должен самостоятельно проверить live Netlify на iPhone/iPad и убедиться, что это именно протестированная версия; записать deployed commit. Не считать release ready без этого подтверждения. Не менять application main, не выполнять merge и не запускать Netlify Deploy.",
       "links": [
         {
           "label": "Release tracker",
@@ -963,6 +975,16 @@
       "summary": "Application main 212334d45 остаётся asset-only; main index blob 59e4db3c. Candidate feature/map-navi-poi-pulse-states-2026-11-19 остаётся 80f542b3; index blob 43cc9949, sw blob 5fdf2b83; compare 37 ahead / 1 behind main (asset-only), 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28. Candidate не имеет PR, workflow runs пусты, check-runs=0, statuses=0. PR #3 open/unmerged, PR #6 open/Draft/unmerged; submitted reviews нет. Отдельный Preview repo обновлён bd7dc83 → dcdb656, но compare подтверждает только два добавленных screenshot-файла; сами изображения не удалось открыть. Preview Pages run 45484710442 success; index blob bf307ff и base href на production без изменений. Это не candidate Preview. Source-level перенос: Follow/Free View/manual recenter на main/Christmas/wine; Pharmacy/Toilets/full Reset на main/Christmas; POI auto-focus/camera priority есть; search/ticker/overlay и toast/zoom/mobile fixes частичные; carousel castle/town only. Browser/device tests, user approval и Netlify deployed commit не подтверждены; direct browser access к Project Map/Preview/live не удался. 25 Nov — deadline пользовательского Netlify Deploy; 26 Nov — live check; 27 Nov — экскурсия. Main не менялся, merge/Netlify Deploy не выполнялись.",
       "nodeId": "release-tracker",
       "commitUrl": "https://github.com/basana/turret-tales-christmas/commit/80f542b3d7a5c51123ff9b129b0d59374762d439"
+    },
+    {
+      "date": "2026-11-26",
+      "timestamp": "2026-11-26T09:37:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "audit",
+      "title": "Финальная ежедневная проверка MAP NAVI — найден interaction Preview 65facc6, live release не подтверждён",
+      "summary": "Application main остаётся 212334d45; candidate 80f542b3 exact HEAD подтверждён compare и не изменился (37 ahead / 1 behind main, 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28), index blob 43cc9949, sw blob 5fdf2b83. PR #3 open/unmerged, PR #6 open/Draft/unmerged, reviews пусты; candidate statuses/check-runs пусты. В отдельном basana/turret-tales-preview обнаружена ветка map-navi-interaction-build-2026-11-25 exact SHA 65facc6, 43 ahead / 1 behind Preview main 41d2f051; index blob 46d13413 (+677/-1) и map-navi-full-panel.js blob fb82b733 (307 lines). Source содержит fullscreen main map, top categories Places/My Ship/Toilets/Pharmacy, dynamic horizontal rail, POI cards/focus; это не application candidate. base href остаётся на turrettales.de; external experimental Pages workflow существует, но run/deployment не подтверждён. CSS задаёт POI controls 84×84; module state helper coerces quarter to third. Browser Preview/Project Map/live access, iPhone/iPad tests, user approval и Netlify deployed commit не подтверждены. Deadline Deploy 25 Nov прошёл без доступного подтверждения; live check 26 Nov не подтверждён; экскурсия завтра. Main не менялся, merge/Netlify Deploy не выполнялись.",
+      "nodeId": "release-tracker",
+      "commitUrl": "https://github.com/basana/turret-tales-preview/commit/65facc6fa1f5150deb174d4fab816e3be4ae8059"
     }
   ],
   "decisions": [
@@ -1124,17 +1146,17 @@
     {
       "date": "2026-11-25",
       "time": "10:00–12:00",
-      "task": "Пользовательский Deploy в Netlify не позднее 25 Nov. На аудите 09:42:29 доступные GitHub данные не подтверждают deployed commit; Deploy не выполнялся автоматизацией и должен быть выполнен пользователем после проверки Preview/одобрения candidate."
+      "task": "Дедлайн пользовательского Netlify Deploy прошёл. На финальном аудите 26 Nov доступные GitHub данные не подтверждают факт Deploy или deployed commit; не утверждать, что Deploy точно не выполнялся."
     },
     {
       "date": "2026-11-26",
       "time": "10:00–11:00",
-      "task": "Проверить live Netlify на устройстве и записать deployed commit."
+      "task": "Live check: статус Netlify и deployed commit не удалось проверить через доступные данные; прямой live-site fetch недоступен. Пользователь должен проверить live на iPhone/iPad и зафиксировать deployed commit до экскурсии."
     },
     {
       "date": "2026-11-27",
       "time": "До экскурсии",
-      "task": "Использовать проверенную опубликованную версию; не вносить новые изменения в день экскурсии."
+      "task": "Первая экскурсия. Использовать только ту опубликованную версию, которую пользователь лично проверил на устройстве; не вносить новые изменения в день экскурсии."
     }
   ]
 }
