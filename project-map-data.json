@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "28 Nov 2026: новый реальный симптом — при слабом интернете утром не загрузилась сама карта; приоритет проверки смещён на OSM map tile requests/HTTP status/тайминги и поведение при загруженной оболочке без тайлов. На вторник 01.12.2026 записана задача удалить из Netlify-hosted content устаревшие экскурсии и заходы/причалы 27, 28 и 30 ноября; это пока не сделано. Любое Production Deploy только после прямого разрешения; успешный Production Deploy на credit-based Netlify plan стоит 15 credits, Preview/branch deploy — 0 deploy credits. Аккаунтный тариф/остаток не проверен.",
-    "updatedAt": "2026-11-28T12:45:00+01:00",
+    "currentFocus": "28 Nov 2026 evening: fresh field feedback confirms urgent usability problems: users interpret the diagonal two-arrow control as full-screen, the icon is ambiguous, map objects/POIs are too small for some older visitors, and desktop/iPad layouts show less/differently shaped map than phone. Prioritize completing the existing MAP NAVI full-screen map + bottom card rail Preview rather than building a throwaway interim layout. Make responsive behavior automatic across phone portrait, iPad portrait/landscape and desktop; no user should need browser Responsive Design mode. Source inspection confirms the interaction branch already uses a 100dvh full-screen map, category rail and bottom card rail, but its landscape layout is only a partial CSS adaptation and no device tests are verified. Next: build a responsive test matrix and fix map/card/icon sizing in the isolated Preview branch. Do not merge or publish to Production without explicit approval. Weak-network tile diagnostics and 01.12 content cleanup remain open.",
+    "updatedAt": "2026-11-28T19:24:00+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -575,6 +575,27 @@
           "url": "https://basana.github.io/map-navi-project-map/"
         }
       ]
+    },
+    {
+      "id": "responsive-layout",
+      "group": "navigation",
+      "title": "Responsive map layout & accessibility",
+      "subtitle": "Телефон · iPad · Desktop · читаемость",
+      "status": "agreed",
+      "summary": "Пользователь получил прямой полевой отклик: иконка расширения непонятна, карта и маркеры слишком мелкие для части пожилых посетителей, а desktop/iPad показывают неудобную композицию. Интерфейс должен автоматически адаптироваться ко всем экранам; пользователю не нужны DevTools/Responsive Design.",
+      "details": "USER FIELD FEEDBACK — 28.11.2026:\n- A visitor pressed the diagonal two-arrow control expecting the map to become full-screen. The current icon did not communicate its actual action.\n- Another visitor asked why the control showed only two arrows; they expected the familiar four-corner/four-direction expand symbol.\n- Several older visitors found map objects/markers too small to distinguish comfortably.\n- A cruise manager viewed the site on a desktop and noticed that the map presentation differs substantially from the phone: the desktop map appears squarer and shows less usable map area. The iPad's approximately 3:4 display also shows a different composition and less content.\n- Visitors must not be expected to enable browser Responsive Design/Developer Tools. Responsive behavior is an implementation responsibility and must adapt automatically.\n\nSOURCE INSPECTION — 28.11.2026:\n- In `basana/turret-tales-preview`, branch `map-navi-interaction-build-2026-11-25`, the accessible `index.html` source has a MAP NAVI fullscreen style: app fixed to viewport with `height:100dvh`, map container `width:100%; height:100%`, a top category rail and a bottom card rail.\n- The branch includes an `orientation:landscape` CSS override, but it is a partial layout rule, not evidence of correct responsive behavior on desktop/iPad. It positions rails differently in landscape; breakpoints for wide desktop, tablet portrait/landscape, map legibility, marker/card scaling and browser viewport behavior still require design and tests.\n- Source inspection is not runtime verification. No iPhone, iPad or desktop visual test was performed; Pages deployment is not confirmed.\n\nRECOMMENDED PRIORITY (not yet implemented):\n1) Continue the new full-screen map + compact bottom card carousel as the primary route. Preserve the map as dominant; selecting/swiping a card focuses the corresponding point. Category changes replace carousel contents.\n2) Define responsive layouts by available viewport width/height and orientation, not by requiring users to change browser settings. Phone portrait, phone landscape, iPad portrait, iPad landscape and desktop wide must all be explicitly tested.\n3) Do not force the map to a square aspect ratio. Let the map occupy the available viewport/container; calculate initial bounds/zoom from the actual container dimensions and visible UI overlays, then call Leaflet invalidateSize after layout/orientation changes. Ensure important POIs are not hidden behind panels.\n4) Improve legibility: establish minimum touch targets and marker/icon sizes, reduce clutter at wide zoom levels through clustering/priority/labels, and offer readable selected-place cards/details. Do not merely enlarge every marker, which would create overlap.\n5) Replace the ambiguous diagonal two-arrow action with a standard four-corner expand icon plus explicit label/accessible name such as “Full screen map”. If it only expands the map area within the page, label that behavior accurately. On mobile browsers the page can fill the browser viewport, but browser chrome itself may remain; true installed-app/PWA fullscreen has platform constraints.\n6) A temporary fullscreen toggle on the old map is technically possible, but it duplicates work. Recommendation: do not build a throwaway intermediate layout unless a minimal, isolated fix can be done without delaying the new version. Prefer fixing the new branch's responsive behavior and using that as the next Preview.\n\nSTATUS: requirements and user observations recorded; no implementation, device test, user approval or production deployment is claimed.",
+      "where": "User field feedback 28.11.2026; source inspection basana/turret-tales-preview branch map-navi-interaction-build-2026-11-25, index.html",
+      "next": "В приоритетном порядке довести новую полноэкранную карту с нижней каруселью в отдельной Preview-ветке: responsive layouts for phone portrait/landscape, iPad portrait/landscape and desktop; legible markers/cards; clear four-corner full-screen control. Then inspect and test each viewport. Do not spend time on a throwaway old-layout intermediate unless a minimal safe patch is needed.",
+      "links": [
+        {
+          "label": "New MAP NAVI interaction branch",
+          "url": "https://github.com/basana/turret-tales-preview/tree/map-navi-interaction-build-2026-11-25"
+        },
+        {
+          "label": "Project Map",
+          "url": "https://basana.github.io/map-navi-project-map/"
+        }
+      ]
     }
   ],
   "edges": [
@@ -1047,6 +1068,16 @@
       "title": "Уточнён сбой при плохой связи: не загружалась сама карта",
       "summary": "Пользователь сообщил: утром при плохом интернете приложение не загрузило именно карту. Это новое наблюдение, не установленная причина. Приоритет диагностики — OSM tile requests, HTTP status/timing, параллельность запросов и поведение карты при доступной оболочке и недоступных тайлах. Также записана незавершённая задача на вт 01.12.2026: удалить из Netlify-hosted content устаревшие экскурсии/заходы и причалы 27, 28, 30 ноября. Публикация в Production только с прямого разрешения.",
       "nodeId": "mobile-performance"
+    },
+    {
+      "date": "2026-11-28",
+      "timestamp": "2026-11-28T19:24:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "observation",
+      "title": "Полевой отзыв: понятность полноэкранного режима, читаемость и разница Phone/iPad/Desktop",
+      "summary": "Пользователь передал прямые отзывы туристов и круиз-менеджера: диагональная иконка из двух стрелок воспринимается как полноэкранное расширение, другой посетитель ожидал четыре расходящиеся стрелки; несколько пожилых посетителей не могли различить мелкие объекты; desktop и iPad показывают отличающуюся/менее полезную композицию карты по сравнению с телефоном. Проверен source branch map-navi-interaction-build-2026-11-25: уже есть full-viewport map (100dvh), category rail, bottom card rail и частичный landscape CSS, но runtime/device tests не подтверждены. Рекомендация: ускорить доработку новой версии, а не создавать дублирующую промежуточную версию; сделать отдельные адаптивные профили для phone portrait/landscape, iPad portrait/landscape и desktop; улучшить читаемость/масштаб POI; заменить control на однозначный four-corner fullscreen icon + label. Это observation/plan, не реализация и не публикация.",
+      "nodeId": "responsive-layout",
+      "commitUrl": ""
     }
   ],
   "decisions": [
@@ -1151,6 +1182,14 @@
       "title": "Netlify credits: изменение данных и Production Deploy — разные операции",
       "summary": "Само редактирование/удаление записей в данных не является отдельным тарифицируемым событием. По актуальной документации Netlify для credit-based plans успешный Production Deploy стоит 15 credits; Deploy Preview/branch deploy — 0 deploy credits. Build minutes не тарифицируются отдельной строкой на этой модели. Тариф и остаток кредитов конкретной команды не проверены. Перед Production Deploy необходимо явное разрешение пользователя.",
       "nodeId": "release-tracker"
+    },
+    {
+      "date": "2026-11-28",
+      "timestamp": "2026-11-28T19:24:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "title": "Responsive design и читаемость обязательны на всех устройствах",
+      "summary": "По реальному отзыву посетителей: карта, POI и управление должны автоматически адаптироваться к телефону, iPad и desktop; пользователь не должен включать Responsive Design в браузере. Иконка расширения должна однозначно обозначать полноэкранную карту (четыре угла/направления и понятная подпись). Для пожилых посетителей требуется лучшая читаемость карты и объектов. Приоритет — новая полноэкранная карта с нижней каруселью; промежуточную версию старого интерфейса не строить, если она дублирует работу.",
+      "nodeId": "responsive-layout"
     }
   ],
   "releaseSchedule": [
