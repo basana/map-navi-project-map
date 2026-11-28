@@ -2,7 +2,7 @@
   "meta": {
     "title": "Map Navi — совместная карта проекта",
     "subtitle": "Рабочая карта решений и реализации ChatGPT + Anatoly",
-    "updated": "2026-11-26",
+    "updated": "2026-11-28",
     "scope": "Project Map — единый журнал решений, реализации и релизного контроля. Текущий план переноса и сроки первой экскурсии вынесены в IMPLEMENTATION_RELEASE_TRACKER_2026-11-15.md.",
     "branch": "Application main 212334d45 (index blob 59e4db3c, sw blob e2ea1a5f unchanged). Application candidate feature/map-navi-poi-pulse-states-2026-11-19 remains exact HEAD 80f542b3 (37 ahead / 1 behind main; 33 ahead integration f29ad217; 20 ahead PR #6 4c0d6d28); index blob 43cc9949, sw blob 5fdf2b83. Separate Preview interaction branch map-navi-interaction-build-2026-11-25 is exact HEAD 65facc6fa1f5150deb174d4fab816e3be4ae8059 (43 ahead / 1 behind Preview main 41d2f051), index blob 46d13413, module blob fb82b733; source contains full-screen map, dynamic Places/My Ship/Toilets/Pharmacy rail and POI cards, but Pages deployment, runtime/device tests and user approval are unverified. Its base href still points to production. No Netlify deployed commit confirmed.",
     "mainProtected": true,
@@ -14,8 +14,8 @@
       "todo": "Запланировано"
     },
     "dashboard": "Панель показывает состояние карты и журнал изменений с точным местным временем (Europe/Berlin).",
-    "currentFocus": "Финальная проверка 26 Nov 2026, 09:37 Europe/Berlin: application main 212334d45 и candidate 80f542b3 не изменились; candidate exact HEAD подтверждён compare, 0 statuses/checks, PR #3 open/unmerged, PR #6 open/Draft/unmerged, reviews пусты. Новая отдельная Preview ветка map-navi-interaction-build-2026-11-25 exact SHA 65facc6 (43 ahead / 1 behind Preview main 41d2f051) содержит fullscreen main map, top categories Places/My Ship/Toilets/Pharmacy, dynamic horizontal card rail, POI cards/focus. Это не application candidate. index blob 46d13413, module blob fb82b733; base href всё ещё указывает на turrettales.de, Pages deployment из experimental-preview workflow не подтверждён, combined statuses и PR-triggered runs пусты. Browser access к Project Map/Preview/live недоступен. Candidate Preview/device tests, user approval, Netlify deployed commit и live check не подтверждены. 25 Nov deadline прошёл без доступного подтверждения Deploy; экскурсия завтра. Application main не менялся, merge/Netlify Deploy не выполнялись.",
-    "updatedAt": "2026-11-26T09:37:00+01:00",
+    "currentFocus": "28 Nov 2026: добавлен отдельный план Mobile Performance & Weak-Network Reliability. Claude не считается активным исполнителем; работу вести самостоятельно в изолированных Preview-ветках. Уже выполнен только source-level lazy loading 41/45 img в ветке perf/lazy-images-2026-11-27; srcset/derivatives, first-screen network waterfall, tile-provider/offline cache, weak-network/device tests не выполнены. Production/main не менять; Netlify Deploy только по прямому разрешению пользователя.",
+    "updatedAt": "2026-11-28T16:56:00+01:00",
     "timeZone": "Europe/Berlin"
   },
   "groups": [
@@ -487,10 +487,10 @@
       "title": "Offline Navigation",
       "subtitle": "Подготовка маршрута и карты заранее",
       "status": "progress",
-      "summary": "Подготовка офлайн-пакета — обязательная функция: выбранный маршрут, POI, материалы и лицензированные картографические данные должны быть доступны при слабой или отсутствующей сети.",
-      "details": "Текущий Service Worker не обеспечивает полноценный offline: заранее сохраняет index.html и manifest.json, но не кеширует большинство ресурсов и не сохраняет тайлы. Основная карта и три дополнительные карты используют стандартные OSM raster tiles. Политика публичного OSM tile-сервера запрещает bulk prefetch/offline download. Необходимо выбрать провайдера с явным разрешением offline/prefetch для веб-PWA либо self-hosted tiles. Целевой UX: Prepare your journey, прогресс, список загруженных компонентов, проверка целостности и Ready for offline use; пять минут — ориентир, не обещание. GPS без сети требует теста на iPhone; offline routing не обещать без локального routing engine. Дополнительная проверка 13.11.2026: activate в sw.js удаляет все Cache Storage entries данного origin, кроме rhine-design-test-v304. Поскольку Cache Storage общий для origin basana.github.io, это потенциально может затронуть кэши других GitHub Pages-проектов; пока это только обнаруженный риск, не подтверждённый инцидент. Перед реализацией ограничить очистку уникальным namespace приложения. Подтверждены четыре OSM tileLayer в index.html: основная карта и три дополнительные карты. Первичное сравнение провайдеров (13.11.2026): Geoapify выглядит наиболее перспективным, поскольку официально разрешает cache/store/redistribute OSM-based generated tiles и поддерживает XYZ raster + Leaflet; однако надо письменно подтвердить bulk prefetch и офлайн-хранение именно в PWA, коммерческие условия и RPS. Thunderforest разрешает browser/device offline cache, но bulk download требует Small Business от €235/месяц без VAT. Stadia Maps ограничивает исключение 100 MB mobile application, поэтому PWA не подтверждена. MapTiler Cloud bulk download требует Custom plan/отдельного соглашения. Ни один провайдер не выбран.",
+      "summary": "Offline Navigation и устойчивость при слабой сети — обязательное требование. Нужно разделять быстрый первый запуск, кэш оболочки/данных и легальное офлайн-хранение картографических тайлов.",
+      "details": "Сохранить ранее зафиксированные ограничения: текущий Service Worker не обеспечивает полноценный offline; основная и три дополнительные карты используют OSM raster tiles; публичный OSM tile-сервер запрещает bulk prefetch/offline download. Geoapify — кандидат, но письменное подтверждение bulk prefetch и PWA offline storage, коммерческих условий и RPS не получено; Thunderforest, Stadia, MapTiler и self-hosted требуют отдельного сравнения. Новый отзыв 28.11.2026: при плохой мобильной связи в центре Кобленца карта долго загружалась — это критический риск для туристов. Целевой сценарий: заранее подготовить и сохранить район/маршрут, POI и лицензированные тайлы; при потере сети уже загруженные данные остаются доступными. Не обещать offline routing без локального routing engine. До выбора поставщика не включать массовую загрузку OSM тайлов.",
       "where": "turret-tales-christmas, feature/map-navi-gps-follow-01: sw.js, index.html; аудит 13.11.2026",
-      "next": "Получить от Geoapify письменное подтверждение условий для PWA bulk prefetch/cache; параллельно оценить реальный объём пакета Koblenz и сравнить с Thunderforest Small Business и self-hosted tiles.",
+      "next": "Сначала измерить первый запуск и выяснить, задерживают ли карту тайлы, JS/CSS, внешние данные или сторонние ресурсы. Затем выбрать разрешённый провайдер/схему тайлов, спроектировать ограниченный офлайн-пакет Koblenz и проверить на iPhone.",
       "links": [
         {
           "label": "Актуальная рабочая ветка приложения",
@@ -548,6 +548,31 @@
         {
           "label": "Separate Preview repo",
           "url": "https://github.com/basana/turret-tales-preview"
+        }
+      ]
+    },
+    {
+      "id": "mobile-performance",
+      "group": "technical",
+      "title": "Mobile Performance & Weak-Network Reliability",
+      "subtitle": "Быстрый запуск · слабая сеть · офлайн-подготовка",
+      "status": "progress",
+      "summary": "При плохой мобильной связи в центре Кобленца карта долго загружалась. Это критическая проблема туристического сценария. Оптимизацию вести по измерениям, начиная с появления первого экрана и карты, а не только с фотографий.",
+      "details": "ПЛАН РАБОТ:\n1) Диагностика: измерить время до первого экрана и интерактивной карты; записать network waterfall; определить вклад Leaflet/CSS/JS, картографических тайлов, внешних данных, шрифтов и изображений.\n2) First-screen: показывать оболочку, карту и основные POI максимально рано; убрать необязательные запросы из критического пути; тяжёлые фото/истории загружать после.\n3) App/data cache: кэшировать оболочку, скрипты, стили, иконки и основные данные; изолировать Service Worker cache namespace, не очищать чужие кэши на basana.github.io.\n4) Images: центральная библиотека, Thumbnail/Preview/Full, srcset/sizes, WebP/AVIF fallback, lazy/progressive loading; оригиналы сохранять.\n5) Map tiles/offline: не делать bulk prefetch публичных OSM tiles; выбрать провайдера с явным разрешением либо self-hosted; подготовить пакет Koblenz/маршрута и тестировать GPS без сети отдельно.\n6) Тесты: Wi-Fi, медленная сеть, offline после предварительной загрузки; iPhone и iPad; первый запуск, карта, POI, My Ship/причалы, GPS, аптеки и туалеты.\n\nУЖЕ СДЕЛАНО: в basana/turret-tales-preview, ветка perf/lazy-images-2026-11-27, 31 img-tag получили loading=lazy и decoding=async; всего 41/45 lazy, 4 eager. Добавлен MOBILE-IMAGE-AUDIT.md. Это source-level изменение, не измерение ускорения и не проверка на устройстве. Ветка не перенесена в main/Production.\n\nНЕ СДЕЛАНО: first-screen/network-waterfall measurement; responsive srcset/derivatives; self-contained preview без зависимости от turrettales.de base URL; полноценный offline tile cache; выбор tile provider; weak-network/device tests. Текущий Preview не является подтверждённым offline-ready приложением.",
+      "where": "basana/turret-tales-preview: perf/lazy-images-2026-11-27; MOBILE-IMAGE-AUDIT.md; basana/map-navi-project-map: offline-navigation",
+      "next": "Самостоятельно начать с read-only диагностики текущей Preview-ветки и зафиксировать waterfall/критические запросы. Затем создать отдельную оптимизационную ветку от согласованной рабочей базы; не менять main, не merge и не Deploy. После получения тестовой ссылки пользователь проверяет на своём iPhone в реальных условиях связи.",
+      "links": [
+        {
+          "label": "Lazy image branch",
+          "url": "https://github.com/basana/turret-tales-preview/tree/perf/lazy-images-2026-11-27"
+        },
+        {
+          "label": "Mobile image audit",
+          "url": "https://github.com/basana/turret-tales-preview/blob/perf/lazy-images-2026-11-27/MOBILE-IMAGE-AUDIT.md"
+        },
+        {
+          "label": "Offline navigation record",
+          "url": "https://basana.github.io/map-navi-project-map/"
         }
       ]
     }
@@ -985,6 +1010,15 @@
       "summary": "Application main остаётся 212334d45; candidate 80f542b3 exact HEAD подтверждён compare и не изменился (37 ahead / 1 behind main, 33 ahead integration f29ad217, 20 ahead PR #6 4c0d6d28), index blob 43cc9949, sw blob 5fdf2b83. PR #3 open/unmerged, PR #6 open/Draft/unmerged, reviews пусты; candidate statuses/check-runs пусты. В отдельном basana/turret-tales-preview обнаружена ветка map-navi-interaction-build-2026-11-25 exact SHA 65facc6, 43 ahead / 1 behind Preview main 41d2f051; index blob 46d13413 (+677/-1) и map-navi-full-panel.js blob fb82b733 (307 lines). Source содержит fullscreen main map, top categories Places/My Ship/Toilets/Pharmacy, dynamic horizontal rail, POI cards/focus; это не application candidate. base href остаётся на turrettales.de; external experimental Pages workflow существует, но run/deployment не подтверждён. CSS задаёт POI controls 84×84; module state helper coerces quarter to third. Browser Preview/Project Map/live access, iPhone/iPad tests, user approval и Netlify deployed commit не подтверждены. Deadline Deploy 25 Nov прошёл без доступного подтверждения; live check 26 Nov не подтверждён; экскурсия завтра. Main не менялся, merge/Netlify Deploy не выполнялись.",
       "nodeId": "release-tracker",
       "commitUrl": "https://github.com/basana/turret-tales-preview/commit/65facc6fa1f5150deb174d4fab816e3be4ae8059"
+    },
+    {
+      "date": "2026-11-28",
+      "timestamp": "2026-11-28T16:56:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "type": "decision",
+      "title": "Зафиксирован план Mobile Performance & Weak-Network Reliability",
+      "summary": "По реальному отзыву: при плохой мобильной связи в центре Кобленца карта долго загружалась. В Project Map добавлен отдельный технический узел с поэтапным планом: измерить first-screen/network waterfall; ускорить критический путь; кэшировать оболочку и данные; продолжить responsive/lazy image pipeline; отдельно решить законное офлайн-кэширование тайлов; проверить Wi-Fi/slow network/offline на iPhone/iPad. Подтверждённое сделанное: только lazy loading 41/45 img в изолированной ветке perf/lazy-images-2026-11-27 и аудит. Реальное ускорение, tile offline и device tests не подтверждены. Claude не считается исполнителем; работа может вестись самостоятельно. Application main/Production не менять; merge и Netlify Deploy без прямого разрешения пользователя запрещены.",
+      "nodeId": "mobile-performance"
     }
   ],
   "decisions": [
@@ -1065,6 +1099,14 @@
       "title": "Для GPS preview сохраняется правая верхняя колонка кнопок",
       "summary": "Для тестовой версии оставляем аптеку, туалет и полный охват карты справа сверху, ниже поиска. Нижнее расположение из коммита Claude от 14.11.2026 не переносим в preview, поскольку оно противоречит ранее согласованному требованию. Main не изменяется.",
       "nodeId": "map-ui"
+    },
+    {
+      "date": "2026-11-28",
+      "timestamp": "2026-11-28T16:56:00+01:00",
+      "timeZone": "Europe/Berlin",
+      "title": "Слабая мобильная связь — критический критерий надёжности MAP NAVI",
+      "summary": "Сначала измерять и устранять задержку первого экрана/карты; изображения оптимизировать отдельно; offline map tiles реализовывать только с разрешённым провайдером. Проверка при Wi-Fi, медленной и отсутствующей сети становится обязательным критерием. Claude не считается активным исполнителем; работа ведётся в отдельных Preview-ветках. Production/main не менять, Deploy — только по прямому разрешению пользователя.",
+      "nodeId": "mobile-performance"
     }
   ],
   "releaseSchedule": [
